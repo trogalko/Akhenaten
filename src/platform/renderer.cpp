@@ -466,6 +466,11 @@ static const SDL_Color *convert_color(color_t color) {
 //         uv, 2 * sizeof(float), 4, indices, sizeof(indices) / sizeof(int), sizeof(int));
 // }
 
+static void draw_isometric_top_raw(const image *img, SDL_Texture *texture,
+    const SDL_Rect *src_coords, const SDL_FRect *dst_coords, color_t color, float scale) {
+    int tiles = (img->width + 2) / 60;
+    int half_width = tiles * 30 - 1;
+    int half_height = tiles * 15;
 
 // TODO: Does not compile because of image
 // Also not in header defined?
