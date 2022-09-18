@@ -10,6 +10,8 @@
 #include "city/data_private.h"
 #include "message.h"
 
+#include <algorithm>
+
 static floods_data_t data;
 
 const floods_data_t *floodplain_data() {
@@ -83,7 +85,7 @@ bool floodplains_is(int state) {
 }
 
 void floodplains_adjust_next_quality(int quality) {
-    data.quality_next = calc_bound(data.quality_next + quality, 0, 100);
+    data.quality_next = std::clamp(data.quality_next + quality, 0, 100);
 }
 int floodplains_expected_quality() {
     return data.quality_next;

@@ -100,7 +100,7 @@ void platform_per_frame_callback(void) {
 }
 
 void platform_show_virtual_keyboard(const uint8_t *text, int max_length) {
-    vkbd.max_length = calc_bound(max_length, 0, MAX_VKBD_TEXT_SIZE);
+    vkbd.max_length = std::clamp(max_length, 0, MAX_VKBD_TEXT_SIZE);
     encoding_to_utf8(text, vkbd.utf8_text, MAX_VKBD_TEXT_SIZE, 0);
     vkbd.requested = 1;
 }

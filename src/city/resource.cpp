@@ -11,6 +11,8 @@
 #include "scenario/building.h"
 #include "scenario/property.h"
 
+#include <algorithm>
+
 static struct {
     resources_list resource_list;
     resources_list food_list;
@@ -122,7 +124,7 @@ int city_resource_trading_amount(int resource) {
     return city_data.resource.trading_amount[resource];
 }
 void city_resource_change_trading_amount(int resource, int delta) {
-    city_data.resource.trading_amount[resource] = calc_bound(city_data.resource.trading_amount[resource] + delta, 0, 100);
+    city_data.resource.trading_amount[resource] = std::clamp(city_data.resource.trading_amount[resource] + delta, 0, 100);
 }
 
 int city_resource_is_stockpiled(int resource) {

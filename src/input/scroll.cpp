@@ -13,6 +13,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include <algorithm>
+
 #define MOUSE_BORDER 5
 #define TOUCH_BORDER 100
 #define SCROLL_DRAG_MIN_DELTA 4
@@ -158,7 +160,7 @@ int scroll_in_progress(void) {
 }
 static int get_scroll_speed_factor(void) {
     auto& settings = Settings::instance();
-    return calc_bound((100 - settings.scroll_speed()) / 10, 0, 10);
+    return std::clamp((100 - settings.scroll_speed()) / 10, 0, 10);
 }
 int scroll_is_smooth(void) {
     return config_get(CONFIG_UI_SMOOTH_SCROLLING) || data.drag.active || data.speed.decaying;

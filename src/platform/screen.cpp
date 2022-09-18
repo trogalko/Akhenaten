@@ -20,6 +20,8 @@
 
 #include <stdlib.h>
 
+#include <algorithm>
+
 static struct {
     SDL_Window *window;
 } SDL;
@@ -55,7 +57,7 @@ static void set_scale_percentage(int new_scale, int pixel_width, int pixel_heigh
 #ifdef __vita__
     scale_percentage = 100;
 #else
-    scale_percentage = calc_bound(new_scale, 50, 500);
+    scale_percentage = std::clamp(new_scale, 50, 500);
 #endif
 
     if (!pixel_width || !pixel_height) {
@@ -322,8 +324,8 @@ void platform_screen_show_error_message_box(const char *title, const char *messa
 }
 
 void system_set_mouse_position(int *x, int *y) {
-    *x = calc_bound(*x, 0, screen_width() - 1);
-    *y = calc_bound(*y, 0, screen_height() - 1);
+    *x = std::clamp(*x, 0, screen_width() - 1);
+    *y = std::clamp(*y, 0, screen_height() - 1);
     SDL_WarpMouseInWindow(SDL.window, scale_logical_to_pixels(*x), scale_logical_to_pixels(*y));
 }
 

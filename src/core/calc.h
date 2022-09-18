@@ -82,15 +82,6 @@ int calc_missile_shooter_direction(int x_from, int y_from, int x_to, int y_to);
 int calc_missile_direction(int x_from, int y_from, int x_to, int y_to);
 
 /**
- * Make sure value is between min and max (inclusive)
- * @param value Value to bound
- * @param min Min value (inclusive)
- * @param max Max value (inclusive)
- * @return Value bounded to be between min and max
- */
-int32_t calc_bound(int32_t value, int32_t min, int32_t max);
-
-/**
  * Absolutely increments a value by "step" until it reaches "max"
  * If "max" is negative, "step" will *always* decrease "value",
  * meaning if "step" is positive, it will be converted to negative.

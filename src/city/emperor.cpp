@@ -11,6 +11,8 @@
 #include "scenario/property.h"
 #include "scenario/invasion.h"
 
+#include <algorithm>
+
 const int SALARY_FOR_RANK[11] = {0, 2, 5, 8, 12, 20, 30, 40, 60, 80, 100};
 
 static int cheated_invasion = 0;
@@ -290,7 +292,7 @@ void city_emperor_init_donation_amount(void) {
 }
 
 void city_emperor_set_donation_amount(int amount) {
-    city_data.emperor.donate_amount = calc_bound(amount, 0, city_data.emperor.personal_savings);
+    city_data.emperor.donate_amount = std::clamp(amount, 0, city_data.emperor.personal_savings);
 }
 
 void city_emperor_change_donation_amount(int change) {

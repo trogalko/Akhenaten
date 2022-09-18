@@ -14,6 +14,8 @@
 
 #include <string.h>
 
+#include <algorithm>
+
 #define XML_BUFFER_SIZE 1024
 #define XML_MAX_DEPTH 3
 #define XML_MAX_ELEMENTS_PER_DEPTH 2
@@ -435,7 +437,7 @@ static void xml_start_animation_element(const char **attributes) {
             img->img.animation.num_sprites = string_to_int(string_from_ascii(attributes[i + 1]));
         }
         if (strcmp(attributes[i], XML_FILE_ATTRIBUTES[2][1][1]) == 0) {
-            img->img.animation.speed_id = calc_bound(string_to_int(string_from_ascii(attributes[i + 1])), 0, 50);
+            img->img.animation.speed_id = std::clamp(string_to_int(string_from_ascii(attributes[i + 1])), 0, 50);
         }
         if (strcmp(attributes[i], XML_FILE_ATTRIBUTES[2][1][2]) == 0) {
             const char *value = attributes[i + 1];

@@ -27,6 +27,8 @@
 #include "scenario/map.h"
 #include "graphics/image_groups.h"
 
+#include <algorithm>
+
 //#define OFFSET(x,y) (x + GRID_SIZE_PH * y)
 
 #define FORBIDDEN_TERRAIN_MEADOW (TERRAIN_AQUEDUCT | TERRAIN_ELEVATION | TERRAIN_ACCESS_RAMP |\
@@ -1110,7 +1112,7 @@ static void floodplain_update_inundation_row(int grid_offset, int order) {
     //  I know it's deterministic, so I just used the random grid for now.
     int randm = map_random_get(grid_offset);
     int ticks = floods_fticks();
-    int local_tick_bound = calc_bound(ticks - order * 25, 0, 25);
+    int local_tick_bound = std::clamp(ticks - order * 25, 0, 25);
     bool flooded = randm % 25 < local_tick_bound;
 
     int b_id = map_building_at(grid_offset);

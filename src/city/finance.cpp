@@ -7,6 +7,8 @@
 #include "game/difficulty.h"
 #include "game/time.h"
 
+#include <algorithm>
+
 #define MAX_HOUSE_LEVELS 20
 
 int city_finance_treasury(void) {
@@ -20,7 +22,7 @@ int city_finance_tax_percentage(void) {
     return city_data.finance.tax_percentage;
 }
 void city_finance_change_tax_percentage(int change) {
-    city_data.finance.tax_percentage = calc_bound(city_data.finance.tax_percentage + change, 0, 25);
+    city_data.finance.tax_percentage = std::clamp(city_data.finance.tax_percentage + change, 0, 25);
 }
 int city_finance_percentage_taxed_people(void) {
     return city_data.taxes.percentage_taxed_people;

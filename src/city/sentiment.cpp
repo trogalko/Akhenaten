@@ -11,6 +11,8 @@
 #include "game/difficulty.h"
 #include "game/tutorial.h"
 
+#include <algorithm>
+
 static const int SENTIMENT_PER_TAX_RATE[26] = {
         3, 2, 2, 2, 1, 1, 1, 0, 0, -1,
         -2, -2, -3, -3, -3, -5, -5, -5, -5, -6,
@@ -29,7 +31,7 @@ void city_sentiment_change_happiness(int amount) {
     for (int i = 1; i < MAX_BUILDINGS; i++) {
         building *b = building_get(i);
         if (b->state == BUILDING_STATE_VALID && b->house_size)
-            b->sentiment.house_happiness = calc_bound(b->sentiment.house_happiness + amount, 0, 100);
+            b->sentiment.house_happiness = std::clamp(b->sentiment.house_happiness + amount, 0, 100);
 
     }
 }
@@ -38,10 +40,13 @@ void city_sentiment_set_max_happiness(int max) {
     for (int i = 1; i < MAX_BUILDINGS; i++) {
         building *b = building_get(i);
         if (b->state == BUILDING_STATE_VALID && b->house_size) {
-            if (b->sentiment.house_happiness > max)
+            if (b->sentiment.house_happiness > max) {
                 b->sentiment.house_happiness = max;
+            }
 
-            b->sentiment.house_happiness = calc_bound(b->sentiment.house_happiness, 0, 100);
+            b->sentiment.house_happiness = 
+                std::clamp(b->sentiment.house_happiness, 
+                    static_cast<signed char>(0), static_cast<signed char>(100));
         }
     }
 }
@@ -223,7 +228,9 @@ void city_sentiment_update(void) {
         b->sentiment.house_happiness += sentiment_contribution_employment;
         b->sentiment.house_happiness += sentiment_contribution_food;
         b->sentiment.house_happiness += sentiment_contribution_tents;
-        b->sentiment.house_happiness = calc_bound(b->sentiment.house_happiness, 0, 100);
+        b->sentiment.house_happiness = 
+            std::clamp(b->sentiment.house_happiness, 
+            static_cast<signed char>(0), static_cast<signed char>(100));
     }
 
     int sentiment_contribution_food = 0;

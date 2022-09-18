@@ -9,12 +9,14 @@
 #include "game/tutorial.h"
 #include "scenario/property.h"
 
+#include <algorithm>
+
 int city_health(void) {
     return city_data.health.value;
 }
 
 void city_health_change(int amount) {
-    city_data.health.value = calc_bound(city_data.health.value + amount, 0, 100);
+    city_data.health.value = std::clamp(city_data.health.value + amount, 0, 100);
 }
 
 static void cause_disease(int total_people) {
@@ -123,7 +125,7 @@ void city_health_update(void) {
             city_data.health.value = city_data.health.target_value;
 
     }
-    city_data.health.value = calc_bound(city_data.health.value, 0, 100);
+    city_data.health.value = std::clamp(city_data.health.value, 0, 100);
 
     cause_disease(total_population);
 }

@@ -6,6 +6,8 @@
 #include "graphics/boilerplate.h"
 #include "graphics/elements/image_button.h"
 
+#include <algorithm>
+
 #define SCROLL_BUTTON_HEIGHT 26
 #define SCROLL_BUTTON_WIDTH 39
 #define SCROLL_DOT_SIZE 25
@@ -36,7 +38,7 @@ void scrollbar_init(scrollbar_type *scrollbar, int scroll_position, int max_scro
     if (max_scroll_position < 0)
         max_scroll_position = 0;
 
-    scrollbar->scroll_position = calc_bound(scroll_position, 0, max_scroll_position);
+    scrollbar->scroll_position = std::clamp(scroll_position, 0, max_scroll_position);
     scrollbar->max_scroll_position = max_scroll_position;
     scrollbar->is_dragging_scroll = 0;
 }

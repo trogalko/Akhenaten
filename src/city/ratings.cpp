@@ -9,6 +9,8 @@
 #include "scenario/criteria.h"
 #include "scenario/property.h"
 
+#include <algorithm>
+
 int city_rating_culture(void) {
     return city_data.ratings.culture;
 }
@@ -87,7 +89,7 @@ void city_ratings_monument_record_rioter(void) {
 }
 
 void city_ratings_change_kingdom(int amount) {
-    city_data.ratings.kingdom = calc_bound(city_data.ratings.kingdom + amount, 0, 100);
+    city_data.ratings.kingdom = std::clamp(city_data.ratings.kingdom + amount, 0, 100);
 }
 
 void city_ratings_reset_kingdom_emperor_change(void) {
@@ -368,7 +370,7 @@ static void update_culture_rating(void) {
     }
     city_data.ratings.culture += city_data.ratings.culture_points.library;
 
-    city_data.ratings.culture = calc_bound(city_data.ratings.culture, 0, 100);
+    city_data.ratings.culture = std::clamp(city_data.ratings.culture, 0, 100);
     update_culture_explanation();
 }
 
@@ -417,7 +419,7 @@ static void update_prosperity_rating(void) {
     if (city_data.ratings.prosperity > city_data.ratings.prosperity_max)
         city_data.ratings.prosperity = city_data.ratings.prosperity_max;
 
-    city_data.ratings.prosperity = calc_bound(city_data.ratings.prosperity, 0, 100);
+    city_data.ratings.prosperity = std::clamp(city_data.ratings.prosperity, 0, 100);
 
     update_prosperity_explanation();
 }
@@ -464,7 +466,7 @@ static void update_monument_rating(void) {
     city_data.ratings.monument_num_rioters = 0;
     city_data.ratings.monument_destroyed_buildings = 0;
 
-    city_data.ratings.monument = calc_bound(city_data.ratings.monument + change, 0, 100);
+    city_data.ratings.monument = std::clamp(city_data.ratings.monument + change, 0, 100);
     update_monument_explanation();
 }
 
@@ -564,7 +566,7 @@ static void update_kingdom_rating(int is_yearly_update) {
         }
         city_data.ratings.kingdom_last_year = city_data.ratings.kingdom;
     }
-    city_data.ratings.kingdom = calc_bound(city_data.ratings.kingdom, 0, 100);
+    city_data.ratings.kingdom = std::clamp(city_data.ratings.kingdom, 0, 100);
     city_ratings_update_kingdom_explanation();
 }
 

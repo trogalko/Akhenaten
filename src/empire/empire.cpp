@@ -15,6 +15,8 @@
 #include <string.h>
 #include "io/io_buffer.h"
 
+#include <algorithm>
+
 const static int EMPIRE_WIDTH[2] = {
         2000,
         1200,
@@ -69,8 +71,8 @@ static void check_scroll_boundaries(void) {
     int max_x = EMPIRE_WIDTH[GAME_ENV] - data.viewport_width;
     int max_y = EMPIRE_HEIGHT[GAME_ENV] - data.viewport_height + 20;
 
-    data.scroll_x = calc_bound(data.scroll_x, 0, max_x);
-    data.scroll_y = calc_bound(data.scroll_y, 0, max_y);
+    data.scroll_x = std::clamp(data.scroll_x, 0, max_x);
+    data.scroll_y = std::clamp(data.scroll_y, 0, max_y);
 }
 
 void empire_load_editor(int empire_id, int viewport_width, int viewport_height) {

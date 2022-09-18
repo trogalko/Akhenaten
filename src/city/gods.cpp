@@ -26,6 +26,8 @@
 #include "floods.h"
 #include "ratings.h"
 
+#include <algorithm>
+
 #define TIE 10
 
 void city_gods_reset(void) {
@@ -665,25 +667,25 @@ void update_curses_and_blessings(int randm_god, int FORCE_EVENT) {
             /* ***** MAJOR BLESSINGS ***** */
             perform_major_blessing(randm_god);
             god->happy_ankhs = 0;
-            god->mood = calc_bound(god->mood - 30, 0, 100);
+            god->mood = std::clamp(god->mood - 30, 0, 100);
         } else if (FORCE_EVENT == GOD_EVENT_MINOR_BLESSING ||
                   (FORCE_EVENT == -1 && god->happy_ankhs > 19 && god->months_since_festival < 15)) {
             /* ***** MINOR BLESSINGS ***** */
             perform_minor_blessing(randm_god);
             god->happy_ankhs = 0;
-            god->mood = calc_bound(god->mood - 12, 0, 100);
+            god->mood = std::clamp(god->mood - 12, 0, 100);
         } else if (FORCE_EVENT == GOD_EVENT_MAJOR_CURSE ||
                   (FORCE_EVENT == -1 && god->wrath_bolts == 50 && god->months_since_festival > 3)) {
             /* ***** MAJOR CURSES ***** */
             perform_major_curse(randm_god);
             god->wrath_bolts = 0;
-            god->mood = calc_bound(god->mood + 30, 0, 100);
+            god->mood = std::clamp(god->mood + 30, 0, 100);
         } else if (FORCE_EVENT == GOD_EVENT_MINOR_CURSE ||
                   (FORCE_EVENT == -1 && god->wrath_bolts > 19 && god->months_since_festival > 3)) {
             /* ***** MINOR CURSES ***** */
             perform_minor_curse(randm_god);
             god->wrath_bolts = 0;
-            god->mood = calc_bound(god->mood + 12, 0, 100);
+            god->mood = std::clamp(god->mood + 12, 0, 100);
         }
     }
 }
@@ -753,7 +755,7 @@ static void calculate_mood_targets() {
         if (festival_penalty > 40)
             festival_penalty = 40;
 
-        city_data.religion.gods[i].target_mood = calc_bound(city_data.religion.gods[i].target_mood + 12 - festival_penalty, 0, 100);
+        city_data.religion.gods[i].target_mood = std::clamp(city_data.religion.gods[i].target_mood + 12 - festival_penalty, 0, 100);
     }
 
 //    if (!(config_get(CONFIG_GP_CH_JEALOUS_GODS))) {
@@ -767,12 +769,12 @@ static void calculate_mood_targets() {
 //            city_data.religion.gods[min_god].target_mood -= 25;
 //    }
 
-    int points = calc_bound((city_data.population.population - 350) / 50, 0, 5);
-    int min_mood = 50 - 10 * points;
-    int max_mood = 50 + 10 * points;
+    int points = std::clamp((city_data.population.population - 350) / 50, 0, 5);
+    uint8_t min_mood = 50 - 10 * points;
+    uint8_t max_mood = 50 + 10 * points;
 
     for (int i = 0; i < MAX_GODS; i++)
-        city_data.religion.gods[i].target_mood = calc_bound(city_data.religion.gods[i].target_mood, min_mood, max_mood);
+        city_data.religion.gods[i].target_mood = std::clamp(city_data.religion.gods[i].target_mood, min_mood, max_mood);
 }
 static void update_moods(int randm_god) {
     for (int i = 0; i < MAX_GODS; i++) {

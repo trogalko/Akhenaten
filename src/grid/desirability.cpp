@@ -10,6 +10,8 @@
 #include "grid/ring.h"
 #include "grid/terrain.h"
 
+#include <algorithm>
+
 static grid_xx desirability_grid = {0, {FS_INT8, FS_INT8}};
 
 static void add_desirability_at_distance(int x, int y, int size, int distance, int desirability) {
@@ -29,17 +31,17 @@ static void add_desirability_at_distance(int x, int y, int size, int distance, i
             const ring_tile *tile = map_ring_tile(i);
             if (map_ring_is_inside_map(x + tile->x, y + tile->y)) {
                 map_grid_set(&desirability_grid, base_offset + tile->grid_offset,
-                             calc_bound(
+                             std::clamp(
                                      map_grid_get(&desirability_grid, base_offset + tile->grid_offset) + desirability,
-                                     -100, 100));
+                                     static_cast<int64_t>(-100), static_cast<int64_t>(100)));
             }
         }
     } else {
         for (int i = start; i < end; i++) {
             const ring_tile *tile = map_ring_tile(i);
             map_grid_set(&desirability_grid, base_offset + tile->grid_offset,
-                         calc_bound(map_grid_get(&desirability_grid, base_offset + tile->grid_offset) + desirability,
-                                    -100, 100));
+                         std::clamp(map_grid_get(&desirability_grid, base_offset + tile->grid_offset) + desirability,
+                                    static_cast<int64_t>(-100), static_cast<int64_t>(100)));
         }
     }
 }

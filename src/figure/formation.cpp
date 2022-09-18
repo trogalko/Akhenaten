@@ -13,6 +13,7 @@
 #include "sound/effect.h"
 
 #include <string.h>
+#include <algorithm>
 
 static formation formations[250];
 
@@ -265,7 +266,7 @@ void formation_change_morale(formation *m, int amount) {
                 break;
         }
     }
-    m->morale = calc_bound(m->morale + amount, 0, max_morale);
+    m->morale = std::clamp(m->morale + amount, 0, max_morale);
 }
 
 void formation_update_morale_after_death(formation *m) {

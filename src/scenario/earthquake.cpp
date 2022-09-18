@@ -15,6 +15,8 @@
 #include "scenario/data.h"
 #include "sound/effect.h"
 
+#include <algorithm>
+
 static struct {
     int game_year;
     int month;
@@ -195,8 +197,8 @@ void scenario_earthquake_process(void) {
                 default:
                     return;
             }
-            int x = calc_bound(data.expand[index].x + dx, 0, scenario_data.map.width - 1);
-            int y = calc_bound(data.expand[index].y + dy, 0, scenario_data.map.height - 1);
+            int x = std::clamp(data.expand[index].x + dx, 0, scenario_data.map.width - 1);
+            int y = std::clamp(data.expand[index].y + dy, 0, scenario_data.map.height - 1);
             if (can_advance_earthquake_to_tile(x, y)) {
                 data.expand[index].x = x;
                 data.expand[index].y = y;

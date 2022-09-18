@@ -5,6 +5,8 @@
 #include "zoom.h"
 #include "lookup.h"
 
+#include <algorithm>
+
 struct {
     float zoom = ZOOM_DEFAULT;
     float target = ZOOM_DEFAULT;
@@ -73,9 +75,9 @@ void zoom_map(const mouse *m) {
             int target_next = current_zoom;
             for (int i = 0; i < 8; ++i) {
                 if (allowed_zoom_levels[i] < current_zoom)
-                    target_prev = allowed_zoom_levels[calc_bound(i, 0, 7)];
+                    target_prev = allowed_zoom_levels[std::clamp(i, 0, 7)];
                 if (allowed_zoom_levels[7 - i] > current_zoom)
-                    target_next = allowed_zoom_levels[calc_bound((7 - i), 0, 7)];
+                    target_next = allowed_zoom_levels[std::clamp((7 - i), 0, 7)];
             }
             data.target = (m->scrolled == SCROLL_DOWN) ? target_next : target_prev;
         } else {
@@ -96,7 +98,7 @@ bool zoom_update_value(pixel_coordinate *camera_position) {
     auto old_zoom = data.zoom;
 //    data.delta = (float)(data.target - data.zoom) * ZOOM_LERP_COEFF;
     if (!data.touch.active)
-        data.delta = calc_bound(data.target - data.zoom, -data.zoom_speed, data.zoom_speed);
+        data.delta = std::clamp(data.target - data.zoom, -data.zoom_speed, data.zoom_speed);
     else
         data.delta = (float)(data.touch.current_zoom - data.zoom);
     data.zoom = bound_zoom(data.zoom + data.delta); // todo: bind camera to max window size... or find a way to mask the borders
@@ -143,9 +145,9 @@ float zoom_get_scale() {
 float zoom_get_percentage() {
     return (float)(int)(data.zoom + 0.5f);
 }
-void zoom_set(float z) {
-    z = calc_bound(z, 50, 200);
-    data.zoom = z;
-    data.target = z;
+void zoom_set(float zoom) {
+    zoom = std::clamp(zoom, 50.0f, 200.0f);
+    data.zoom = zoom;
+    data.target = zoom;
     city_view_refresh_viewport();
 }

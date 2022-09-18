@@ -11,6 +11,8 @@
 #include "game/time.h"
 #include "scenario/property.h"
 
+#include <algorithm>
+
 #define MAX_CATS 10
 
 enum {
@@ -292,7 +294,7 @@ int city_labor_wages(void) {
 }
 void city_labor_change_wages(int amount) {
     city_data.labor.wages += amount;
-    city_data.labor.wages = calc_bound(city_data.labor.wages, 0, 100);
+    city_data.labor.wages = std::clamp(city_data.labor.wages, 0, 100);
 }
 int city_labor_wages_rome(void) {
     return city_data.labor.wages_rome;
