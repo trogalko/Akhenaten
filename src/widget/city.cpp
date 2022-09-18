@@ -554,13 +554,17 @@ void widget_city_handle_input_military(const mouse *m, const hotkeys *h, int leg
 }
 
 void widget_city_get_tooltip(tooltip_context *c) {
-    if (setting_tooltips() == TOOLTIPS_NONE)
+    auto& settings = Settings::instance();
+    if (settings.tooltips() == Tooltips::NONE) {
         return;
-    if (!window_is(WINDOW_CITY))
+    }
+    if (!window_is(WINDOW_CITY)) {
         return;
+    }
     int grid_offset = data.current_tile.grid_offset();
-    if (grid_offset == 0)
+    if (grid_offset == 0) {
         return;
+    }
     int building_id = map_building_at(grid_offset);
     int overlay = game_state_overlay();
     // cheat tooltips

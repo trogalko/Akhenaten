@@ -131,9 +131,10 @@ static int update_extra_info_value(int value, int *field) {
 }
 static int update_extra_info(int is_background) {
     int changed = 0;
-    if (data.info_to_display & SIDEBAR_EXTRA_DISPLAY_GAME_SPEED)
-        changed |= update_extra_info_value(setting_game_speed(), &data.game_speed);
-
+    if (data.info_to_display & SIDEBAR_EXTRA_DISPLAY_GAME_SPEED) {
+        auto& settings = Settings::instance();
+        changed |= update_extra_info_value(settings.game_speed(), &data.game_speed);
+    }
     if (data.info_to_display & SIDEBAR_EXTRA_DISPLAY_UNEMPLOYMENT) {
         changed |= update_extra_info_value(city_labor_unemployment_percentage(), &data.unemployment_percentage);
         changed |= update_extra_info_value(
@@ -142,8 +143,9 @@ static int update_extra_info(int is_background) {
         );
     }
     if (data.info_to_display & SIDEBAR_EXTRA_DISPLAY_RATINGS) {
-        if (is_background)
+        if (is_background) {
             set_extra_info_objectives();
+        }
 
         changed |= update_extra_info_value(city_rating_culture(), &data.culture.value);
         changed |= update_extra_info_value(city_rating_prosperity(), &data.prosperity.value);
@@ -256,9 +258,11 @@ int sidebar_extra_handle_mouse(const mouse *m) {
 }
 
 static void button_game_speed(int is_down, int param2) {
-    if (is_down)
-        setting_decrease_game_speed();
+    auto& settings = Settings::instance();
+    if (is_down) {
+        settings.decrease_game_speed();
+    }
     else {
-        setting_increase_game_speed();
+        settings.increase_game_speed();
     }
 }

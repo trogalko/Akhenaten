@@ -1,99 +1,173 @@
 #ifndef GAME_SETTINGS_H
 #define GAME_SETTINGS_H
 
-#include <stdint.h>
+#include <city/constants.h>
+#include <core/game_environment.h>
 
-enum {
-    TOOLTIPS_NONE = 0,
-    TOOLTIPS_SOME = 1,
-    TOOLTIPS_FULL = 2
+#include <array>
+#include <cstdint>
+#include <memory>
+#include <string_view>
+
+enum class Tooltips {
+    NONE = 0,
+    SOME = 1,
+    FULL = 2
 };
 
-enum {
-    DIFFICULTY_VERY_EASY = 0,
-    DIFFICULTY_EASY = 1,
-    DIFFICULTY_NORMAL = 2,
-    DIFFICULTY_HARD = 3,
-    DIFFICULTY_VERY_HARD = 4
+enum class Difficulty {
+    VERY_EASY = 0,
+    EASY = 1,
+    NORMAL = 2,
+    HARD = 3,
+    VERY_HARD = 4
 };
 
-enum {
-    SOUND_MUSIC = 1,
-    SOUND_SPEECH = 2,
-    SOUND_EFFECTS = 3,
-    SOUND_CITY = 4,
+enum class SoundType {
+    MUSIC = 1,
+    SPEECH = 2,
+    EFFECTS = 3,
+    CITY = 4,
 };
 
-enum {
-    CITIES_OLD_NAMES = 0,
-    CITIES_NEW_NAMES = 1
+enum class CitiesNamesStyle {
+    OLD_NAMES = 0,
+    NEW_NAMES = 1
 };
 
-typedef struct {
-    bool enabled;
-    int volume;
-} set_sound;
+struct SettingSound {
+    bool enabled{true};
+    int volume{100};
+};
 
-void settings_load(void);
-void settings_save(void);
+class buffer;
+class Settings {
+private:
+    explicit Settings();
+public:
+    ~Settings() = default;
 
-int setting_fullscreen(void);
-void setting_window(int *width, int *height);
-void setting_set_display(int fullscreen, int width, int height);
+    Settings(Settings && rhs) = default;
+    Settings& operator=(Settings && rhs) = default;
 
-const set_sound *setting_sound(int type);
+    Settings(const Settings& rhs) = delete;
+    Settings& operator=(const Settings& rhs) = delete;
 
-int setting_sound_is_enabled(int type);
-void setting_toggle_sound_enabled(int type);
-void setting_increase_sound_volume(int type);
-void setting_decrease_sound_volume(int type);
-void setting_reset_sound(int type, int enabled, int volume);
+    static Settings& instance()
+    {
+        static Settings settings;
+        return settings;
+    }
 
-int setting_game_speed(void);
-void setting_increase_game_speed(void);
-void setting_decrease_game_speed(void);
+    void load();
+    void save();
 
-int setting_scroll_speed(void);
-void setting_increase_scroll_speed(void);
-void setting_decrease_scroll_speed(void);
-void setting_reset_speeds(int game_speed, int scroll_speed);
+    bool fullscreen() const;
+    void toggle_fullscreen();  
+    int window_width() const;
+    int window_height() const;
+    void set_display(bool fullscreen, int window_width, int window_height);
 
-int setting_tooltips(void);
-void setting_cycle_tooltips(void);
+    SettingSound sound(SoundType sound_type) const;
+    void toggle_sound_enabled(SoundType sound_type);
+    void increase_sound_volume(SoundType sound_type);
+    void decrease_sound_volume(SoundType sound_type);
+    void reset_sound(SoundType sound_type, const SettingSound& set_sound);
 
-int setting_warnings(void);
-void setting_toggle_warnings(void);
+    int game_speed() const;
+    void increase_game_speed();
+    void decrease_game_speed();
 
-int setting_monthly_autosave(void);
-void setting_toggle_monthly_autosave(void);
+    int scroll_speed() const;
+    void increase_scroll_speed(); 
+    void decrease_scroll_speed(); 
 
-int setting_city_names_style(void);
-void setting_toggle_city_names_style(void);
+    void reset_speeds(int game_speed, int scroll_speed);
 
-int setting_pyramid_speedup(void);
-void setting_toggle_pyramid_speedup(void);
+    Tooltips tooltips() const;
+    void cycle_tooltips();
 
-int setting_popup_messages(void);
-void setting_toggle_popup_messages(int flag);
+    bool warnings() const;
+    void toggle_warnings();
 
-bool setting_gods_enabled(void);
-void setting_toggle_gods_enabled(void);
+    bool monthly_autosave() const;
+    void toggle_monthly_autosave();
 
-int setting_difficulty(void);
-void setting_increase_difficulty(void);
-void setting_decrease_difficulty(void);
+    CitiesNamesStyle city_names_style() const;
+    void cycle_city_names_style();
 
-int setting_victory_video(void);
+    bool pyramid_speedup() const;
+    void toggle_pyramid_speedup();
 
-int setting_last_advisor(void);
-void setting_set_last_advisor(int advisor);
+    bool gods_enabled() const;
+    void toggle_gods_enabled();
 
-const uint8_t *setting_player_name(void);
-const char *setting_player_name_utf8(void);
-void setting_set_player_name(const uint8_t *player_name);
+    // TODO consider add docs how this collection of flags is organized.
+    // Are these different bits in a byte?
+    // If yes maybe use std::bitset for clarity.
+    int popup_messages() const;
+    void toggle_popup_messages(int flag);
 
-int setting_personal_savings_for_mission(int mission_id);
-void setting_set_personal_savings_for_mission(int mission_id, int savings);
-void setting_clear_personal_savings(void);
+    Difficulty difficulty() const;
+    void increase_difficulty();
+    void decrease_difficulty();
+
+    bool victory_video() const;
+
+    Advisor last_advisor() const;
+    void set_last_advisor(Advisor advisor);
+
+    const uint8_t *player_name() const;
+    const char *player_name_utf8() const;
+    void set_player_name(const uint8_t *player_name);
+
+    // TODO consider explaining what savings int means.
+    // is it like a set of bits?
+    int personal_savings_for_mission(int mission_id) const;
+    void set_personal_savings_for_mission(int mission_id, int savings);
+    void clear_personal_savings();
+
+private: 
+    void _load_default_settings();
+    void _load_settings(buffer *buffer);
+    const SettingSound* _sound(SoundType sound_type) const; 
+    SettingSound* _sound(SoundType sound_type); 
+
+    static constexpr int INF_SIZE = 560;
+    static constexpr int MAX_PERSONAL_SAVINGS = 100;
+    static constexpr std::string_view SETTINGS_FILENAME = "c3.inf";
+
+    // display settings
+    bool m_fullscreen{};
+    int m_window_width{};
+    int m_window_height{};
+    // sound settings
+    SettingSound m_sound_effects{};
+    SettingSound m_sound_music{};
+    SettingSound m_sound_speech{};
+    SettingSound m_sound_city{};
+    // speed settings
+    int m_game_speed{};
+    int m_scroll_speed{};
+    // misc settings
+    Difficulty m_difficulty{};
+    Tooltips m_tooltips{};
+    int m_monthly_autosave{};
+    bool m_warnings{};
+    bool m_gods_enabled{};
+    bool m_victory_video{};
+    // pharaoh settings
+    int m_popup_messages{};
+    CitiesNamesStyle m_city_names_style{};
+    bool m_pyramid_speedup{};
+    // persistent game state
+    Advisor m_last_advisor{};
+    std::array<uint8_t, MAX_PLAYER_NAME> m_player_name;
+    std::array<char, MAX_PLAYER_NAME> m_player_name_utf8;
+    // personal savings
+    std::array<int, MAX_PERSONAL_SAVINGS> m_personal_savings;
+    // file data
+    std::shared_ptr<buffer> m_inf_file{nullptr};
+};
 
 #endif // GAME_SETTINGS_H

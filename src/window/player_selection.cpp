@@ -87,8 +87,8 @@ static bool is_valid_selected_player() {
 
 void window_player_selection_init() {
     panel->refresh_file_finder();
-
-    string_copy(setting_player_name(), data.selected_player, MAX_PLAYER_NAME);
+    auto& settings = Settings::instance();
+    string_copy(settings.player_name(), data.selected_player, MAX_PLAYER_NAME);
     encoding_to_utf8(data.selected_player, data.selected_player_utf8, MAX_PLAYER_NAME, 0);
 
     panel->select(data.selected_player_utf8);
@@ -131,7 +131,8 @@ static void button_select_file(int index, int param2) {
     if (index >= panel->get_total_entries())
         return clear_selectd_name();
     set_name(panel->get_selected_entry_text(FILE_NO_EXT));
-    setting_set_player_name(data.selected_player);
+    auto& settings = Settings::instance();
+    settings.set_player_name(data.selected_player);
 }
 static void button_double_click(int index, int param2) {
     button_click(2, 0);

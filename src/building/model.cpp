@@ -148,8 +148,10 @@ const model_building *model_get_building(int type) {
 //    if (type == BUILDING_ROADBLOCK) {
 //        return &MODEL_ROADBLOCK;
 //    }
-    return &data.buildings[setting_difficulty()][type];
+    auto& settings = Settings::instance();
+    return &data.buildings[static_cast<int>(settings.difficulty())][type];
 }
 const model_house *model_get_house(int level) {
-    return &data.houses[setting_difficulty()][level];
+    auto& settings = Settings::instance();
+    return &data.houses[static_cast<int>(settings.difficulty())][level];
 }

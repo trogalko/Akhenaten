@@ -80,6 +80,7 @@ static int get_elapsed_ticks(void) {
 
     int game_speed_index = 0;
     int ticks_per_frame = 1;
+    auto& settings = Settings::instance();
     switch (window_get_id()) {
         default:
             return 0;
@@ -88,11 +89,12 @@ static int get_elapsed_ticks(void) {
         case WINDOW_SLIDING_SIDEBAR:
         case WINDOW_OVERLAY_MENU:
         case WINDOW_BUILD_MENU:
-            game_speed_index = (100 - setting_game_speed()) / 10;
-            if (game_speed_index >= 10)
+            game_speed_index = (100 - settings.game_speed()) / 10;
+            if (game_speed_index >= 10) {
                 return 0;
+            }
             else if (game_speed_index < 0) {
-                ticks_per_frame = setting_game_speed() / 100;
+                ticks_per_frame = settings.game_speed() / 100;
                 game_speed_index = 0;
             }
             break;
@@ -119,7 +121,8 @@ bool game_pre_init(void) {
     if (!lang_load(0))
         return false;
     update_encoding();
-    settings_load(); // c3.inf
+    auto& settings = Settings::instance();
+    settings.load(); // c3.inf
     config_load(); // augustus.ini
     hotkey_config_load();
     scenario_settings_init();
@@ -210,7 +213,8 @@ void game_draw(void) {
 }
 void game_exit(void) {
     video_shutdown();
-    settings_save();
+    auto& settings = Settings::instance();
+    settings.save();
     config_save();
     sound_system_shutdown();
 }

@@ -348,10 +348,11 @@ void sound_system_init(void) {
     sound_device_init_channels(SOUND_CHANNEL_MAX, channel_filenames[GAME_ENV]);
     sound_device_load_formats();
 
-    sound_city_set_volume(setting_sound(SOUND_CITY)->volume);
-    sound_effect_set_volume(setting_sound(SOUND_EFFECTS)->volume);
-    sound_music_set_volume(setting_sound(SOUND_MUSIC)->volume);
-    sound_speech_set_volume(setting_sound(SOUND_SPEECH)->volume);
+    auto& settings = Settings::instance();
+    sound_city_set_volume(settings.sound(SoundType::CITY).volume);
+    sound_effect_set_volume(settings.sound(SoundType::EFFECTS).volume);
+    sound_music_set_volume(settings.sound(SoundType::MUSIC).volume);
+    sound_speech_set_volume(settings.sound(SoundType::SPEECH).volume);
 }
 void sound_system_shutdown(void) {
     sound_device_close();

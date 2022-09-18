@@ -47,267 +47,268 @@ static struct {
 } data;
 
 static void add_definition(const hotkey_mapping *mapping) {
-    hotkey_definition *def = &data.definitions[data.num_definitions];
-    def->key = mapping->key;
-    def->modifiers = mapping->modifiers;
-    def->value = 1;
-    def->repeatable = 0;
+    hotkey_definition *hotkey_definition = &data.definitions[data.num_definitions];
+    hotkey_definition->key = mapping->key;
+    hotkey_definition->modifiers = mapping->modifiers;
+    hotkey_definition->value = 1;
+    hotkey_definition->repeatable = 0;
     switch (mapping->action) {
         case HOTKEY_TOGGLE_PAUSE:
-            def->action = &data.hotkey_state.toggle_pause;
+            hotkey_definition->action = &data.hotkey_state.toggle_pause;
             break;
         case HOTKEY_TOGGLE_OVERLAY:
-            def->action = &data.hotkey_state.toggle_overlay;
+            hotkey_definition->action = &data.hotkey_state.toggle_overlay;
             break;
         case HOTKEY_CYCLE_LEGION:
-            def->action = &data.hotkey_state.cycle_legion;
+            hotkey_definition->action = &data.hotkey_state.cycle_legion;
             break;
         case HOTKEY_INCREASE_GAME_SPEED:
-            def->action = &data.hotkey_state.increase_game_speed;
-            def->repeatable = 1;
+            hotkey_definition->action = &data.hotkey_state.increase_game_speed;
+            hotkey_definition->repeatable = 1;
             break;
         case HOTKEY_DECREASE_GAME_SPEED:
-            def->action = &data.hotkey_state.decrease_game_speed;
-            def->repeatable = 1;
+            hotkey_definition->action = &data.hotkey_state.decrease_game_speed;
+            hotkey_definition->repeatable = 1;
             break;
         case HOTKEY_ROTATE_MAP_LEFT:
-            def->action = &data.hotkey_state.rotate_map_left;
+            hotkey_definition->action = &data.hotkey_state.rotate_map_left;
             break;
         case HOTKEY_ROTATE_MAP_RIGHT:
-            def->action = &data.hotkey_state.rotate_map_right;
+            hotkey_definition->action = &data.hotkey_state.rotate_map_right;
             break;
         case HOTKEY_SHOW_ADVISOR_LABOR:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_LABOR;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::LABOR);
             break;
         case HOTKEY_SHOW_ADVISOR_MILITARY:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_MILITARY;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::MILITARY);
             break;
         case HOTKEY_SHOW_ADVISOR_IMPERIAL:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_IMPERIAL;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::IMPERIAL);
             break;
         case HOTKEY_SHOW_ADVISOR_RATINGS:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_RATINGS;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::RATINGS);
             break;
         case HOTKEY_SHOW_ADVISOR_TRADE:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_TRADE;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::TRADE);
             break;
         case HOTKEY_SHOW_ADVISOR_POPULATION:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_POPULATION;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::POPULATION);
             break;
         case HOTKEY_SHOW_ADVISOR_HEALTH:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_HEALTH;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::HEALTH);
             break;
         case HOTKEY_SHOW_ADVISOR_EDUCATION:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_EDUCATION;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::EDUCATION);
             break;
         case HOTKEY_SHOW_ADVISOR_ENTERTAINMENT:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_ENTERTAINMENT;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::ENTERTAINMENT);
             break;
         case HOTKEY_SHOW_ADVISOR_RELIGION:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_RELIGION;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::RELIGION);
             break;
         case HOTKEY_SHOW_ADVISOR_FINANCIAL:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_FINANCIAL;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::FINANCIAL);
             break;
         case HOTKEY_SHOW_ADVISOR_CHIEF:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_CHIEF;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::CHIEF);
             break;
         case HOTKEY_SHOW_ADVISOR_HOUSING:
-            def->action = &data.hotkey_state.show_advisor;
-            def->value = ADVISOR_HOUSING;
+            hotkey_definition->action = &data.hotkey_state.show_advisor;
+            hotkey_definition->value = static_cast<int>(Advisor::HOUSING);
             break;
         case HOTKEY_SHOW_OVERLAY_WATER:
-            def->action = &data.hotkey_state.show_overlay;
-            def->value = OVERLAY_WATER;
+            hotkey_definition->action = &data.hotkey_state.show_overlay;
+            hotkey_definition->value = OVERLAY_WATER;
             break;
         case HOTKEY_SHOW_OVERLAY_FIRE:
-            def->action = &data.hotkey_state.show_overlay;
-            def->value = OVERLAY_FIRE;
+            hotkey_definition->action = &data.hotkey_state.show_overlay;
+            hotkey_definition->value = OVERLAY_FIRE;
             break;
         case HOTKEY_SHOW_OVERLAY_DAMAGE:
-            def->action = &data.hotkey_state.show_overlay;
-            def->value = OVERLAY_DAMAGE;
+            hotkey_definition->action = &data.hotkey_state.show_overlay;
+            hotkey_definition->value = OVERLAY_DAMAGE;
             break;
         case HOTKEY_SHOW_OVERLAY_CRIME:
-            def->action = &data.hotkey_state.show_overlay;
-            def->value = OVERLAY_CRIME;
+            hotkey_definition->action = &data.hotkey_state.show_overlay;
+            hotkey_definition->value = OVERLAY_CRIME;
             break;
         case HOTKEY_SHOW_OVERLAY_PROBLEMS:
-            def->action = &data.hotkey_state.show_overlay;
-            def->value = OVERLAY_PROBLEMS;
+            hotkey_definition->action = &data.hotkey_state.show_overlay;
+            hotkey_definition->value = OVERLAY_PROBLEMS;
             break;
         case HOTKEY_EDITOR_TOGGLE_BATTLE_INFO:
-            def->action = &data.hotkey_state.toggle_editor_battle_info;
+            hotkey_definition->action = &data.hotkey_state.toggle_editor_battle_info;
             break;
         case HOTKEY_LOAD_FILE:
-            def->action = &data.hotkey_state.load_file;
+            hotkey_definition->action = &data.hotkey_state.load_file;
             break;
         case HOTKEY_SAVE_FILE:
-            def->action = &data.hotkey_state.save_file;
+            hotkey_definition->action = &data.hotkey_state.save_file;
             break;
         case HOTKEY_ROTATE_BUILDING:
-            def->action = &data.hotkey_state.rotate_building;
+            hotkey_definition->action = &data.hotkey_state.rotate_building;
             break;
         case HOTKEY_CHANGE_BUILDING_VARIANT:
-            def->action = &data.hotkey_state.change_building_variant;
+            hotkey_definition->action = &data.hotkey_state.change_building_variant;
             break;
         case HOTKEY_GO_TO_BOOKMARK_1:
-            def->action = &data.hotkey_state.go_to_bookmark;
-            def->value = 1;
+            hotkey_definition->action = &data.hotkey_state.go_to_bookmark;
+            hotkey_definition->value = 1;
             break;
         case HOTKEY_GO_TO_BOOKMARK_2:
-            def->action = &data.hotkey_state.go_to_bookmark;
-            def->value = 2;
+            hotkey_definition->action = &data.hotkey_state.go_to_bookmark;
+            hotkey_definition->value = 2;
             break;
         case HOTKEY_GO_TO_BOOKMARK_3:
-            def->action = &data.hotkey_state.go_to_bookmark;
-            def->value = 3;
+            hotkey_definition->action = &data.hotkey_state.go_to_bookmark;
+            hotkey_definition->value = 3;
             break;
         case HOTKEY_GO_TO_BOOKMARK_4:
-            def->action = &data.hotkey_state.go_to_bookmark;
-            def->value = 4;
+            hotkey_definition->action = &data.hotkey_state.go_to_bookmark;
+            hotkey_definition->value = 4;
             break;
         case HOTKEY_SET_BOOKMARK_1:
-            def->action = &data.hotkey_state.set_bookmark;
-            def->value = 1;
+            hotkey_definition->action = &data.hotkey_state.set_bookmark;
+            hotkey_definition->value = 1;
             break;
         case HOTKEY_SET_BOOKMARK_2:
-            def->action = &data.hotkey_state.set_bookmark;
-            def->value = 2;
+            hotkey_definition->action = &data.hotkey_state.set_bookmark;
+            hotkey_definition->value = 2;
             break;
         case HOTKEY_SET_BOOKMARK_3:
-            def->action = &data.hotkey_state.set_bookmark;
-            def->value = 3;
+            hotkey_definition->action = &data.hotkey_state.set_bookmark;
+            hotkey_definition->value = 3;
             break;
         case HOTKEY_SET_BOOKMARK_4:
-            def->action = &data.hotkey_state.set_bookmark;
-            def->value = 4;
+            hotkey_definition->action = &data.hotkey_state.set_bookmark;
+            hotkey_definition->value = 4;
             break;
         case HOTKEY_CENTER_WINDOW:
-            def->action = &data.global_hotkey_state.center_screen;
+            hotkey_definition->action = &data.global_hotkey_state.center_screen;
             break;
         case HOTKEY_TOGGLE_FULLSCREEN:
-            def->action = &data.global_hotkey_state.toggle_fullscreen;
+            hotkey_definition->action = &data.global_hotkey_state.toggle_fullscreen;
             break;
         case HOTKEY_RESIZE_TO_640:
-            def->action = &data.global_hotkey_state.resize_to;
-            def->value = 640;
+            hotkey_definition->action = &data.global_hotkey_state.resize_to;
+            hotkey_definition->value = 640;
             break;
         case HOTKEY_RESIZE_TO_800:
-            def->action = &data.global_hotkey_state.resize_to;
-            def->value = 800;
+            hotkey_definition->action = &data.global_hotkey_state.resize_to;
+            hotkey_definition->value = 800;
             break;
         case HOTKEY_RESIZE_TO_1024:
-            def->action = &data.global_hotkey_state.resize_to;
-            def->value = 1024;
+            hotkey_definition->action = &data.global_hotkey_state.resize_to;
+            hotkey_definition->value = 1024;
             break;
         case HOTKEY_SAVE_SCREENSHOT:
-            def->action = &data.global_hotkey_state.save_screenshot;
+            hotkey_definition->action = &data.global_hotkey_state.save_screenshot;
             break;
         case HOTKEY_SAVE_CITY_SCREENSHOT:
-            def->action = &data.global_hotkey_state.save_city_screenshot;
+            hotkey_definition->action = &data.global_hotkey_state.save_city_screenshot;
             break;
         case HOTKEY_BUILD_VACANT_HOUSE:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_HOUSE_VACANT_LOT;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_HOUSE_VACANT_LOT;
             break;
         case HOTKEY_BUILD_CLEAR_LAND:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_CLEAR_LAND;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_CLEAR_LAND;
             break;
         case HOTKEY_BUILD_ROAD:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_ROAD;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_ROAD;
             break;
         case HOTKEY_BUILD_ENGINEERS_POST:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_ENGINEERS_POST;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_ENGINEERS_POST;
             break;
         case HOTKEY_BUILD_WALL:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_WALL;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_WALL;
             break;
         case HOTKEY_BUILD_GATEHOUSE:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_GATEHOUSE;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_GATEHOUSE;
             break;
         case HOTKEY_BUILD_PREFECTURE:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_POLICE_STATION;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_POLICE_STATION;
             break;
         case HOTKEY_BUILD_GRANARY:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_GRANARY;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_GRANARY;
             break;
         case HOTKEY_BUILD_WAREHOUSE:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_WAREHOUSE;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_WAREHOUSE;
             break;
         case HOTKEY_BUILD_MARKET:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_MARKET;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_MARKET;
             break;
         case HOTKEY_BUILD_PLAZA:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_PLAZA;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_PLAZA;
             break;
         case HOTKEY_BUILD_GARDENS:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_GARDENS;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_GARDENS;
             break;
         case HOTKEY_BUILD_RESERVOIR:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_WATER_LIFT;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_WATER_LIFT;
             break;
         case HOTKEY_BUILD_AQUEDUCT:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_IRRIGATION_DITCH;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_IRRIGATION_DITCH;
             break;
         case HOTKEY_BUILD_FOUNTAIN:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_MENU_BEAUTIFICATION;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_MENU_BEAUTIFICATION;
             break;
         case HOTKEY_BUILD_DOCTOR:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_APOTHECARY;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_APOTHECARY;
             break;
         case HOTKEY_BUILD_ROADBLOCK:
-            def->action = &data.hotkey_state.building;
-            def->value = BUILDING_ROADBLOCK;
+            hotkey_definition->action = &data.hotkey_state.building;
+            hotkey_definition->value = BUILDING_ROADBLOCK;
             break;
         case HOTKEY_DEBUG_1_UP:
-            def->action = &data.hotkey_state.debug_1_up;
-            def->repeatable = 1;
+            hotkey_definition->action = &data.hotkey_state.debug_1_up;
+            hotkey_definition->repeatable = 1;
             break;
         case HOTKEY_DEBUG_1_DOWN:
-            def->action = &data.hotkey_state.debug_1_down;
-            def->repeatable = 1;
+            hotkey_definition->action = &data.hotkey_state.debug_1_down;
+            hotkey_definition->repeatable = 1;
             break;
         case HOTKEY_DEBUG_2_UP:
-            def->action = &data.hotkey_state.debug_2_up;
-            def->repeatable = 1;
+            hotkey_definition->action = &data.hotkey_state.debug_2_up;
+            hotkey_definition->repeatable = 1;
             break;
         case HOTKEY_DEBUG_2_DOWN:
-            def->action = &data.hotkey_state.debug_2_down;
-            def->repeatable = 1;
+            hotkey_definition->action = &data.hotkey_state.debug_2_down;
+            hotkey_definition->repeatable = 1;
             break;
         default:
-            def->action = 0;
+            hotkey_definition->action = 0;
     }
-    if (def->action)
+    if (hotkey_definition->action) {
         data.num_definitions++;
+    }
 }
 
 static void add_arrow(const hotkey_mapping *mapping) {
@@ -460,8 +461,10 @@ void hotkey_handle_global_keys(void) {
                 break;
         }
     }
-    if (data.global_hotkey_state.toggle_fullscreen)
-        system_set_fullscreen(!setting_fullscreen());
+    if (data.global_hotkey_state.toggle_fullscreen) {
+        auto& settings = Settings::instance();
+        settings.toggle_fullscreen();
+    }
 
 //    if (data.global_hotkey_state.save_screenshot) {
 //        graphics_save_screenshot(0);

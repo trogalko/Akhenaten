@@ -57,7 +57,8 @@ static image_button image_buttons_help_close[] = {
 };
 
 static image_button image_buttons_advisor[] = {
-        {350, -38, 28, 28, IB_NORMAL, GROUP_MESSAGE_ADVISOR_BUTTONS, 9, button_advisor, button_none, ADVISOR_RATINGS, 0, 1}
+        {350, -38, 28, 28, IB_NORMAL, GROUP_MESSAGE_ADVISOR_BUTTONS, 9, 
+            button_advisor, button_none, static_cast<int>(Advisor::RATINGS), 0, 1}
 };
 
 static generic_button generic_button_mothball[] = {
@@ -244,11 +245,13 @@ void highlight_waypoints(building *b) // highlight the 4 routing tiles for roams
 }
 
 int OFFSET(int x, int y) {
+    // TODO handle other case from switch statement
     switch (GAME_ENV) {
         case ENGINE_ENV_PHARAOH:
             return GRID_OFFSET(x, y);
             break;
     }
+    return 0; // should not be hit added for silence warning
 }
 
 static void init(int grid_offset) {

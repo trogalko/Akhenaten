@@ -17,30 +17,36 @@ static const struct {
 };
 
 int difficulty_starting_kingdom(void) {
-    return data[setting_difficulty()].starting_kingdom;
+    auto& settings = Settings::instance();
+    return data[static_cast<int>(settings.difficulty())].starting_kingdom;
 }
 
 int difficulty_sentiment(void) {
-    return data[setting_difficulty()].sentiment;
+    auto& settings = Settings::instance();
+    return data[static_cast<int>(settings.difficulty())].sentiment;
 }
 
 int difficulty_adjust_money(int money) {
-    return calc_adjust_with_percentage(money, data[setting_difficulty()].money);
+    auto& settings = Settings::instance();
+    return calc_adjust_with_percentage(money, data[static_cast<int>(settings.difficulty())].money);
 }
 
 int difficulty_adjust_enemies(int enemies) {
-    return calc_adjust_with_percentage(enemies, data[setting_difficulty()].enemies);
+    auto& settings = Settings::instance();
+    return calc_adjust_with_percentage(enemies, data[static_cast<int>(settings.difficulty())].enemies);
 }
 
 int difficulty_adjust_wolf_attack(int attack) {
-    switch (setting_difficulty()) {
-        case DIFFICULTY_VERY_EASY:
+    auto& settings = Settings::instance();
+    switch (settings.difficulty()) {
+        case Difficulty::VERY_EASY:
             return 2;
-        case DIFFICULTY_EASY:
+        case Difficulty::EASY:
             return 4;
-        case DIFFICULTY_NORMAL:
+        case Difficulty::NORMAL:
             return 6;
         default:
             return attack;
     }
+    return attack;
 }

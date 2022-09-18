@@ -79,7 +79,8 @@ void fullpath_saves(char *full, const char *filename) {
         return;
     }
     strcat(full, "Save/");
-    strcat(full, setting_player_name_utf8());
+    auto& settings = Settings::instance();
+    strcat(full, settings.player_name_utf8());
     strcat(full, "/");
     strcat(full, filename);
 }
@@ -172,7 +173,8 @@ static void post_load() {
 
     // scenario settings
     scenario_set_name(scenario_name());
-    city_set_player_name(setting_player_name());
+    auto& settings = Settings::instance();
+    city_set_player_name(settings.player_name());
     scenario_set_campaign_rank(get_scenario_mission_rank(scenario_campaign_scenario_id()));
 
     // camera

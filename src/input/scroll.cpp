@@ -157,7 +157,8 @@ int scroll_in_progress(void) {
     return data.is_scrolling || data.drag.active;
 }
 static int get_scroll_speed_factor(void) {
-    return calc_bound((100 - setting_scroll_speed()) / 10, 0, 10);
+    auto& settings = Settings::instance();
+    return calc_bound((100 - settings.scroll_speed()) / 10, 0, 10);
 }
 int scroll_is_smooth(void) {
     return config_get(CONFIG_UI_SMOOTH_SCROLLING) || data.drag.active || data.speed.decaying;
@@ -298,7 +299,8 @@ static int get_direction(const mouse *m) {
     int is_inside_window = m->is_inside_window;
     int width = screen_width();
     int height = screen_height();
-    if (setting_fullscreen() && m->x < width && m->y < height) {
+    auto& settings = Settings::instance();
+    if (settings.fullscreen() && m->x < width && m->y < height) {
         // For Windows 10, in fullscreen mode, on HiDPI screens, this is needed
         // to get scrolling to work
         is_inside_window = 1;

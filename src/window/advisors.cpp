@@ -46,34 +46,34 @@ static image_button help_button = {
 };
 
 static generic_button advisor_buttons_C3[] = {
-        {12,  1, 40, 40, button_change_advisor, button_none, ADVISOR_LABOR,         0},
-        {60,  1, 40, 40, button_change_advisor, button_none, ADVISOR_MILITARY,      0},
-        {108, 1, 40, 40, button_change_advisor, button_none, ADVISOR_IMPERIAL,      0},
-        {156, 1, 40, 40, button_change_advisor, button_none, ADVISOR_RATINGS,       0},
-        {204, 1, 40, 40, button_change_advisor, button_none, ADVISOR_TRADE,         0},
-        {252, 1, 40, 40, button_change_advisor, button_none, ADVISOR_POPULATION,    0},
-        {300, 1, 40, 40, button_change_advisor, button_none, ADVISOR_HEALTH,        0},
-        {348, 1, 40, 40, button_change_advisor, button_none, ADVISOR_EDUCATION,     0},
-        {396, 1, 40, 40, button_change_advisor, button_none, ADVISOR_ENTERTAINMENT, 0},
-        {444, 1, 40, 40, button_change_advisor, button_none, ADVISOR_RELIGION,      0},
-        {492, 1, 40, 40, button_change_advisor, button_none, ADVISOR_FINANCIAL,     0},
-        {540, 1, 40, 40, button_change_advisor, button_none, ADVISOR_CHIEF,         0},
+        {12,  1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::LABOR),         0},
+        {60,  1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::MILITARY),      0},
+        {108, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::IMPERIAL),      0},
+        {156, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::RATINGS),       0},
+        {204, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::TRADE),         0},
+        {252, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::POPULATION),    0},
+        {300, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::HEALTH),        0},
+        {348, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::EDUCATION),     0},
+        {396, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::ENTERTAINMENT), 0},
+        {444, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::RELIGION),      0},
+        {492, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::FINANCIAL),     0},
+        {540, 1, 40, 40, button_change_advisor, button_none, static_cast<int>(Advisor::CHIEF),         0},
         {588, 1, 40, 40, button_change_advisor, button_none, 0,                     0},
 };
 static image_button advisor_buttons_PH[] = {
-        {12,  1, 33, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 0,  button_change_advisor, button_none, ADVISOR_LABOR,         0},
-        {52,  1, 39, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 4,  button_change_advisor, button_none, ADVISOR_MILITARY,      0},
-        {96,  1, 34, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 8,  button_change_advisor, button_none, ADVISOR_IMPERIAL,      0},
-        {135, 1, 38, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 12, button_change_advisor, button_none, ADVISOR_RATINGS,       0},
-        {178, 1, 46, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 16, button_change_advisor, button_none, ADVISOR_TRADE,         0},
-        {229, 1, 48, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 20, button_change_advisor, button_none, ADVISOR_POPULATION,    0},
-        {282, 1, 35, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 24, button_change_advisor, button_none, ADVISOR_HEALTH,        0},
-        {322, 1, 38, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 28, button_change_advisor, button_none, ADVISOR_EDUCATION,     0},
-        {363, 1, 39, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 32, button_change_advisor, button_none, ADVISOR_ENTERTAINMENT, 0},
-        {406, 1, 35, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 36, button_change_advisor, button_none, ADVISOR_RELIGION,      0},
-        {445, 1, 40, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 40, button_change_advisor, button_none, ADVISOR_FINANCIAL,     0},
-        {490, 1, 46, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 44, button_change_advisor, button_none, ADVISOR_CHIEF,         0},
-        {542, 1, 40, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 48, button_change_advisor, button_none, ADVISOR_MONUMENTS,     0},
+        {12,  1, 33, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 0,  button_change_advisor, button_none, static_cast<int>(Advisor::LABOR),         0},
+        {52,  1, 39, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 4,  button_change_advisor, button_none, static_cast<int>(Advisor::MILITARY),      0},
+        {96,  1, 34, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 8,  button_change_advisor, button_none, static_cast<int>(Advisor::IMPERIAL),      0},
+        {135, 1, 38, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 12, button_change_advisor, button_none, static_cast<int>(Advisor::RATINGS),       0},
+        {178, 1, 46, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 16, button_change_advisor, button_none, static_cast<int>(Advisor::TRADE),         0},
+        {229, 1, 48, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 20, button_change_advisor, button_none, static_cast<int>(Advisor::POPULATION),    0},
+        {282, 1, 35, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 24, button_change_advisor, button_none, static_cast<int>(Advisor::HEALTH),        0},
+        {322, 1, 38, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 28, button_change_advisor, button_none, static_cast<int>(Advisor::EDUCATION),     0},
+        {363, 1, 39, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 32, button_change_advisor, button_none, static_cast<int>(Advisor::ENTERTAINMENT), 0},
+        {406, 1, 35, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 36, button_change_advisor, button_none, static_cast<int>(Advisor::RELIGION),      0},
+        {445, 1, 40, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 40, button_change_advisor, button_none, static_cast<int>(Advisor::FINANCIAL),     0},
+        {490, 1, 46, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 44, button_change_advisor, button_none, static_cast<int>(Advisor::CHIEF),         0},
+        {542, 1, 40, 32, IB_OVERSEER, GROUP_MENU_ADVISOR_BUTTONS, 48, button_change_advisor, button_none, static_cast<int>(Advisor::MONUMENTS),     0},
         {588, 1, 42, 32, IB_NORMAL,   GROUP_MENU_ADVISOR_BUTTONS, 52, button_back_to_city,   button_none, 0,                     0},
 };
 
@@ -125,7 +125,7 @@ static const int ADVISOR_TO_MESSAGE_TEXT[] = {
 };
 
 static const advisor_window_type *current_advisor_window = 0;
-static int current_advisor = ADVISOR_NONE;
+static int current_advisor = static_cast<int>(Advisor::NONE);
 
 static int focus_button_id;
 static int advisor_height;
@@ -138,7 +138,8 @@ static void set_advisor_window(void) {
 }
 static void set_advisor(int advisor) {
     current_advisor = advisor;
-    setting_set_last_advisor(advisor);
+    auto& settings = Settings::instance();
+    settings.set_last_advisor(static_cast<Advisor>(advisor));
     set_advisor_window();
     if (GAME_ENV == ENGINE_ENV_PHARAOH)
         advisor_buttons_PH[advisor - 1].pressed = 1; // set button active when coming back to menu
@@ -327,7 +328,8 @@ void window_advisors_show(void) {
 void window_advisors_show_checked(void) {
     tutorial_availability avail = tutorial_advisor_availability();
     if (avail == AVAILABLE) {
-        set_advisor(setting_last_advisor());
+        auto& settings = Settings::instance();
+        set_advisor(static_cast<int>(settings.last_advisor()));
         window_advisors_show();
     } else
         city_warning_show(avail == NOT_AVAILABLE ? WARNING_NOT_AVAILABLE : WARNING_NOT_AVAILABLE_YET);

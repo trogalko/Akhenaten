@@ -515,7 +515,7 @@ void sound_device_write_custom_music_data(const unsigned char *audio_data, int l
     memset(mix_buffer, (custom_music.format == AUDIO_U8) ? 128 : 0, len);
     SDL_MixAudioFormat(mix_buffer, audio_data,
                        custom_music.format, len,
-                       percentage_to_volume(setting_sound(SOUND_EFFECTS)->volume));
+                       percentage_to_volume(Settings::instance().sound(SoundType::EFFECTS).volume));
 
     put_custom_audio_stream(mix_buffer, len);
     free(mix_buffer);

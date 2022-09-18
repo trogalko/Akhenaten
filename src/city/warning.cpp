@@ -29,18 +29,23 @@ static struct warning *new_warning(void) {
 }
 
 void city_warning_show(int type) {
-    if (!setting_warnings())
+    auto& settings = Settings::instance();
+    if (!settings.warnings()) {
         return;
+    }
     struct warning *w = new_warning();
-    if (!w)
+    if (!w) {
         return;
+    }
     w->in_use = 1;
     w->time = time_get_millis();
     const uint8_t *text;
-    if (type == WARNING_ORIENTATION)
+    if (type == WARNING_ORIENTATION) {
         text = lang_get_string(17, city_view_orientation());
-    else
+    }
+    else {
         text = lang_get_string(19, type - 2);
+    }
     string_copy(text, w->text, MAX_TEXT);
 }
 

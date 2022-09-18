@@ -44,7 +44,8 @@ static void draw_foreground(void) {
 
     lang_text_draw_centered(42, 0, 128, 94, 224, FONT_LARGE_BLACK_ON_LIGHT);
 
-    lang_text_draw_centered(42, setting_fullscreen() ? 2 : 1, 128, 140, 224, FONT_NORMAL_BLACK_ON_DARK);
+    auto& settings = Settings::instance();
+    lang_text_draw_centered(42, static_cast<int>(settings.fullscreen()) ? 2 : 1, 128, 140, 224, FONT_NORMAL_BLACK_ON_DARK);
 
     lang_text_draw_centered(42, 3, 128, 164, 224, FONT_NORMAL_BLACK_ON_DARK);
     lang_text_draw_centered(42, 4, 128, 188, 224, FONT_NORMAL_BLACK_ON_DARK);
@@ -63,7 +64,8 @@ static void handle_input(const mouse *m, const hotkeys *h) {
 }
 
 static void button_fullscreen(int param1, int param2) {
-    system_set_fullscreen(!setting_fullscreen());
+    auto& settings = Settings::instance();
+    settings.toggle_fullscreen();
     data.close_callback();
 }
 

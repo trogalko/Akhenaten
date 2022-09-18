@@ -40,8 +40,9 @@ static struct {
 static void init(void (*close_callback)(void)) {
     data.focus_button_id = 0;
     data.close_callback = close_callback;
-    data.original_game_speed = setting_game_speed();
-    data.original_scroll_speed = setting_scroll_speed();
+    auto& settings = Settings::instance();
+    data.original_game_speed = settings.game_speed();
+    data.original_scroll_speed = settings.scroll_speed();
 }
 
 static void draw_foreground(void) {
@@ -57,12 +58,14 @@ static void draw_foreground(void) {
     // ok/cancel label texts
     lang_text_draw_centered(45, 4, 128, 236, 224, FONT_NORMAL_BLACK_ON_DARK);
     lang_text_draw_centered(45, 1, 128, 266, 224, FONT_NORMAL_BLACK_ON_DARK);
+
+    auto& settings = Settings::instance();
     // game speed
     lang_text_draw(45, 2, 112, 146, FONT_SMALL_PLAIN);
-    text_draw_percentage(setting_game_speed(), 328, 146, FONT_SMALL_PLAIN);
+    text_draw_percentage(settings.game_speed(), 328, 146, FONT_SMALL_PLAIN);
     // scroll speed
     lang_text_draw(45, 3, 112, 182, FONT_SMALL_PLAIN);
-    text_draw_percentage(setting_scroll_speed(), 328, 182, FONT_SMALL_PLAIN);
+    text_draw_percentage(settings.scroll_speed(), 328, 182, FONT_SMALL_PLAIN);
 
     arrow_buttons_draw(160, 40, arrow_buttons, 4);
     graphics_reset_dialog();
@@ -83,23 +86,28 @@ static void button_ok(int param1, int param2) {
 }
 
 static void button_cancel(int param1, int param2) {
-    setting_reset_speeds(data.original_game_speed, data.original_scroll_speed);
+    auto& settings = Settings::instance();
+    settings.reset_speeds(data.original_game_speed, data.original_scroll_speed);
     data.close_callback();
 }
 
 static void arrow_button_game(int is_down, int param2) {
-    if (is_down)
-        setting_decrease_game_speed();
+    auto& settings = Settings::instance();
+    if (is_down) {
+        settings.decrease_game_speed();
+    }
     else {
-        setting_increase_game_speed();
+        settings.increase_game_speed();
     }
 }
 
 static void arrow_button_scroll(int is_down, int param2) {
-    if (is_down)
-        setting_decrease_scroll_speed();
+    auto& settings = Settings::instance();
+    if (is_down) {
+        settings.decrease_scroll_speed();
+    }
     else {
-        setting_increase_scroll_speed();
+        settings.increase_scroll_speed();
     }
 }
 

@@ -1,377 +1,509 @@
-#include <core/encoding.h>
 #include "settings.h"
 
-#include "city/constants.h"
-#include "core/buffer.h"
-#include "core/calc.h"
-#include "io/io.h"
-#include "core/string.h"
-#include "core/game_environment.h"
+#include <core/buffer.h>
+#include <core/calc.h>
+#include <core/encoding.h>
+#include <core/string.h>
+#include <io/io.h>
 
-#define INF_SIZE 560
-#define MAX_PERSONAL_SAVINGS 100
-//#define MAX_PLAYER_NAME 32
+#include <algorithm>
 
-static struct {
-    // display settings
-    bool fullscreen;
-    int window_width;
-    int window_height;
-    // sound settings
-    set_sound sound_effects;
-    set_sound sound_music;
-    set_sound sound_speech;
-    set_sound sound_city;
-    // speed settings
-    int game_speed;
-    int scroll_speed;
-    // misc settings
-    int difficulty;
-    int tooltips;
-    int monthly_autosave;
-    bool warnings;
-    bool gods_enabled;
-    bool victory_video;
-    // pharaoh settings
-    int popup_messages;
-    int city_names_style;
-    bool pyramid_speedup;
-    // persistent game state
-    int last_advisor;
-    uint8_t player_name[MAX_PLAYER_NAME];
-    char player_name_utf8[MAX_PLAYER_NAME];
-    // personal savings
-    int personal_savings[MAX_PERSONAL_SAVINGS];
-    // file data
-    buffer *inf_file = new buffer(INF_SIZE);
-} data;
-
-static void load_default_settings(void) {
-    data.fullscreen = true;
-    data.window_width = 800;
-    data.window_height = 600;
-
-    data.sound_effects.enabled = true;
-    data.sound_effects.volume = 100;
-    data.sound_music.enabled = true;
-    data.sound_music.volume = 80;
-    data.sound_speech.enabled = true;
-    data.sound_speech.volume = 100;
-    data.sound_city.enabled = true;
-    data.sound_city.volume = 100;
-
-    data.game_speed = 90;
-    data.scroll_speed = 70;
-
-    data.difficulty = DIFFICULTY_HARD;
-    data.tooltips = TOOLTIPS_FULL;
-    data.warnings = true;
-    data.gods_enabled = true;
-    data.victory_video = false;
-    data.last_advisor = ADVISOR_LABOR;
-
-    data.popup_messages = 0;
-    data.city_names_style = CITIES_OLD_NAMES;
-    data.pyramid_speedup = false;
-
-    setting_clear_personal_savings();
-}
-static void load_settings(buffer *buf) {
-    buf->skip(4);
-    data.fullscreen = buf->read_i32();
-    buf->skip(3);
-    data.sound_effects.enabled = buf->read_u8();
-    data.sound_music.enabled = buf->read_u8();
-    data.sound_speech.enabled = buf->read_u8();
-    buf->skip(6);
-    data.game_speed = buf->read_i32(); data.game_speed = 80; // todo: fix settings
-    data.scroll_speed = buf->read_i32();
-    buf->read_raw(data.player_name, MAX_PLAYER_NAME);
-    buf->skip(16);
-    data.last_advisor = buf->read_i32();
-    data.last_advisor = ADVISOR_TRADE; // debug
-    buf->skip(4); //int save_game_mission_id;
-    data.tooltips = buf->read_i32();
-    buf->skip(4); //int starting_kingdom;
-    buf->skip(4); //int personal_savings_last_mission;
-    buf->skip(4); //int current_mission_id;
-    buf->skip(4); //int is_custom_scenario;
-    data.sound_city.enabled = buf->read_u8();
-    data.warnings = buf->read_u8();
-    data.monthly_autosave = buf->read_u8();
-    buf->skip(1); //unsigned char autoclear_enabled;
-    data.sound_effects.volume = buf->read_i32();
-    data.sound_music.volume = buf->read_i32();
-    data.sound_speech.volume = buf->read_i32();
-    data.sound_city.volume = buf->read_i32();
-    buf->skip(8); // ram
-    data.window_width = buf->read_i32();
-    data.window_height = buf->read_i32();
-    buf->skip(8); //int max_confirmed_resolution;
-    for (int i = 0; i < MAX_PERSONAL_SAVINGS; i++) {
-        data.personal_savings[i] = buf->read_i32();
-    }
-    data.victory_video = buf->read_i32();
-
-    if (buf->at_end()) {
-        // Settings file is from unpatched C3, use default values
-        data.difficulty = DIFFICULTY_HARD;
-        data.gods_enabled = 1;
-    } else {
-        data.difficulty = buf->read_i32();
-        data.gods_enabled = buf->read_i32();
-    }
+Settings::Settings()
+    :m_inf_file{std::make_unique<buffer>(INF_SIZE)}
+{
 }
 
-void settings_load(void) {
-    load_default_settings();
+void Settings::load() 
+{
+    _load_default_settings();
 
     // TODO: load <Pharaoh.inf>
-    int size = io_read_file_into_buffer("c3.inf", NOT_LOCALIZED, data.inf_file, INF_SIZE);
-    if (!size)
+    int size = io_read_file_into_buffer(
+        SETTINGS_FILENAME.data(), NOT_LOCALIZED, m_inf_file.get(), INF_SIZE);
+    if (!size) {
         return;
-    load_settings(data.inf_file);
+    }
+    _load_settings(m_inf_file.get());
 
-    if (data.window_width + data.window_height < 500) {
+    if (m_window_width + m_window_height < 500) {
         // most likely migration from Caesar 3
-        data.window_width = 800;
-        data.window_height = 600;
+        m_window_width = 800;
+        m_window_height = 600;
     }
 }
-void settings_save(void) {
-    buffer *buf = data.inf_file;
 
-    buf->skip(4);
-    buf->write_i32(data.fullscreen);
-    buf->skip(3);
-    buf->write_u8(data.sound_effects.enabled);
-    buf->write_u8(data.sound_music.enabled);
-    buf->write_u8(data.sound_speech.enabled);
-    buf->skip(6);
-    buf->write_i32(data.game_speed);
-    buf->write_i32(data.scroll_speed);
-    buf->write_raw(data.player_name, MAX_PLAYER_NAME);
-    buf->skip(16);
-    buf->write_i32(data.last_advisor);
-    buf->skip(4); //int save_game_mission_id;
-    buf->write_i32(data.tooltips);
-    buf->skip(4); //int starting_kingdom;
-    buf->skip(4); //int personal_savings_last_mission;
-    buf->skip(4); //int current_mission_id;
-    buf->skip(4); //int is_custom_scenario;
-    buf->write_u8(data.sound_city.enabled);
-    buf->write_u8(data.warnings);
-    buf->write_u8(data.monthly_autosave);
-    buf->skip(1); //unsigned char autoclear_enabled;
-    buf->write_i32(data.sound_effects.volume);
-    buf->write_i32(data.sound_music.volume);
-    buf->write_i32(data.sound_speech.volume);
-    buf->write_i32(data.sound_city.volume);
-    buf->skip(8); // ram
-    buf->write_i32(data.window_width);
-    buf->write_i32(data.window_height);
-    buf->skip(8); //int max_confirmed_resolution;
-    for (int i = 0; i < MAX_PERSONAL_SAVINGS; i++) {
-        buf->write_i32(data.personal_savings[i]);
+void Settings::save()
+{
+    auto buffer = m_inf_file;
+
+    constexpr int data1 = 1;
+    constexpr int data3 = 3;
+    constexpr int data4 = 4;
+    constexpr int data6 = 6;
+    constexpr int data8 = 8;
+    constexpr int data16 = 16;
+
+    constexpr int data_save_game_mission_id = data4;
+    constexpr int data_starting_kingdom = data4;
+    constexpr int data_personal_savings_last_mission = data4;
+    constexpr int data_current_mission_id = data4;
+    constexpr int data_is_custom_scenario = data4;
+    constexpr int data_autoclear = data1;
+
+    constexpr int data_ram = data8;
+    constexpr int max_confirmed_resolution = data8;
+
+    buffer->skip(data4);
+    buffer->write_i32(static_cast<int32_t>(m_fullscreen));
+    buffer->skip(data3);
+    buffer->write_u8(static_cast<uint8_t>(m_sound_effects.enabled));
+    buffer->write_u8(static_cast<uint8_t>(m_sound_music.enabled));
+    buffer->write_u8(static_cast<uint8_t>(m_sound_speech.enabled));
+    buffer->skip(data6);
+    buffer->write_i32(static_cast<int32_t>(m_game_speed));
+    buffer->write_i32(static_cast<int32_t>(m_scroll_speed));
+    buffer->write_raw(m_player_name.data(), m_player_name.size());
+    buffer->skip(data16);
+    buffer->write_i32(static_cast<int32_t>(m_last_advisor));
+    buffer->skip(data_save_game_mission_id); 
+    buffer->write_i32(static_cast<int32_t>(m_tooltips));
+    buffer->skip(data_starting_kingdom); 
+    buffer->skip(data_personal_savings_last_mission); 
+    buffer->skip(data_current_mission_id);
+    buffer->skip(data_is_custom_scenario); 
+    buffer->write_u8(static_cast<uint8_t>(m_sound_city.enabled));
+    buffer->write_u8(static_cast<uint8_t>(m_warnings));
+    buffer->write_u8(static_cast<uint8_t>(m_monthly_autosave));
+    buffer->skip(data_autoclear); 
+    buffer->write_i32(static_cast<int32_t>(m_sound_effects.volume));
+    buffer->write_i32(static_cast<int32_t>(m_sound_music.volume));
+    buffer->write_i32(static_cast<int32_t>(m_sound_speech.volume));
+    buffer->write_i32(static_cast<int32_t>(m_sound_city.volume));
+    buffer->skip(data_ram); 
+    buffer->write_i32(static_cast<int32_t>(m_window_width));
+    buffer->write_i32(static_cast<int32_t>(m_window_height));
+    buffer->skip(max_confirmed_resolution); 
+
+    for (std::size_t i = 0; i < m_personal_savings.size(); i++) {
+        buffer->write_i32(static_cast<int32_t>(m_personal_savings[i]));
     }
-    buf->write_i32(data.victory_video);
-    buf->write_i32(data.difficulty);
-    buf->write_i32(data.gods_enabled);
 
-    io_write_buffer_to_file("c3.inf", data.inf_file, INF_SIZE);
+    buffer->write_i32(static_cast<int32_t>(m_victory_video));
+    buffer->write_i32(static_cast<int32_t>(m_difficulty));
+    buffer->write_i32(static_cast<int32_t>(m_gods_enabled));
+
+    io_write_buffer_to_file(SETTINGS_FILENAME.data(), buffer.get(), INF_SIZE);    
 }
-int setting_fullscreen(void) {
-    return data.fullscreen;
+
+bool Settings::fullscreen() const
+{
+    return m_fullscreen;
 }
-void setting_window(int *width, int *height) {
-    *width = data.window_width;
-    *height = data.window_height;
+
+void Settings::toggle_fullscreen()
+{
+    m_fullscreen = !m_fullscreen;
 }
-void setting_set_display(int fullscreen, int width, int height) {
-    data.fullscreen = fullscreen;
+
+int Settings::window_width() const
+{
+    return m_window_width;
+}
+
+int Settings::window_height() const
+{
+    return m_window_height;
+}
+
+void Settings::set_display(bool fullscreen, int window_width, int window_height) 
+{
+    m_fullscreen = fullscreen;
     if (!fullscreen) {
-        data.window_width = width;
-        data.window_height = height;
+        m_window_width = window_width;
+        m_window_height = window_height;
     }
 }
 
-static set_sound *get_sound(int type) {
-    switch (type) {
-        case SOUND_MUSIC:
-            return &data.sound_music;
-        case SOUND_EFFECTS:
-            return &data.sound_effects;
-        case SOUND_SPEECH:
-            return &data.sound_speech;
-        case SOUND_CITY:
-            return &data.sound_city;
-        default:
-            return 0;
-    }
-}
-const set_sound *setting_sound(int type) {
-    return get_sound(type);
+SettingSound Settings::sound(SoundType sound_type) const
+{
+    return *_sound(sound_type);
 }
 
-int setting_sound_is_enabled(int type) {
-    return get_sound(type)->enabled;
-}
-void setting_toggle_sound_enabled(int type) {
-    set_sound *sound = get_sound(type);
-    sound->enabled = sound->enabled ? 0 : 1;
-}
-void setting_increase_sound_volume(int type) {
-    set_sound *sound = get_sound(type);
-    sound->volume = calc_bound(sound->volume + 1, 0, 100);
-}
-void setting_decrease_sound_volume(int type) {
-    set_sound *sound = get_sound(type);
-    sound->volume = calc_bound(sound->volume - 1, 0, 100);
-}
-void setting_reset_sound(int type, int enabled, int volume) {
-    set_sound *sound = get_sound(type);
-    sound->enabled = enabled;
-    sound->volume = calc_bound(volume, 0, 100);
-}
-int setting_game_speed(void) {
-    return data.game_speed;
-}
-void setting_increase_game_speed(void) {
-    if (data.game_speed >= 100) {
-        if (data.game_speed < 1000)
-            data.game_speed += 100;
-    } else
-        data.game_speed = calc_bound(data.game_speed + 10, 10, 100);
-}
-void setting_decrease_game_speed(void) {
-    if (data.game_speed > 100)
-        data.game_speed -= 100;
-    else
-        data.game_speed = calc_bound(data.game_speed - 10, 10, 100);
+void Settings::toggle_sound_enabled(SoundType sound_type)
+{
+    auto sound = _sound(sound_type);
+    sound->enabled = !sound->enabled;
 }
 
-int setting_scroll_speed(void) {
-    return data.scroll_speed;
-}
-void setting_increase_scroll_speed(void) {
-    data.scroll_speed = calc_bound(data.scroll_speed + 10, 0, 100);
-}
-void setting_decrease_scroll_speed(void) {
-    data.scroll_speed = calc_bound(data.scroll_speed - 10, 0, 100);
-}
-void setting_reset_speeds(int game_speed, int scroll_speed) {
-    data.game_speed = game_speed;
-    data.scroll_speed = scroll_speed;
+void Settings::increase_sound_volume(SoundType sound_type) 
+{
+  auto sound = _sound(sound_type);
+  sound->volume = std::clamp(sound->volume + 1, 0, 100);
 }
 
-int setting_tooltips(void) {
-    return data.tooltips;
-}
-void setting_cycle_tooltips(void) {
-    switch (data.tooltips) {
-        case TOOLTIPS_NONE:
-            data.tooltips = TOOLTIPS_SOME;
-            break;
-        case TOOLTIPS_SOME:
-            data.tooltips = TOOLTIPS_FULL;
-            break;
-        default:
-            data.tooltips = TOOLTIPS_NONE;
-            break;
-    }
+void Settings::decrease_sound_volume(SoundType sound_type) 
+{
+  auto sound = _sound(sound_type);
+  sound->volume = std::clamp(sound->volume - 1, 0, 100);
 }
 
-int setting_warnings(void) {
-    return data.warnings;
-}
-void setting_toggle_warnings(void) {
-    data.warnings = data.warnings ? 0 : 1;
-}
-
-int setting_monthly_autosave(void) {
-    return data.monthly_autosave;
-}
-void setting_toggle_monthly_autosave(void) {
-    data.monthly_autosave = data.monthly_autosave ? 0 : 1;
+void Settings::reset_sound(SoundType sound_type, const SettingSound& set_sound)
+{
+    auto sound = _sound(sound_type);
+    *sound =  set_sound;
 }
 
-int setting_city_names_style(void) {
-    return data.city_names_style;
-}
-void setting_toggle_city_names_style(void) {
-    data.city_names_style = data.city_names_style ? 0 : 1;
+int Settings::game_speed() const 
+{ 
+    return m_game_speed; 
 }
 
-int setting_pyramid_speedup(void) {
-    return data.pyramid_speedup;
-}
-void setting_toggle_pyramid_speedup(void) {
-    data.pyramid_speedup = data.pyramid_speedup ? 0 : 1;
-}
-
-int setting_popup_messages(void) {
-    return data.popup_messages;
-}
-void setting_toggle_popup_messages(int flag) {
-    data.popup_messages ^= flag;
-}
-
-bool setting_gods_enabled(void) {
-    return data.gods_enabled;
-}
-void setting_toggle_gods_enabled(void) {
-    data.gods_enabled = data.gods_enabled ? 0 : 1;
-}
-
-int setting_difficulty(void) {
-    return data.difficulty;
-}
-void setting_increase_difficulty(void) {
-    if (data.difficulty >= DIFFICULTY_VERY_HARD)
-        data.difficulty = DIFFICULTY_VERY_HARD;
+void Settings::increase_game_speed() 
+{
+    // TODO why can this be ever > 100. Why not only the else part?
+    if (m_game_speed >= 100) { 
+        if (m_game_speed < 1000) {
+        m_game_speed += 100;
+        }
+    } 
     else {
-        data.difficulty++;
+        m_game_speed = std::clamp(m_game_speed + 10, 10, 100);
     }
 }
-void setting_decrease_difficulty(void) {
-    if (data.difficulty <= DIFFICULTY_VERY_EASY)
-        data.difficulty = DIFFICULTY_VERY_EASY;
+
+void Settings::decrease_game_speed() 
+{
+    // TODO why can this be ever > 100. Why not only the else part?
+    if (m_game_speed > 100) {
+        m_game_speed -= 100;
+    }
     else {
-        data.difficulty--;
+        m_game_speed = std::clamp(m_game_speed - 10, 10, 100);
     }
 }
 
-int setting_victory_video(void) {
-    data.victory_video = data.victory_video ? 0 : 1;
-    return data.victory_video;
+int Settings::scroll_speed() const 
+{
+    return m_scroll_speed;
 }
 
-int setting_last_advisor(void) {
-    return data.last_advisor;
-}
-void setting_set_last_advisor(int advisor) {
-    data.last_advisor = advisor;
+void Settings::increase_scroll_speed()
+{
+    m_scroll_speed = std::clamp(m_scroll_speed + 10, 0, 100);
 }
 
-const uint8_t *setting_player_name(void) {
-    return data.player_name;
-}
-const char *setting_player_name_utf8(void) {
-    return data.player_name_utf8;
-}
-void setting_set_player_name(const uint8_t *player_name) {
-    string_copy(player_name, data.player_name, MAX_PLAYER_NAME);
-    encoding_to_utf8(player_name, data.player_name_utf8, MAX_PLAYER_NAME, 0);
+void Settings::decrease_scroll_speed()
+{
+    m_scroll_speed = std::clamp(m_scroll_speed - 10, 0, 100);
 }
 
-int setting_personal_savings_for_mission(int mission_id) {
-    return data.personal_savings[mission_id];
+void Settings::reset_speeds(int game_speed, int scroll_speed)
+{
+    m_game_speed = std::clamp(game_speed, 0, 100);
+    m_scroll_speed = std::clamp(scroll_speed, 0, 100);
 }
-void setting_set_personal_savings_for_mission(int mission_id, int savings) {
-    data.personal_savings[mission_id] = savings;
+
+Tooltips Settings::tooltips() const
+{
+    return m_tooltips;
 }
-void setting_clear_personal_savings(void) {
-    for (int i = 0; i < MAX_PERSONAL_SAVINGS; i++) {
-        data.personal_savings[i] = 0;
+
+void Settings::cycle_tooltips()
+{
+    if(m_tooltips == Tooltips::FULL) {
+        m_tooltips = Tooltips::NONE;
     }
+    else {
+        auto enum_index = static_cast<int>(m_tooltips);
+        ++enum_index;
+        m_tooltips = static_cast<Tooltips>(enum_index);
+    }
+}
+
+bool Settings::warnings() const
+{
+    return m_warnings;
+}
+
+void Settings::toggle_warnings()
+{
+    m_warnings = !m_warnings;
+}
+
+bool Settings::monthly_autosave() const
+{
+    return m_monthly_autosave;
+}
+
+void Settings::toggle_monthly_autosave()
+{
+    m_monthly_autosave = !m_monthly_autosave;
+}
+
+CitiesNamesStyle Settings::city_names_style() const
+{
+    return m_city_names_style;
+}
+
+void Settings::cycle_city_names_style()
+{
+    if(m_city_names_style == CitiesNamesStyle::OLD_NAMES) {
+        m_city_names_style = CitiesNamesStyle::NEW_NAMES;
+    }
+    else { // m_city_names_style == CitiesNamesStyle::NEW_NAMES
+        m_city_names_style = CitiesNamesStyle::OLD_NAMES;
+    }
+}
+
+bool Settings::pyramid_speedup() const
+{
+    return m_pyramid_speedup;
+}
+
+void Settings::toggle_pyramid_speedup()
+{
+    m_pyramid_speedup = !m_pyramid_speedup;
+}
+
+int Settings::popup_messages() const
+{ 
+    return m_popup_messages; 
+}
+
+void Settings::toggle_popup_messages(int flag) 
+{ 
+    m_popup_messages ^= flag; 
+}
+
+bool Settings::gods_enabled() const
+{
+    return m_gods_enabled;
+}
+
+void Settings::toggle_gods_enabled()
+{
+    m_gods_enabled = !m_gods_enabled;
+}
+
+Difficulty Settings::difficulty() const
+{
+    return m_difficulty;
+}
+
+void Settings::increase_difficulty()
+{
+    if(m_difficulty == Difficulty::HARD) {
+        return;
+    }
+    auto enum_index = static_cast<int>(m_difficulty);
+    ++enum_index;
+    m_difficulty = static_cast<Difficulty>(enum_index);
+}
+
+void Settings::decrease_difficulty()
+{
+    if(m_difficulty == Difficulty::VERY_EASY) {
+        return;
+    }
+    auto enum_index = static_cast<int>(m_difficulty);
+    --enum_index;
+    m_difficulty = static_cast<Difficulty>(enum_index); 
+}
+
+bool Settings::victory_video() const
+{
+    return m_victory_video;
+}
+
+Advisor Settings::last_advisor() const
+{
+    return m_last_advisor;
+}
+
+void Settings::set_last_advisor(Advisor advisor)
+{
+    m_last_advisor = advisor;
+}
+
+const uint8_t *Settings::player_name() const
+{
+    return m_player_name.data();
+}
+
+const char *Settings::player_name_utf8() const
+{
+    return m_player_name_utf8.data();
+}
+
+void Settings::set_player_name(const uint8_t *player_name)
+{
+    string_copy(player_name, m_player_name.data(), m_player_name.size());
+    encoding_to_utf8(player_name, m_player_name_utf8.data(), m_player_name_utf8.size(), 0);   
+}
+
+int Settings::personal_savings_for_mission(int mission_id) const
+{
+    return m_personal_savings.at(mission_id);
+}
+
+void Settings::set_personal_savings_for_mission(int mission_id, int savings) 
+{
+    m_personal_savings.at(mission_id) = savings;
+}
+
+void Settings::clear_personal_savings(void) {
+    for(auto& personal_saving: m_personal_savings) {
+        personal_saving = 0;
+    }
+}
+
+void Settings::_load_default_settings()
+{
+    m_fullscreen = true;
+    m_window_width = 800;
+    m_window_height = 600;
+
+    m_sound_effects = SettingSound{};
+    m_sound_music = SettingSound{true, 80};
+    m_sound_speech = SettingSound{};
+    m_sound_city = SettingSound{};
+
+    m_game_speed = 90;
+    m_scroll_speed = 70;
+
+    m_difficulty = Difficulty::HARD;
+    m_tooltips = Tooltips::FULL;
+    m_warnings = true;
+    m_gods_enabled = true;
+    m_victory_video = false;
+    m_last_advisor = Advisor::LABOR;
+
+    m_popup_messages = 0;
+    m_city_names_style = CitiesNamesStyle::OLD_NAMES;
+    m_pyramid_speedup = false;
+
+    for(auto& personal_saving : m_personal_savings) {
+        personal_saving = 0;
+    }
+}
+
+void Settings::_load_settings(buffer *buffer) 
+{
+    constexpr int data1 = 1;
+    constexpr int data3 = 3;
+    constexpr int data4 = 4;
+    constexpr int data6 = 6;
+    constexpr int data8 = 8;
+    constexpr int data16 = 16;
+
+    constexpr int data_save_game_mission_id = data4;
+    constexpr int data_starting_kingdom = data4;
+    constexpr int data_personal_savings_last_mission = data4;
+    constexpr int data_current_mission_id = data4;
+    constexpr int data_is_custom_scenario = data4;
+    constexpr int data_autoclear = data1;
+
+    constexpr int data_ram = data8;
+    constexpr int max_confirmed_resolution = data8;
+
+    buffer->skip(data4);
+
+    m_fullscreen = static_cast<bool>(buffer->read_i32());
+
+    buffer->skip(data3);
+
+    m_sound_effects.enabled = static_cast<bool>(buffer->read_u8());
+    m_sound_music.enabled = static_cast<bool>(buffer->read_u8());
+    m_sound_speech.enabled = static_cast<bool>(buffer->read_u8());
+
+    buffer->skip(data6);
+
+    m_game_speed = static_cast<int>(buffer->read_i32());
+    m_game_speed = 80; // todo: fix settings
+    m_scroll_speed = static_cast<int>(buffer->read_i32());
+
+    buffer->read_raw(m_player_name.data(), m_player_name.size());
+
+    buffer->skip(data16);
+
+    m_last_advisor =  static_cast<Advisor>(buffer->read_i32());
+    // TODO: remove this ?
+    m_last_advisor = Advisor::TRADE; // debug
+
+    buffer->skip(data_save_game_mission_id); 
+
+    m_tooltips = static_cast<Tooltips>(buffer->read_i32());
+
+    buffer->skip(data_starting_kingdom); 
+    buffer->skip(data_personal_savings_last_mission); 
+    buffer->skip(data_current_mission_id); 
+    buffer->skip(data_is_custom_scenario);
+
+    m_sound_city.enabled = static_cast<bool>(buffer->read_u8());
+    m_warnings = static_cast<bool>(buffer->read_u8());
+    m_monthly_autosave = static_cast<bool>(buffer->read_u8());
+
+    buffer->skip(data_autoclear);
+
+    m_sound_effects.volume = static_cast<int>(buffer->read_i32());
+    m_sound_music.volume = static_cast<int>(buffer->read_i32());
+    m_sound_speech.volume = static_cast<int>(buffer->read_i32());
+    m_sound_city.volume = static_cast<int>(buffer->read_i32());
+
+    buffer->skip(data_ram);
+
+    m_window_width = static_cast<int>(buffer->read_i32());
+    m_window_height = static_cast<int>(buffer->read_i32());
+
+    buffer->skip(max_confirmed_resolution);
+
+    for (std::size_t i = 0; i < m_personal_savings.size(); i++) {
+      m_personal_savings[i] = static_cast<int>(buffer->read_i32());
+    }
+    m_victory_video = buffer->read_i32();
+
+    // TODO is this switch valid for pharaoh since it mentions c3?
+    if (buffer->at_end()) {
+      // Settings file is from unpatched C3, use default values
+      m_difficulty = Difficulty::HARD;
+      m_gods_enabled = true;
+    } 
+    else {
+      m_difficulty = static_cast<Difficulty>(buffer->read_i32());
+      m_gods_enabled = static_cast<bool>(buffer->read_i32());
+    }    
+}
+
+const SettingSound* Settings::_sound(SoundType sound_type) const
+{
+    switch (sound_type) {
+    case SoundType::MUSIC:
+        return &m_sound_music;
+    case SoundType::EFFECTS:
+        return &m_sound_effects;
+    case SoundType::SPEECH:
+        return &m_sound_speech;
+    case SoundType::CITY:
+        return &m_sound_city;
+    default:
+        return &m_sound_music;
+    }
+    return &m_sound_music;
+}
+
+SettingSound* Settings::_sound(SoundType sound_type)
+{
+    switch (sound_type) {
+    case SoundType::MUSIC:
+        return &m_sound_music;
+    case SoundType::EFFECTS:
+        return &m_sound_effects;
+    case SoundType::SPEECH:
+        return &m_sound_speech;
+    case SoundType::CITY:
+        return &m_sound_city;
+    default:
+        return &m_sound_music;
+    }
+    return &m_sound_music;
 }

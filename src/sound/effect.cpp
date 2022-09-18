@@ -11,9 +11,14 @@ void sound_effect_set_volume(int percentage) {
 }
 
 void sound_effect_play(int effect) {
-    if (!setting_sound(SOUND_EFFECTS)->enabled)
+    auto&
+     settings = Settings::instance();
+    auto setting_sound_effects = settings.sound(SoundType::EFFECTS);
+    if (!setting_sound_effects.enabled) {
         return;
-    if (sound_device_is_channel_playing(effect))
+    }
+    if (sound_device_is_channel_playing(effect)) {
         return;
-    sound_device_play_channel(effect, setting_sound(SOUND_EFFECTS)->volume);
+    }
+    sound_device_play_channel(effect, setting_sound_effects.volume);
 }

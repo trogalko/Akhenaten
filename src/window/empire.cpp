@@ -53,13 +53,16 @@ static void button_open_trade(int param1, int param2);
 static void button_show_resource_window(int resource, int param2);
 
 static image_button image_button_help[] = {
-        {0, 0, 27, 27, IB_NORMAL, GROUP_CONTEXT_ICONS, 0, button_help, button_none, 0, 0, 1}
+        {0, 0, 27, 27, IB_NORMAL, GROUP_CONTEXT_ICONS, 0, 
+            button_help, button_none, 0, 0, 1}
 };
 static image_button image_button_return_to_city[] = {
-        {0, 0, 24, 24, IB_NORMAL, GROUP_CONTEXT_ICONS, 4, button_return_to_city, button_none, 0, 0, 1}
+        {0, 0, 24, 24, IB_NORMAL, GROUP_CONTEXT_ICONS, 4, 
+            button_return_to_city, button_none, 0, 0, 1}
 };
 static image_button image_button_advisor[] = {
-        {-4, 0, 24, 24, IB_NORMAL, GROUP_MESSAGE_ADVISOR_BUTTONS, 12, button_advisor, button_none, ADVISOR_TRADE, 0, 1},
+        {-4, 0, 24, 24, IB_NORMAL, GROUP_MESSAGE_ADVISOR_BUTTONS, 12, 
+            button_advisor, button_none, static_cast<int>(Advisor::TRADE), 0, 1},
 };
 static int ADVISOR_BUTTON_X = 0;
 
@@ -483,8 +486,10 @@ static void draw_empire_object(const empire_object *obj) {
 
 
             int text_group = 21;
-            if (setting_city_names_style() == CITIES_OLD_NAMES)
+            auto& settings = Settings::instance();
+            if (settings.city_names_style() == CitiesNamesStyle::OLD_NAMES) {
                 text_group = 195;
+            }
 
             int text_offset_x = 0;
             int text_offset_y = 50;
@@ -574,12 +579,15 @@ static void draw_city_name(const empire_city *city) {
     }
     else if (GAME_ENV == ENGINE_ENV_PHARAOH) {
         if (city) {
-            if (setting_city_names_style() == CITIES_OLD_NAMES)
+            auto& settings = Settings::instance();
+            if (settings.city_names_style() == CitiesNamesStyle::OLD_NAMES) {
                 lang_text_draw_centered(195, city->name_id,
                                         (data.x_min + data.x_max - 332) / 2 + 32, data.y_max - INFO_Y_CITY_NAME, 268, FONT_LARGE_BLACK_ON_LIGHT);
-            else
+            }
+            else {
                 lang_text_draw_centered(21, city->name_id,
                                         (data.x_min + data.x_max - 332) / 2 + 32, data.y_max - INFO_Y_CITY_NAME, 268, FONT_LARGE_BLACK_ON_LIGHT);
+            }
         }
     }
 }

@@ -278,18 +278,20 @@ static void clear_state(void) {
 }
 
 static void set_text_for_autosave(void) {
-    menu_update_text(&menu[INDEX_OPTIONS], 4, setting_monthly_autosave() ? 51 : 52);
+    auto& settings = Settings::instance();
+    menu_update_text(&menu[INDEX_OPTIONS], 4, settings.monthly_autosave() ? 51 : 52);
 }
 static void set_text_for_tooltips(void) {
-    int new_text;
-    switch (setting_tooltips()) {
-        case TOOLTIPS_NONE:
+    int new_text{};
+    auto& settings = Settings::instance();
+    switch (settings.tooltips()) {
+        case Tooltips::NONE:
             new_text = 2;
             break;
-        case TOOLTIPS_SOME:
+        case Tooltips::SOME:
             new_text = 3;
             break;
-        case TOOLTIPS_FULL:
+        case Tooltips::FULL:
             new_text = 4;
             break;
         default:
@@ -298,7 +300,8 @@ static void set_text_for_tooltips(void) {
     menu_update_text(&menu[INDEX_HELP], 1, new_text);
 }
 static void set_text_for_warnings(void) {
-    menu_update_text(&menu[INDEX_HELP], 2, setting_warnings() ? 6 : 5);
+    auto& settings = Settings::instance();
+    menu_update_text(&menu[INDEX_HELP], 2, settings.warnings() ? 6 : 5);
 }
 
 static void init(void) {
@@ -615,7 +618,8 @@ static void menu_options_difficulty(int param) {
     window_difficulty_options_show(window_city_show);
 }
 static void menu_options_autosave(int param) {
-    setting_toggle_monthly_autosave();
+    auto& settings = Settings::instance();
+    settings.toggle_monthly_autosave();
     set_text_for_autosave();
 }
 
@@ -625,11 +629,13 @@ static void menu_help_help(int param) {
     window_message_dialog_show(MESSAGE_DIALOG_HELP, -1, window_city_draw_all);
 }
 static void menu_help_mouse_help(int param) {
-    setting_cycle_tooltips();
+    auto& settings = Settings::instance();
+    settings.cycle_tooltips();
     set_text_for_tooltips();
 }
 static void menu_help_warnings(int param) {
-    setting_toggle_warnings();
+    auto& settings = Settings::instance();
+    settings.toggle_warnings();
     set_text_for_warnings();
 }
 static void menu_help_about(int param) {

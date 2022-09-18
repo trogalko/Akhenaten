@@ -381,6 +381,7 @@ bool map_routing_passable_by_usage(int terrain_usage, int grid_offset) {
         case TERRAIN_USAGE_ANIMAL:
             return map_grid_get(&terrain_land_noncitizen, grid_offset) >= NONCITIZEN_0_PASSABLE;
     }
+    return false; // Should never be hit. To silence compiler warning.
 }
 
 int map_routing_is_wall_passable(int grid_offset) {

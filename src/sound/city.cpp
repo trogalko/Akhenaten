@@ -234,10 +234,15 @@ void sound_city_decay_views(void) {
 
 static void play_channel(int channel, int direction) {
     channel += CITY_CHANNEL_OFFSET;
-    if (!setting_sound(SOUND_CITY)->enabled)
+    auto&
+     settings = Settings::instance();
+    auto setting_sound_city = settings.sound(SoundType::CITY);
+    if (!setting_sound_city.enabled) {
         return;
-    if (sound_device_is_channel_playing(channel))
+    }
+    if (sound_device_is_channel_playing(channel)) {
         return;
+    }
     int left_pan;
     int right_pan;
     switch (direction) {
@@ -256,7 +261,7 @@ static void play_channel(int channel, int direction) {
             left_pan = right_pan = 0;
             break;
     }
-    sound_device_play_channel_panned(channel, setting_sound(SOUND_CITY)->volume, left_pan, right_pan);
+    sound_device_play_channel_panned(channel, setting_sound_city.volume, left_pan, right_pan);
 }
 void sound_city_play(void) {
     time_millis now = time_get_millis();
@@ -275,9 +280,10 @@ void sound_city_play(void) {
         }
     }
 
-    if (now - last_update_time < 2000)
+    if (now - last_update_time < 2000) {
         // Only play 1 sound every 2 seconds
         return;
+    }
     time_millis max_delay = 0;
     int max_sound_id = 0;
     for (int i = 1; i < MAX_CHANNELS; i++) {

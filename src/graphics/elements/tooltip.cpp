@@ -90,14 +90,15 @@ static void draw_button_tooltip(tooltip_context *c) {
         case WINDOW_ADVISORS:
             if (c->mouse_y < screen_dialog_offset_y() + 432) {
                 y = c->mouse_y;
-                switch (window_advisors_get_advisor()) {
-                    case ADVISOR_LABOR:
+                auto advisors = static_cast<Advisor>(window_advisors_get_advisor());
+                switch (advisors) {
+                    case Advisor::LABOR:
                         y -= 74;
                         break;
-                    case ADVISOR_TRADE:
+                    case Advisor::TRADE:
                         y -= 54;
                         break;
-                    case ADVISOR_POPULATION:
+                    case Advisor::POPULATION:
                         y -= 58;
                         break;
                     default:
@@ -288,7 +289,8 @@ static bool should_draw_tooltip(tooltip_context *c) {
         reset_timer();
         return false;
     }
-    if (!c->high_priority && setting_tooltips() != TOOLTIPS_FULL) {
+    auto& settings = Settings::instance();
+    if (!c->high_priority && settings.tooltips() != Tooltips::FULL) {
         reset_timer();
         return false;
     }
@@ -306,8 +308,13 @@ void tooltip_handle(const mouse *m, void (*func)(tooltip_context *)) {
     }
     tooltip_context context = {m->x, m->y, 0, 0, 0, 0, 0, 0};
     context.text_group = DEFAULT_TEXT_GROUP;
-    if (setting_tooltips() && func)
+
+    // TODO Why is there a boolean check on tooltips if it is not a boolean.
+    // This should be probably always true
+    auto& settings = Settings::instance();
+    if (static_cast<int>(settings.tooltips()) && func) {
         func(&context);
+    }
 
     if (should_draw_tooltip(&context)) {
         draw_tooltip(&context);

@@ -222,6 +222,7 @@ int calc_missile_direction(int x_from, int y_from, int x_to, int y_to) {
     }
 }
 
+// TODO: can be replaced with std::clamp if c++17 is allowed
 int32_t calc_bound(int32_t value, int32_t min, int32_t max) {
     if (value < min)
         return min;

@@ -48,7 +48,8 @@ static struct {
 } data;
 
 static void init() {
-    string_copy(setting_player_name(), data.player_name, MAX_PLAYER_NAME);
+    auto& settings = Settings::instance();
+    string_copy(settings.player_name(), data.player_name, MAX_PLAYER_NAME);
     text_tag_substitution tags[] = {
             {"[player_name]", data.player_name}
     };

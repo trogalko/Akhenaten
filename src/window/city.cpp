@@ -149,65 +149,67 @@ static void toggle_pause(void) {
 
 bool city_has_loaded = false;
 
-static void handle_hotkeys(const hotkeys *h) {
-    handle_debug_hotkeys(h);
+static void handle_hotkeys(const hotkeys *hotkeys) {
+    handle_debug_hotkeys(hotkeys);
     ////
-    if (h->toggle_pause)
+    if (hotkeys->toggle_pause) {
         toggle_pause();
-
-    if (h->decrease_game_speed) {
-        setting_decrease_game_speed();
     }
-    if (h->increase_game_speed) {
-        setting_increase_game_speed();
+    if (hotkeys->decrease_game_speed) {
+        auto& settings = Settings::instance();
+        settings.decrease_game_speed();
     }
-    if (h->show_overlay)
-        show_overlay(h->show_overlay);
-
-    if (h->toggle_overlay) {
+    if (hotkeys->increase_game_speed) {
+        auto& settings = Settings::instance();
+        settings.increase_game_speed();
+    }
+    if (hotkeys->show_overlay) {
+        show_overlay(hotkeys->show_overlay);
+    }
+    if (hotkeys->toggle_overlay) {
         exit_military_command();
         game_state_toggle_overlay();
         select_city_overlay();
         window_invalidate();
     }
-    if (h->show_advisor)
-        window_advisors_show_advisor(h->show_advisor);
-
-    if (h->cycle_legion)
+    if (hotkeys->show_advisor) {
+        window_advisors_show_advisor(hotkeys->show_advisor);
+    }
+    if (hotkeys->cycle_legion) {
         cycle_legion();
-
-    if (h->rotate_map_left) {
+    }
+    if (hotkeys->rotate_map_left) {
         game_orientation_rotate_left();
         window_invalidate();
     }
-    if (h->rotate_map_right) {
+    if (hotkeys->rotate_map_right) {
         game_orientation_rotate_right();
         window_invalidate();
     }
-    if (h->go_to_bookmark) {
-        if (map_bookmark_go_to(h->go_to_bookmark - 1))
+    if (hotkeys->go_to_bookmark) {
+        if (map_bookmark_go_to(hotkeys->go_to_bookmark - 1))
             window_invalidate();
 
     }
-    if (h->set_bookmark)
-        map_bookmark_save(h->set_bookmark - 1);
-
-    if (h->load_file)
+    if (hotkeys->set_bookmark) {
+        map_bookmark_save(hotkeys->set_bookmark - 1);
+    }
+    if (hotkeys->load_file) {
         window_file_dialog_show(FILE_TYPE_SAVED_GAME, FILE_DIALOG_LOAD);
-
-    if (h->save_file)
+    }
+    if (hotkeys->save_file) {
         window_file_dialog_show(FILE_TYPE_SAVED_GAME, FILE_DIALOG_SAVE);
-
-    if (h->rotate_building)
+    }
+    if (hotkeys->rotate_building) {
         building_rotation_rotate_by_hotkey();
-
-    if (h->change_building_variant)
+    }
+    if (hotkeys->change_building_variant) {
         building_rotation_variant_by_hotkey();
-
-    if (h->building) {
-        if (scenario_building_allowed(h->building)) {
+    }
+    if (hotkeys->building) {
+        if (scenario_building_allowed(hotkeys->building)) {
             Planner.construction_cancel();
-            Planner.setup_build(h->building);
+            Planner.setup_build(hotkeys->building);
         }
     }
 }

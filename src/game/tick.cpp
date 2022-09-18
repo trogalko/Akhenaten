@@ -96,16 +96,20 @@ static void advance_month(void) {
     map_routing_update_land_citizen();
 //    city_message_sort_and_compact();
 
-    if (game_time_advance_month())
+    if (game_time_advance_month()) {
         advance_year();
-    else
+    }
+    else {
         city_ratings_update(0);
+    }
 
     city_population_record_monthly();
     city_festival_update();
-    if (GAME_ENV == ENGINE_ENV_C3)
+    if (GAME_ENV == ENGINE_ENV_C3) {
         tutorial_on_month_tick();
-    if (setting_monthly_autosave()) {
+    }
+    auto& settings = Settings::instance();
+    if (settings.monthly_autosave()) {
 //        if (0)
 //            SaveFileIO::write_savegame("autosave.sav");
 //        if (1)

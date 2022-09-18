@@ -133,8 +133,9 @@ static void draw_god_row(int god, int y_offset, int temple, int complex, int shr
 }
 
 static int draw_background(void) {
-    int height_blocks;
-    if (setting_gods_enabled()) {
+    int height_blocks{};
+    auto& settings = Settings::instance();
+    if (settings.gods_enabled()) {
         height_blocks = 27; //17
         outer_panel_draw(0, 0, 40, height_blocks);
     } else {

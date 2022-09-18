@@ -33,7 +33,8 @@ static input_box player_name_input = {160, 208, 20, 2, FONT_NORMAL_WHITE_ON_DARK
 static uint8_t player_name[32];
 
 static void init(void) {
-    setting_clear_personal_savings();
+    auto& settings = Settings::instance();
+    settings.clear_personal_savings();
     scenario_settings_init();
     encoding_from_utf8("", player_name, 0);
     input_box_start(&player_name_input, player_name, 32, 1);
@@ -58,9 +59,11 @@ static void button_back(int param1, int param2) {
 }
 static void confirm_new_player_name(int param1, int param2) {
     input_box_stop(&player_name_input);
-    setting_set_player_name(player_name);
-    if (GAME_ENV == ENGINE_ENV_C3)
+    auto& settings = Settings::instance();
+    settings.set_player_name(player_name);
+    if (GAME_ENV == ENGINE_ENV_C3) {
         window_mission_next_selection_show();
+    }
     else if (GAME_ENV == ENGINE_ENV_PHARAOH) {
         // in OG Pharaoh, creating a new player name automatically opens the
         // game selection menu; here we first go back to the player list instead

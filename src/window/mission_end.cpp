@@ -114,7 +114,8 @@ static void draw_foreground(void) {
 }
 
 static void advance_to_next_mission(void) {
-    setting_set_personal_savings_for_mission(scenario_campaign_rank() + 1, city_emperor_personal_savings());
+    auto& settings = Settings::instance();
+    settings.set_personal_savings_for_mission(scenario_campaign_rank() + 1, city_emperor_personal_savings());
     scenario_set_campaign_rank(scenario_campaign_rank() + 1);
     city_save_campaign_player_name();
 
@@ -126,7 +127,7 @@ static void advance_to_next_mission(void) {
     if (scenario_campaign_rank() >= 11 || scenario_is_custom()) {
         window_main_menu_show(1);
         if (!scenario_is_custom()) {
-            setting_clear_personal_savings();
+            settings.clear_personal_savings();
             scenario_settings_init();
             scenario_set_campaign_rank(2);
         }
@@ -184,8 +185,10 @@ void window_mission_end_show_won(void) {
         // Won campaign
         window_victory_video_show("smk/win_game.smk", 400, 292, show_intermezzo);
     } else {
-        if (setting_victory_video())
+        auto& settings = Settings::instance();
+        if (settings.victory_video()) {
             window_victory_video_show("smk/victory_balcony.smk", 400, 292, show_intermezzo);
+        }
         else {
             window_victory_video_show("smk/victory_senate.smk", 400, 292, show_intermezzo);
         }

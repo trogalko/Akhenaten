@@ -326,6 +326,9 @@ int city_message_get_text_id(int message_id) {
             return message_id + 99;
     } else if (GAME_ENV == ENGINE_ENV_PHARAOH)
         return message_id;
+    // TODO What about ENGINE_ENV_MAX
+    // Add return here for now to silence warning
+    return 0;
 }
 int city_message_get_advisor(int message_type) {
     switch (message_type) {

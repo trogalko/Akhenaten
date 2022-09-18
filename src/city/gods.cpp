@@ -52,6 +52,7 @@ int god_known_status(int god) {
 
 static bool OSIRIS_locusts() {
     // TODO
+    return false;
 }
 static bool PTAH_warehouse_restock() {
     // fill warehouses with gems, clay, pottery, flax, linen, or jewelry
@@ -98,8 +99,8 @@ static bool PTAH_warehouse_restock() {
             else
                 return true;
         }
-    } else
-        return false;
+    } 
+    return false;
 }
 static bool PTAH_industry_restock() {
     // restocks shipwrights, weavers and jewelers
@@ -229,11 +230,13 @@ static bool PTAH_industry_destruction() {
 static bool SETH_fort_destruction() {
     // TODO
 //            formation_legion_curse();
+    return false;
 }
 static bool SETH_ships_destruction() {
     // TODO
 //                figure_sink_all_ships();
 //                city_data.religion.neptune_sank_ships = 1;
+    return false;
 }
 static bool SETH_hailstorm() {
     // TODO
@@ -244,9 +247,11 @@ static bool SETH_hailstorm() {
 //                    city_message_post(true, MESSAGE_CURSE_SETH_NOEFFECT, 0, 0);
 //                    return 0;
 //                }
+    return false;
 }
 static bool PTAH_frogs() {
     // TODO
+    return false;
 }
 static bool BAST_refill_houses_and_bazaar() {
     // TODO
@@ -262,6 +267,7 @@ static bool BAST_refill_houses_and_bazaar() {
 //                city_health_change(-20);
 //            city_data.religion.venus_curse_active = true;
 //            city_sentiment_update();
+    return false;
 }
 
 static void swap(int *A, int *B) {
@@ -426,6 +432,7 @@ static bool BAST_malaria_plague() {
 //            city_sentiment_change_happiness(-5);
 //            city_health_change(-10);
 //            city_sentiment_update();
+    return false;
 }
 
 static void perform_major_blessing(int god) {
@@ -787,7 +794,8 @@ static void update_moods(int randm_god) {
     }
 
     // update anger/happiness/bolt icons/etc.
-    int difficulty = setting_difficulty();
+    auto& settings = Settings::instance();
+    int difficulty = static_cast<int>(settings.difficulty());
     if (god_known_status(randm_god) != GOD_STATUS_UNKNOWN) { // OG code checks "randm_god < MAX_GODS" which is redundant.
         god_status *god = &city_data.religion.gods[randm_god];
         if (god->mood > 50)
@@ -860,7 +868,8 @@ static void update_monthly_data(int randm_god) {
 void city_gods_update(bool mood_calc_only) {
     calculate_mood_targets();
 
-    if (!mood_calc_only && setting_gods_enabled()) {
+    auto& settings = Settings::instance();
+    if (!mood_calc_only && settings.gods_enabled()) {
         int randm_god = anti_scum_random_15bit() % 5;
         update_moods(randm_god);
 
