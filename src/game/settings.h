@@ -1,8 +1,8 @@
 #ifndef GAME_SETTINGS_H
 #define GAME_SETTINGS_H
 
-#include <city/constants.h>
-#include <core/game_environment.h>
+#include "city/constants.h"
+#include "core/game_environment.h"
 
 #include <array>
 #include <cstdint>

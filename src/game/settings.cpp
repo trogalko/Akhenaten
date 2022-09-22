@@ -1,10 +1,9 @@
 #include "settings.h"
 
-#include <core/buffer.h>
-#include <core/calc.h>
-#include <core/encoding.h>
-#include <core/string.h>
-#include <io/io.h>
+#include "core/buffer.h"
+#include "core/encoding.h"
+#include "core/string.h"
+#include "io/io.h"
 
 #include <algorithm>
 
