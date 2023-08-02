@@ -3,7 +3,8 @@
 class building;
 class map_point;
 
-enum e_granary_task { GRANARY_TASK_NONE = -1, GRANARY_TASK_GETTING = 0 };
+enum e_granary_task { GRANARY_TASK_NONE = -1,
+                      GRANARY_TASK_GETTING = 0 };
 
 int building_granary_get_amount(building* granary, int resource);
 

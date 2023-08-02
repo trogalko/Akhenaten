@@ -3,9 +3,15 @@
 
 #include <stdio.h>
 
-enum { TYPE_NONE = 0, TYPE_DIR = 1, TYPE_FILE = 2, TYPE_ANY = 3 };
+enum { TYPE_NONE = 0,
+       TYPE_DIR = 1,
+       TYPE_FILE = 2,
+       TYPE_ANY = 3 };
 
-enum { LIST_ERROR = 0, LIST_NO_MATCH = 1, LIST_CONTINUE = 1, LIST_MATCH = 2 };
+enum { LIST_ERROR = 0,
+       LIST_NO_MATCH = 1,
+       LIST_CONTINUE = 1,
+       LIST_MATCH = 2 };
 
 /**
  * Sets the base path for Julius

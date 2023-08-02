@@ -75,7 +75,10 @@ enum {
     INVENTORY_MAX = 8
 };
 
-enum { RESOURCE_UNIT_PILE = 0, RESOURCE_UNIT_BLOCK = 1, RESOURCE_UNIT_WEAPON = 2, RESOURCE_UNIT_CHARIOT = 3 };
+enum { RESOURCE_UNIT_PILE = 0,
+       RESOURCE_UNIT_BLOCK = 1,
+       RESOURCE_UNIT_WEAPON = 2,
+       RESOURCE_UNIT_CHARIOT = 3 };
 
 int ALLOWED_FOODS(int i);
 bool is_food_allowed(int resource);

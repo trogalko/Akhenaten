@@ -31,7 +31,11 @@ enum {
     SWITCH_NUM_BUTTONS = 16
 };
 
-enum { ANALOG_LEFT = 0, ANALOG_UP = 1, ANALOG_RIGHT = 2, ANALOG_DOWN = 3, ANALOG_MAX = 4 };
+enum { ANALOG_LEFT = 0,
+       ANALOG_UP = 1,
+       ANALOG_RIGHT = 2,
+       ANALOG_DOWN = 3,
+       ANALOG_MAX = 4 };
 
 static int can_change_touch_mode = 1;
 

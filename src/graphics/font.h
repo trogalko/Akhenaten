@@ -37,7 +37,9 @@ struct font_definition {
     int (*image_y_offset)(uint8_t c, int image_height, int line_height);
 };
 
-enum { NO_EXTRA_FONT = 0, FULL_CHARSET_IN_FONT = 1, MULTIBYTE_IN_FONT = 2 };
+enum { NO_EXTRA_FONT = 0,
+       FULL_CHARSET_IN_FONT = 1,
+       MULTIBYTE_IN_FONT = 2 };
 
 /**
  * Sets the encoding for font drawing functions

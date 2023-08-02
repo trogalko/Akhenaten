@@ -16,16 +16,26 @@
 static void button_invasion(int id, int param2);
 
 static generic_button buttons[] = {
-  {20, 42, 290, 25, button_invasion, button_none, 0, 0},    {20, 72, 290, 25, button_invasion, button_none, 1, 0},
-  {20, 102, 290, 25, button_invasion, button_none, 2, 0},   {20, 132, 290, 25, button_invasion, button_none, 3, 0},
-  {20, 162, 290, 25, button_invasion, button_none, 4, 0},   {20, 192, 290, 25, button_invasion, button_none, 5, 0},
-  {20, 222, 290, 25, button_invasion, button_none, 6, 0},   {20, 252, 290, 25, button_invasion, button_none, 7, 0},
-  {20, 282, 290, 25, button_invasion, button_none, 8, 0},   {20, 312, 290, 25, button_invasion, button_none, 9, 0},
-  {320, 42, 290, 25, button_invasion, button_none, 10, 0},  {320, 72, 290, 25, button_invasion, button_none, 11, 0},
-  {320, 102, 290, 25, button_invasion, button_none, 12, 0}, {320, 132, 290, 25, button_invasion, button_none, 13, 0},
-  {320, 162, 290, 25, button_invasion, button_none, 14, 0}, {320, 192, 290, 25, button_invasion, button_none, 15, 0},
-  {320, 222, 290, 25, button_invasion, button_none, 16, 0}, {320, 252, 290, 25, button_invasion, button_none, 17, 0},
-  {320, 282, 290, 25, button_invasion, button_none, 18, 0}, {320, 312, 290, 25, button_invasion, button_none, 19, 0},
+  {20, 42, 290, 25, button_invasion, button_none, 0, 0},
+  {20, 72, 290, 25, button_invasion, button_none, 1, 0},
+  {20, 102, 290, 25, button_invasion, button_none, 2, 0},
+  {20, 132, 290, 25, button_invasion, button_none, 3, 0},
+  {20, 162, 290, 25, button_invasion, button_none, 4, 0},
+  {20, 192, 290, 25, button_invasion, button_none, 5, 0},
+  {20, 222, 290, 25, button_invasion, button_none, 6, 0},
+  {20, 252, 290, 25, button_invasion, button_none, 7, 0},
+  {20, 282, 290, 25, button_invasion, button_none, 8, 0},
+  {20, 312, 290, 25, button_invasion, button_none, 9, 0},
+  {320, 42, 290, 25, button_invasion, button_none, 10, 0},
+  {320, 72, 290, 25, button_invasion, button_none, 11, 0},
+  {320, 102, 290, 25, button_invasion, button_none, 12, 0},
+  {320, 132, 290, 25, button_invasion, button_none, 13, 0},
+  {320, 162, 290, 25, button_invasion, button_none, 14, 0},
+  {320, 192, 290, 25, button_invasion, button_none, 15, 0},
+  {320, 222, 290, 25, button_invasion, button_none, 16, 0},
+  {320, 252, 290, 25, button_invasion, button_none, 17, 0},
+  {320, 282, 290, 25, button_invasion, button_none, 18, 0},
+  {320, 312, 290, 25, button_invasion, button_none, 19, 0},
 };
 
 static int focus_button_id;

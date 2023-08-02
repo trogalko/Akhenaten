@@ -21,35 +21,93 @@
 #define SOUND_FILENAME_MAX 32
 
 static const char FIGURE_SOUNDS[2][50][SOUND_FILENAME_MAX]
-  = {{"vigils",    "wallguard", "engine", "taxman", "market", "crtpsh",   "donkey",     "boats",
-      "priest",    "teach",     "pupils", "bather", "doctor", "mortuary", "actors",     "gladtr",
-      "liontr",    "charot",    "patric", "pleb",   "rioter", "homeless", "unemploy",   "emigrate",
-      "immigrant", "enemy",     "local",  "libary", "srgeon", "docker",   "missionary", "granboy"},
+  = {{"vigils", "wallguard", "engine", "taxman", "market", "crtpsh", "donkey", "boats", "priest", "teach", "pupils", "bather", "doctor", "mortuary", "actors", "gladtr", "liontr", "charot", "patric", "pleb", "rioter", "homeless", "unemploy", "emigrate", "immigrant", "enemy", "local", "libary", "srgeon", "docker", "missionary", "granboy"},
      {
        //
      }};
 static const char FIGURE_PHRASE_VARIANTS[2][20][SOUND_FILENAME_MAX]
-  = {{"_starv1.wav", "_nojob1.wav", "_needjob1.wav", "_nofun1.wav", "_relig1.wav", "_great1.wav", "_great2.wav",
-      "_exact1.wav", "_exact2.wav", "_exact3.wav",   "_exact4.wav", "_exact5.wav", "_exact6.wav", "_exact7.wav",
-      "_exact8.wav", "_exact9.wav", "_exact0.wav",   "_free1.wav",  "_free2.wav",  "_free3.wav"},
-     {"_g01.wav", "_g02.wav", "_g03.wav", "_g04.wav", "_g05.wav", "_g06.wav", "_g07.wav",
-      "_g08.wav", "_g09.wav", "_g10.wav", "_e01.wav", "_e02.wav", "_e03.wav", "_e04.wav",
-      "_e05.wav", "_e06.wav", "_e07.wav", "_e08.wav", "_e09.wav", "_e10.wav"}};
+  = {{"_starv1.wav", "_nojob1.wav", "_needjob1.wav", "_nofun1.wav", "_relig1.wav", "_great1.wav", "_great2.wav", "_exact1.wav", "_exact2.wav", "_exact3.wav", "_exact4.wav", "_exact5.wav", "_exact6.wav", "_exact7.wav", "_exact8.wav", "_exact9.wav", "_exact0.wav", "_free1.wav", "_free2.wav", "_free3.wav"},
+     {"_g01.wav", "_g02.wav", "_g03.wav", "_g04.wav", "_g05.wav", "_g06.wav", "_g07.wav", "_g08.wav", "_g09.wav", "_g10.wav", "_e01.wav", "_e02.wav", "_e03.wav", "_e04.wav", "_e05.wav", "_e06.wav", "_e07.wav", "_e08.wav", "_e09.wav", "_e10.wav"}};
 static const int int_TO_SOUND_TYPE[2][200] = {{
-                                                -1, 24, 23, 21, 5,  19, -1, 3,  2,  5,  // 0-9
-                                                0,  1,  1,  1,  -1, 14, 15, 16, 17, 6,  // 10-19
-                                                7,  6,  20, 20, 20, -1, 4,  8,  10, 9,  // 20-29
-                                                9,  13, 11, 12, 12, 19, -1, -1, 5,  4,  // 30-39
-                                                18, -1, 1,  25, 25, 25, 25, 25, 25, 25, // 40-49
-                                                25, 25, 25, 25, 25, 25, 25, 25, -1, -1, // 50-59
-                                                -1, -1, -1, -1, 30, -1, 31, -1, -1, -1, // 60-69
-                                                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1  // 70-79
+                                                -1, 24, 23, 21, 5, 19, -1, 3, 2, 5, // 0-9
+                                                0,
+                                                1,
+                                                1,
+                                                1,
+                                                -1,
+                                                14,
+                                                15,
+                                                16,
+                                                17,
+                                                6, // 10-19
+                                                7,
+                                                6,
+                                                20,
+                                                20,
+                                                20,
+                                                -1,
+                                                4,
+                                                8,
+                                                10,
+                                                9, // 20-29
+                                                9,
+                                                13,
+                                                11,
+                                                12,
+                                                12,
+                                                19,
+                                                -1,
+                                                -1,
+                                                5,
+                                                4, // 30-39
+                                                18,
+                                                -1,
+                                                1,
+                                                25,
+                                                25,
+                                                25,
+                                                25,
+                                                25,
+                                                25,
+                                                25, // 40-49
+                                                25,
+                                                25,
+                                                25,
+                                                25,
+                                                25,
+                                                25,
+                                                25,
+                                                25,
+                                                -1,
+                                                -1, // 50-59
+                                                -1,
+                                                -1,
+                                                -1,
+                                                -1,
+                                                30,
+                                                -1,
+                                                31,
+                                                -1,
+                                                -1,
+                                                -1, // 60-69
+                                                -1,
+                                                -1,
+                                                -1,
+                                                -1,
+                                                -1,
+                                                -1,
+                                                -1,
+                                                -1,
+                                                -1,
+                                                -1 // 70-79
                                               },
                                               {
                                                 //
                                               }};
 
-enum E_GOD_STATE { GOD_STATE_NONE = 0, GOD_STATE_VERY_ANGRY = 1, GOD_STATE_ANGRY = 2 };
+enum E_GOD_STATE { GOD_STATE_NONE = 0,
+                   GOD_STATE_VERY_ANGRY = 1,
+                   GOD_STATE_ANGRY = 2 };
 
 static int lion_tamer_phrase() {
     //    if (action_state == FIGURE_ACTION_150_ATTACK) {

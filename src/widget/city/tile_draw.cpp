@@ -53,7 +53,8 @@ static const int ADJACENT_OFFSETS_PH[2][4][7]
        GRID_OFFSET(-3, -1),
        GRID_OFFSET(-3, -2)}}};
 
-enum e_figure_draw_mode { e_figure_draw_common = 0, e_figure_draw_overlay = 1 };
+enum e_figure_draw_mode { e_figure_draw_common = 0,
+                          e_figure_draw_overlay = 1 };
 
 struct draw_context_t {
     time_millis last_water_animation_time;

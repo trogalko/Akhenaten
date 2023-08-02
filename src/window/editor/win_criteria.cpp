@@ -16,7 +16,10 @@
 #include "window/editor/map.h"
 #include "window/numeric_input.h"
 
-enum E_RATING { RATING_CULTURE, RATING_PROSPERITY, RATING_MONUMENT, RATING_KINGDOM };
+enum E_RATING { RATING_CULTURE,
+                RATING_PROSPERITY,
+                RATING_MONUMENT,
+                RATING_KINGDOM };
 
 static void button_rating_toggle(int rating, int param2);
 static void button_rating_value(int rating, int param2);

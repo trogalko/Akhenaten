@@ -27,11 +27,11 @@ enum bind_signature_e {
     BIND_SIGNATURE_GRID,
 };
 
-#define IO_BRANCH(R, W)                                                                                                \
-    if (access_type == CHUNK_ACCESS_READ)                                                                              \
-        R;                                                                                                             \
-    else if (access_type == CHUNK_ACCESS_WRITE)                                                                        \
-        W;                                                                                                             \
+#define IO_BRANCH(R, W)                         \
+    if (access_type == CHUNK_ACCESS_READ)       \
+        R;                                      \
+    else if (access_type == CHUNK_ACCESS_WRITE) \
+        W;                                      \
     return;
 
 class io_buffer {

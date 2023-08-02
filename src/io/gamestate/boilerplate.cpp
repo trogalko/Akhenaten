@@ -136,7 +136,10 @@ const int GamestateIO::read_file_version(const char* filename, int offset) {
     return small_buffer->read_i32();
 }
 
-enum E_LOADED { LOADED_NULL = -1, LOADED_MISSION = 0, LOADED_SAVE = 1, LOADED_CUSTOM_MAP = 2 };
+enum E_LOADED { LOADED_NULL = -1,
+                LOADED_MISSION = 0,
+                LOADED_SAVE = 1,
+                LOADED_CUSTOM_MAP = 2 };
 
 static stopwatch WATCH;
 static int last_loaded = LOADED_NULL;
@@ -337,11 +340,11 @@ static void file_schema(e_file_format file_format, const int file_version) {
         FILEIO.push_chunk(8, false, "building_burning_list_info", iob_building_burning_list_info); // ok
         FILEIO.push_chunk(4, false, "figure_sequence", iob_figure_sequence);                       // ok
         FILEIO.push_chunk(12, false, "scenario_carry_settings", iob_scenario_carry_settings);      // ok
-        FILEIO.push_chunk(3232, true, "invasion_warnings", iob_invasion_warnings); // 94743 + 31 --> 94774 + 4 = 94778
-        FILEIO.push_chunk(4, false, "scenario_is_custom", iob_scenario_is_custom); // ok
-        FILEIO.push_chunk(8960, false, "city_sounds", iob_city_sounds);            // ok
-        FILEIO.push_chunk(4, false, "building_extra_highest_id", iob_building_highest_id); // ok
-        FILEIO.push_chunk(8804, false, "figure_traders", iob_figure_traders);              // +4000 ???
+        FILEIO.push_chunk(3232, true, "invasion_warnings", iob_invasion_warnings);                 // 94743 + 31 --> 94774 + 4 = 94778
+        FILEIO.push_chunk(4, false, "scenario_is_custom", iob_scenario_is_custom);                 // ok
+        FILEIO.push_chunk(8960, false, "city_sounds", iob_city_sounds);                            // ok
+        FILEIO.push_chunk(4, false, "building_extra_highest_id", iob_building_highest_id);         // ok
+        FILEIO.push_chunk(8804, false, "figure_traders", iob_figure_traders);                      // +4000 ???
 
         FILEIO.push_chunk(1000, true, "building_list_burning", iob_building_list_burning); // ok
         FILEIO.push_chunk(1000, true, "building_list_small", iob_building_list_small);     // ok
@@ -497,34 +500,34 @@ static void file_schema(e_file_format file_format, const int file_version) {
         FILEIO.push_chunk(8, false, "city_view_camera", iob_city_view_camera);                       // ok
         FILEIO.push_chunk(8, false, "city_graph_order", iob_city_graph_order);                       // I guess ????
         FILEIO.push_chunk(12, false, "empire_map_params", iob_empire_map_params);                    // ok ???
-        FILEIO.push_chunk(6466, false, "empire_cities", iob_empire_cities);                    // 83920 + 7681 --> 91601
-        FILEIO.push_chunk(288, false, "building_count_industry", iob_building_count_industry); // 288 bytes ??????
+        FILEIO.push_chunk(6466, false, "empire_cities", iob_empire_cities);                          // 83920 + 7681 --> 91601
+        FILEIO.push_chunk(288, false, "building_count_industry", iob_building_count_industry);       // 288 bytes ??????
         FILEIO.push_chunk(288, false, "trade_prices", iob_trade_prices);
         FILEIO.push_chunk(84, false, "figure_names", iob_figure_names);
         FILEIO.push_chunk(1592, false, "scenario_info", iob_scenario_info);
         FILEIO.push_chunk(4, false, "max_year", iob_max_year);
-        FILEIO.push_chunk(48000, false, "messages", iob_messages);         // 94000 + 533 --> 94532 + 4 = 94536
-        FILEIO.push_chunk(182, false, "message_extra", iob_message_extra); // ok
+        FILEIO.push_chunk(48000, false, "messages", iob_messages);                                 // 94000 + 533 --> 94532 + 4 = 94536
+        FILEIO.push_chunk(182, false, "message_extra", iob_message_extra);                         // ok
         FILEIO.push_chunk(8, false, "building_burning_list_info", iob_building_burning_list_info); // ok
         FILEIO.push_chunk(4, false, "figure_sequence", iob_figure_sequence);                       // ok
         FILEIO.push_chunk(12, false, "scenario_carry_settings", iob_scenario_carry_settings);      // ok
-        FILEIO.push_chunk(3232, false, "invasion_warnings", iob_invasion_warnings); // 94743 + 31 --> 94774 + 4 = 94778
-        FILEIO.push_chunk(4, false, "scenario_is_custom", iob_scenario_is_custom);  // ok
-        FILEIO.push_chunk(8960, false, "city_sounds", iob_city_sounds);             // ok
-        FILEIO.push_chunk(4, false, "building_extra_highest_id", iob_building_highest_id);  // ok
-        FILEIO.push_chunk(8804, false, "figure_traders", iob_figure_traders);               // +4000 ???
-        FILEIO.push_chunk(1000, false, "building_list_burning", iob_building_list_burning); // ok
-        FILEIO.push_chunk(1000, false, "building_list_small", iob_building_list_small);     // ok
-        FILEIO.push_chunk(8000, false, "building_list_large", iob_building_list_large);     // ok
-        FILEIO.push_chunk(32, false, "junk7a", iob_junk7a);                                 // unknown bytes
-        FILEIO.push_chunk(24, false, "junk7b", iob_junk7b);                                 // unknown bytes
-        FILEIO.push_chunk(39200, false, "building_storages", iob_building_storages);        // storage instructions
-        FILEIO.push_chunk(2880, false, "trade_routes_limits", iob_trade_routes_limits);     // ok
-        FILEIO.push_chunk(2880, false, "trade_routes_traded", iob_trade_routes_traded);     // ok
-        FILEIO.push_chunk(50, false, "junk8", iob_routing_stats);                           // unknown bytes
-        FILEIO.push_chunk(65, false, "scenario_map_name", iob_scenario_map_name);           // ok
-        FILEIO.push_chunk(32, false, "bookmarks", iob_bookmarks);                           // ok
-        FILEIO.push_chunk(12, false, "junk9a", iob_junk9a);                                 // ok ????
+        FILEIO.push_chunk(3232, false, "invasion_warnings", iob_invasion_warnings);                // 94743 + 31 --> 94774 + 4 = 94778
+        FILEIO.push_chunk(4, false, "scenario_is_custom", iob_scenario_is_custom);                 // ok
+        FILEIO.push_chunk(8960, false, "city_sounds", iob_city_sounds);                            // ok
+        FILEIO.push_chunk(4, false, "building_extra_highest_id", iob_building_highest_id);         // ok
+        FILEIO.push_chunk(8804, false, "figure_traders", iob_figure_traders);                      // +4000 ???
+        FILEIO.push_chunk(1000, false, "building_list_burning", iob_building_list_burning);        // ok
+        FILEIO.push_chunk(1000, false, "building_list_small", iob_building_list_small);            // ok
+        FILEIO.push_chunk(8000, false, "building_list_large", iob_building_list_large);            // ok
+        FILEIO.push_chunk(32, false, "junk7a", iob_junk7a);                                        // unknown bytes
+        FILEIO.push_chunk(24, false, "junk7b", iob_junk7b);                                        // unknown bytes
+        FILEIO.push_chunk(39200, false, "building_storages", iob_building_storages);               // storage instructions
+        FILEIO.push_chunk(2880, false, "trade_routes_limits", iob_trade_routes_limits);            // ok
+        FILEIO.push_chunk(2880, false, "trade_routes_traded", iob_trade_routes_traded);            // ok
+        FILEIO.push_chunk(50, false, "junk8", iob_routing_stats);                                  // unknown bytes
+        FILEIO.push_chunk(65, false, "scenario_map_name", iob_scenario_map_name);                  // ok
+        FILEIO.push_chunk(32, false, "bookmarks", iob_bookmarks);                                  // ok
+        FILEIO.push_chunk(12, false, "junk9a", iob_junk9a);                                        // ok ????
         FILEIO.push_chunk(396, false, "junk9b", iob_junk9b);
         FILEIO.push_chunk(51984, false, "soil_fertility_grid", iob_soil_fertility_grid);
         FILEIO.push_chunk(18600, false, "scenario_events", iob_scenario_events);

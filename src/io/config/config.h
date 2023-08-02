@@ -60,7 +60,8 @@ enum {
     CONFIG_MAX_ENTRIES
 };
 
-enum { CONFIG_STRING_UI_LANGUAGE_DIR, CONFIG_STRING_MAX_ENTRIES };
+enum { CONFIG_STRING_UI_LANGUAGE_DIR,
+       CONFIG_STRING_MAX_ENTRIES };
 
 /**
  * Get an integer config value

@@ -987,7 +987,7 @@ io_buffer* iob_buildings = new io_buffer([](io_buffer* iob) {
         iob->bind(BIND_SIGNATURE_UINT8, &b->storage_id);
         iob->bind(
           BIND_SIGNATURE_INT8,
-          &b->sentiment.house_happiness); // which union field we use does not matter // 90 for house, 50 for wells
+          &b->sentiment.house_happiness);                             // which union field we use does not matter // 90 for house, 50 for wells
         iob->bind(BIND_SIGNATURE_UINT8, &b->show_on_problem_overlay); // 4
 
         // 68 additional bytes

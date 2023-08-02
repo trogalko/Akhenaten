@@ -28,7 +28,11 @@ enum {
     VITA_NUM_BUTTONS = 12
 };
 
-enum { ANALOG_DOWN = 0, ANALOG_LEFT = 1, ANALOG_UP = 2, ANALOG_RIGHT = 3, ANALOG_MAX = 4 };
+enum { ANALOG_DOWN = 0,
+       ANALOG_LEFT = 1,
+       ANALOG_UP = 2,
+       ANALOG_RIGHT = 3,
+       ANALOG_MAX = 4 };
 
 static int can_change_touch_mode = 1;
 

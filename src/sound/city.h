@@ -4,7 +4,9 @@
 #include "building/building.h"
 #include "core/buffer.h"
 
-enum { SOUND_DIRECTION_LEFT = 0, SOUND_DIRECTION_CENTER = 2, SOUND_DIRECTION_RIGHT = 4 };
+enum { SOUND_DIRECTION_LEFT = 0,
+       SOUND_DIRECTION_CENTER = 2,
+       SOUND_DIRECTION_RIGHT = 4 };
 
 void sound_city_init(void);
 

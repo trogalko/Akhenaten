@@ -18,7 +18,9 @@
 /**
  * Speed direction constants
  */
-enum { SPEED_DIRECTION_NEGATIVE = -1, SPEED_DIRECTION_STOPPED = 0, SPEED_DIRECTION_POSITIVE = 1 };
+enum { SPEED_DIRECTION_NEGATIVE = -1,
+       SPEED_DIRECTION_STOPPED = 0,
+       SPEED_DIRECTION_POSITIVE = 1 };
 
 typedef struct {
     time_millis start_time;

@@ -11,8 +11,8 @@
 #include "graphics/elements/lang_text.h"
 #include "graphics/elements/panel.h"
 #include "graphics/text.h"
-#include "grid/terrain.h"
 #include "grid/floodplain.h"
+#include "grid/terrain.h"
 #include "io/gamefiles/lang.h"
 
 static void draw_farm(building_info_context* c, int help_id, const char* sound_file, int group_id, int resource) {

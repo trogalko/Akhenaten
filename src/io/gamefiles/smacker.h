@@ -9,9 +9,13 @@
 /** Smacker object struct pointer */
 typedef struct smacker_t* smacker;
 
-enum { SMACKER_Y_SCALE_NONE = 0, SMACKER_Y_SCALE_INTERLACE = 1, SMACKER_Y_SCALE_DOUBLE = 2 };
+enum { SMACKER_Y_SCALE_NONE = 0,
+       SMACKER_Y_SCALE_INTERLACE = 1,
+       SMACKER_Y_SCALE_DOUBLE = 2 };
 
-typedef enum { SMACKER_FRAME_ERROR = 0, SMACKER_FRAME_OK = 1, SMACKER_FRAME_DONE = 2 } smacker_frame_status;
+typedef enum { SMACKER_FRAME_ERROR = 0,
+               SMACKER_FRAME_OK = 1,
+               SMACKER_FRAME_DONE = 2 } smacker_frame_status;
 
 /**
  * Open SMK file from file pointer.

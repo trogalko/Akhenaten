@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <stdint.h>
 
@@ -10,7 +10,10 @@
 /**
  * Type
  */
-enum { TYPE_MANUAL = 0, TYPE_ABOUT = 1, TYPE_MESSAGE = 2, TYPE_MISSION = 3 };
+enum { TYPE_MANUAL = 0,
+       TYPE_ABOUT = 1,
+       TYPE_MESSAGE = 2,
+       TYPE_MISSION = 3 };
 
 /**
  * Message type
@@ -60,7 +63,7 @@ struct lang_message {
     struct lang_message_string subtitle;
     struct lang_message_string video;
     struct lang_message_string content;
-} ;
+};
 
 /**
  * Checks whether the directory contains language files

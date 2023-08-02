@@ -568,9 +568,9 @@ void draw_ornaments_and_animations(pixel_coordinate pixel, map_point point) {
         //                color_mask);
         ////                const image *img = image_get(image_id_from_group(GROUP_BUILDING_WELL));
         ////                ImageDraw::img_generic(image_id_from_group(GROUP_BUILDING_WELL) + 1, x +
-        ///img->animation.sprite_x_offset, /                                       y + img->animation.sprite_y_offset -
-        ///20, color_mask); /                ImageDraw::img_ornament(image_id_from_group(GROUP_BUILDING_WELL) + 1, x, /
-        ///y - 20, color_mask);
+        /// img->animation.sprite_x_offset, /                                       y + img->animation.sprite_y_offset -
+        /// 20, color_mask); /                ImageDraw::img_ornament(image_id_from_group(GROUP_BUILDING_WELL) + 1, x, /
+        /// y - 20, color_mask);
         //            }
         //            break;
     case BUILDING_BOOTH:

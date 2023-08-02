@@ -22,28 +22,25 @@
 #include "scenario/map.h"
 #include "scenario/property.h"
 
-#include "grid/terrain.h"
-#include "grid/building.h"
-#include "graphics/image_groups.h"
-#include "missile.h"
 #include "figure/properties.h"
+#include "graphics/image_groups.h"
+#include "grid/building.h"
+#include "grid/terrain.h"
+#include "missile.h"
 
 static const coords_t SEAGULL_OFFSETS[] = {{0, 0}, {0, -2}, {-2, 0}, {1, 2}, {2, 0}, {-3, 1}, {4, -3}, {-2, 4}, {0, 0}};
 
 static const coords_t HORSE_DESTINATION_1[]
-  = {{2, 1},  {3, 1},  {4, 1},  {5, 1}, {6, 1}, {7, 1}, {8, 1}, {9, 1}, {10, 1}, {11, 1}, {12, 2},
-     {12, 3}, {11, 3}, {10, 3}, {9, 3}, {8, 3}, {7, 3}, {6, 3}, {5, 3}, {4, 3},  {3, 3},  {2, 2}};
+  = {{2, 1}, {3, 1}, {4, 1}, {5, 1}, {6, 1}, {7, 1}, {8, 1}, {9, 1}, {10, 1}, {11, 1}, {12, 2}, {12, 3}, {11, 3}, {10, 3}, {9, 3}, {8, 3}, {7, 3}, {6, 3}, {5, 3}, {4, 3}, {3, 3}, {2, 2}};
 static const coords_t HORSE_DESTINATION_2[]
-  = {{12, 3}, {11, 3}, {10, 3}, {9, 3}, {8, 3}, {7, 3}, {6, 3}, {5, 3}, {4, 3},  {3, 3},  {2, 2},
-     {2, 1},  {3, 1},  {4, 1},  {5, 1}, {6, 1}, {7, 1}, {8, 1}, {9, 1}, {10, 1}, {11, 1}, {12, 2}};
+  = {{12, 3}, {11, 3}, {10, 3}, {9, 3}, {8, 3}, {7, 3}, {6, 3}, {5, 3}, {4, 3}, {3, 3}, {2, 2}, {2, 1}, {3, 1}, {4, 1}, {5, 1}, {6, 1}, {7, 1}, {8, 1}, {9, 1}, {10, 1}, {11, 1}, {12, 2}};
 
 static const int SHEEP_IMAGE_OFFSETS[]
-  = {0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,  3,  3,  3,  3,  3,  3,  3,
-     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1,
-     0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,  3,  3,  3,  3,  3,  3,  3,
-     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,  3,  3,  3,  4,  4,  5,  5};
+  = {0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 5, 5};
 
-enum E_HORSE { HORSE_CREATED = 0, HORSE_RACING = 1, HORSE_FINISHED = 2 };
+enum E_HORSE { HORSE_CREATED = 0,
+               HORSE_RACING = 1,
+               HORSE_FINISHED = 2 };
 
 static void create_fishing_point(int x, int y) {
     random_generate_next();
@@ -718,27 +715,27 @@ void figure::hunter_action() {
         break;
     }
     switch (action_state) {
-        case ACTION_8_RECALCULATE:
-        case 14:
-        case 13:
-        case 9:
-        case ACTION_11_HUNTER_WALK: // normal walk
-            image_set_animation(GROUP_FIGURE_HUNTER_OSTRICH_MOVE, 0, 12);
-            break;
+    case ACTION_8_RECALCULATE:
+    case 14:
+    case 13:
+    case 9:
+    case ACTION_11_HUNTER_WALK: // normal walk
+        image_set_animation(GROUP_FIGURE_HUNTER_OSTRICH_MOVE, 0, 12);
+        break;
 
-        case ACTION_15_HUNTER_HUNT: // hunting
-            image_set_animation(GROUP_FIGURE_HUNTER_OSTRICH_HUNT, 0, 12);
-            break;
-//        case ??: // attacking
-//            image_set_animation(GROUP_FIGURE_HUNTER, 200, 12);
-//        case ??: // attacking w/ prey on his back
-//            image_set_animation(GROUP_FIGURE_HUNTER, 296, 12);
-        case ACTION_15_HUNTER_PACK:
-            image_set_animation(GROUP_FIGURE_HUNTER_OSTRICH_PACK, 0, 18);
-            break;
+    case ACTION_15_HUNTER_HUNT: // hunting
+        image_set_animation(GROUP_FIGURE_HUNTER_OSTRICH_HUNT, 0, 12);
+        break;
+        //        case ??: // attacking
+        //            image_set_animation(GROUP_FIGURE_HUNTER, 200, 12);
+        //        case ??: // attacking w/ prey on his back
+        //            image_set_animation(GROUP_FIGURE_HUNTER, 296, 12);
+    case ACTION_15_HUNTER_PACK:
+        image_set_animation(GROUP_FIGURE_HUNTER_OSTRICH_PACK, 0, 18);
+        break;
 
-        case ACTION_15_HUNTER_MOVE_PACKED:
-            image_set_animation(GROUP_FIGURE_HUNTER_OSTRICH_MOVE_PACKED, 0, 12);
-            break;
+    case ACTION_15_HUNTER_MOVE_PACKED:
+        image_set_animation(GROUP_FIGURE_HUNTER_OSTRICH_MOVE_PACKED, 0, 12);
+        break;
     }
 }

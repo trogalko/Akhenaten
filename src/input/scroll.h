@@ -5,7 +5,9 @@
 #include "input/mouse.h"
 #include "input/touch.h"
 
-typedef enum { SCROLL_TYPE_CITY = 0, SCROLL_TYPE_EMPIRE = 1, SCROLL_TYPE_MAX = 2 } scroll_type;
+typedef enum { SCROLL_TYPE_CITY = 0,
+               SCROLL_TYPE_EMPIRE = 1,
+               SCROLL_TYPE_MAX = 2 } scroll_type;
 
 int scroll_in_progress(void);
 int scroll_is_smooth(void);

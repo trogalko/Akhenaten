@@ -3,7 +3,8 @@
 
 #include "building.h"
 
-enum { MONUMENT_PYRAMID = 0, MONUMENT_MASTABA = 1 };
+enum { MONUMENT_PYRAMID = 0,
+       MONUMENT_MASTABA = 1 };
 
 enum {
     MONUMENT_PART_CORNERS = 0,

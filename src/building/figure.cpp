@@ -1,8 +1,8 @@
 #include "building/figure.h"
 #include "figuretype/entertainer.h"
 
-#include "figuretype/entertainer.h"
 #include "city/data_private.h"
+#include "figuretype/entertainer.h"
 
 #include "building/barracks.h"
 #include "building/granary.h"
@@ -118,8 +118,8 @@ figure* building::create_figure_generic(int _type, int created_action, int slot,
     return f;
 }
 
-figure *building::create_roaming_figure(int _type, int created_action, int slot) {
-    figure *f = create_figure_generic(_type, created_action, slot, figure_roam_direction);
+figure* building::create_roaming_figure(int _type, int created_action, int slot) {
+    figure* f = create_figure_generic(_type, created_action, slot, figure_roam_direction);
 
     f->set_destination(0);
     f->set_immigrant_home(0);

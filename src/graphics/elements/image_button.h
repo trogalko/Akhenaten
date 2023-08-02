@@ -6,7 +6,10 @@
 
 #include "core/time.h"
 
-enum { IB_BUILD = 2, IB_NORMAL = 4, IB_SCROLL = 6, IB_OVERSEER = 8 };
+enum { IB_BUILD = 2,
+       IB_NORMAL = 4,
+       IB_SCROLL = 6,
+       IB_OVERSEER = 8 };
 
 struct image_button {
     short x_offset;

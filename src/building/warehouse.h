@@ -3,7 +3,9 @@
 #include "building/building.h"
 #include "grid/point.h"
 
-enum e_warehouse_state { WAREHOUSE_ROOM = 0, WAREHOUSE_FULL = 1, WAREHOUSE_SOME_ROOM = 2 };
+enum e_warehouse_state { WAREHOUSE_ROOM = 0,
+                         WAREHOUSE_FULL = 1,
+                         WAREHOUSE_SOME_ROOM = 2 };
 
 enum e_warehouse_task {
     WAREHOUSE_TASK_NONE = -1,

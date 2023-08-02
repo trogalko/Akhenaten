@@ -69,8 +69,8 @@ void crashhandler_install(void) {
 
 #ifdef HAS_STACK_TRACE
 
-#define log_info_sprintf(...)                                                                                          \
-    snprintf(crash_info, 256, __VA_ARGS__);                                                                            \
+#define log_info_sprintf(...)               \
+    snprintf(crash_info, 256, __VA_ARGS__); \
     log_info(crash_info, 0, 0)
 
 

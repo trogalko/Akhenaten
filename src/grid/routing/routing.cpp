@@ -151,7 +151,7 @@ static void callback_calc_distance_build_aqueduct(int next_offset, int dist) {
     default:
         if (!map_terrain_is(next_offset, TERRAIN_FLOODPLAIN)
             && map_terrain_has_adjecent_with_type(next_offset, TERRAIN_FLOODPLAIN)) { // on the EDGE of floodplains
-            blocked = true; // CAN NOT place canals on floodplain edges directly in Pharaoh
+            blocked = true;                                                           // CAN NOT place canals on floodplain edges directly in Pharaoh
         }
         break;
     }

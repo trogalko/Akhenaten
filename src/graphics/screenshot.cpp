@@ -26,7 +26,9 @@
 #define IMAGE_HEIGHT_CHUNK TILE_Y_SIZE
 #define IMAGE_BYTES_PER_PIXEL 3
 
-enum { FULL_CITY_SCREENSHOT = 0, DISPLAY_SCREENSHOT = 1, MAX_SCREENSHOT_TYPES = 2 };
+enum { FULL_CITY_SCREENSHOT = 0,
+       DISPLAY_SCREENSHOT = 1,
+       MAX_SCREENSHOT_TYPES = 2 };
 
 static const char filename_formats[MAX_SCREENSHOT_TYPES][32] = {
   "full city %Y-%m-%d %H.%M.%S.png",

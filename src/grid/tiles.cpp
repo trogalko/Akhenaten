@@ -29,11 +29,11 @@
 
 // #define OFFSET(x,y) (x + GRID_SIZE_PH * y)
 
-#define FORBIDDEN_TERRAIN_MEADOW                                                                                       \
-    (TERRAIN_AQUEDUCT | TERRAIN_ELEVATION | TERRAIN_ACCESS_RAMP | TERRAIN_RUBBLE | TERRAIN_ROAD | TERRAIN_BUILDING     \
+#define FORBIDDEN_TERRAIN_MEADOW                                                                                   \
+    (TERRAIN_AQUEDUCT | TERRAIN_ELEVATION | TERRAIN_ACCESS_RAMP | TERRAIN_RUBBLE | TERRAIN_ROAD | TERRAIN_BUILDING \
      | TERRAIN_GARDEN)
 
-#define FORBIDDEN_TERRAIN_RUBBLE                                                                                       \
+#define FORBIDDEN_TERRAIN_RUBBLE \
     (TERRAIN_AQUEDUCT | TERRAIN_ELEVATION | TERRAIN_ACCESS_RAMP | TERRAIN_ROAD | TERRAIN_BUILDING | TERRAIN_GARDEN)
 
 static int aqueduct_include_construction = 0;

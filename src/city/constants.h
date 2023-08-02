@@ -53,7 +53,9 @@ enum {
     GOD_BAST = 4,   // GOD_VENUS = 4
 };
 
-enum { GOD_STATUS_UNKNOWN = 0, GOD_STATUS_KNOWN = 1, GOD_STATUS_PATRON = 2 };
+enum { GOD_STATUS_UNKNOWN = 0,
+       GOD_STATUS_KNOWN = 1,
+       GOD_STATUS_PATRON = 2 };
 
 enum {
     TRADE_STATUS_NONE = 0,

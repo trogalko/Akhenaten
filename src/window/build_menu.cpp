@@ -56,8 +56,7 @@ static generic_button build_menu_buttons[] = {
   {BTN_W_MIN, 696, 256 + BTN_W_ADD, 20, button_menu_index, button_none, 30, 0},
 };
 
-static const int Y_MENU_OFFSETS[] = {0,   322, 306, 274, 258, 226, 210, 178,  162,  130, 114, 82, 66, 34, 18,
-                                     -30, -46, -62, -78, -78, -94, -94, -110, -110, 0,   0,   0,  0,  0,  0};
+static const int Y_MENU_OFFSETS[] = {0, 322, 306, 274, 258, 226, 210, 178, 162, 130, 114, 82, 66, 34, 18, -30, -46, -62, -78, -78, -94, -94, -110, -110, 0, 0, 0, 0, 0, 0};
 
 static struct {
     int selected_submenu;

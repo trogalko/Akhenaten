@@ -1,7 +1,9 @@
 #ifndef CITY_EMPEROR_H
 #define CITY_EMPEROR_H
 
-enum { GIFT_MODEST = 0, GIFT_GENEROUS = 1, GIFT_LAVISH = 2 };
+enum { GIFT_MODEST = 0,
+       GIFT_GENEROUS = 1,
+       GIFT_LAVISH = 2 };
 
 typedef struct {
     int id;

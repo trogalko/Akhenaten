@@ -8,7 +8,9 @@
  * If you want to use the japacker library, please check its original source at https://github.com/crudelios/japacker.
  */
 
-typedef enum { IMAGE_PACKER_STOP = 0, IMAGE_PACKER_CONTINUE = 1, IMAGE_PACKER_NEW_IMAGE = 2 } image_packer_fail_policy;
+typedef enum { IMAGE_PACKER_STOP = 0,
+               IMAGE_PACKER_CONTINUE = 1,
+               IMAGE_PACKER_NEW_IMAGE = 2 } image_packer_fail_policy;
 
 typedef enum {
     IMAGE_PACKER_SORT_BY_PERIMETER = 0,

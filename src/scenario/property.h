@@ -3,7 +3,9 @@
 
 #include <stdint.h>
 
-enum { CLIMATE_CENTRAL = 0, CLIMATE_NORTHERN = 1, CLIMATE_DESERT = 2 };
+enum { CLIMATE_CENTRAL = 0,
+       CLIMATE_NORTHERN = 1,
+       CLIMATE_DESERT = 2 };
 
 int scenario_is_custom(void);
 

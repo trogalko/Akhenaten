@@ -29,7 +29,10 @@ static const int DIRECTION_Y[] = {-1, -1, 0, 1, 1, 1, 0, -1, 0};
 static const int SCROLL_STEP[SCROLL_TYPE_MAX][11]
   = {{60, 44, 30, 20, 16, 12, 10, 8, 6, 4, 2}, {20, 15, 10, 7, 5, 4, 3, 3, 2, 2, 1}};
 
-enum key_state { KEY_STATE_UNPRESSED = 0, KEY_STATE_PRESSED = 1, KEY_STATE_HELD = 2, KEY_STATE_AXIS = 3 };
+enum key_state { KEY_STATE_UNPRESSED = 0,
+                 KEY_STATE_PRESSED = 1,
+                 KEY_STATE_HELD = 2,
+                 KEY_STATE_AXIS = 3 };
 
 typedef struct {
     key_state state;

@@ -3,7 +3,10 @@
 #include "core/time.h"
 #include "graphics/screen.h"
 
-enum { SYSTEM_NONE = 0, SYSTEM_UP = 1, SYSTEM_DOWN = 2, SYSTEM_DOUBLE_CLICK = 4 };
+enum { SYSTEM_NONE = 0,
+       SYSTEM_UP = 1,
+       SYSTEM_DOWN = 2,
+       SYSTEM_DOUBLE_CLICK = 4 };
 
 #define DOUBLE_CLICK_TIME 500
 

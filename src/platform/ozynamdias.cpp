@@ -559,7 +559,8 @@ static void handle_event(SDL_Event* event, int* active, int* quit) {
         break;
     case SDL_MOUSEWHEEL:
         if (event->wheel.which != SDL_TOUCH_MOUSEID)
-            mouse_set_scroll(event->wheel.y > 0 ? SCROLL_UP : event->wheel.y < 0 ? SCROLL_DOWN : SCROLL_NONE);
+            mouse_set_scroll(event->wheel.y > 0 ? SCROLL_UP : event->wheel.y < 0 ? SCROLL_DOWN
+                                                                                 : SCROLL_NONE);
 
         break;
 

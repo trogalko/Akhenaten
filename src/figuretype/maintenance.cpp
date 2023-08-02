@@ -21,7 +21,9 @@
 
 #include "figure/properties.h"
 
-enum E_NEARBY { NEARBY_ANY, NEARBY_ANIMAL, NEARBY_HOSTILE };
+enum E_NEARBY { NEARBY_ANY,
+                NEARBY_ANIMAL,
+                NEARBY_HOSTILE };
 
 int figure::is_nearby(int category, int* distance, int max_distance, bool gang_on) {
     int figure_id = 0;

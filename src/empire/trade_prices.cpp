@@ -9,14 +9,14 @@ struct trade_price {
 };
 
 static const struct trade_price DEFAULT_PRICES[RESOURCES_MAX] = {
-  {0, 0},     {28, 21}, // grain
-  {47, 35},             // meat
-  {33, 25},             // lettuce
-  {33, 25},             // chickpeas
-  {33, 25},             // pomegranates
-  {33, 25},             // figs
-  {42, 33},             // fish
-  {44, 34},             // gamemeat
+  {0, 0}, {28, 21}, // grain
+  {47, 35},         // meat
+  {33, 25},         // lettuce
+  {33, 25},         // chickpeas
+  {33, 25},         // pomegranates
+  {33, 25},         // figs
+  {42, 33},         // fish
+  {44, 34},         // gamemeat
 
   {21, 16},   // straw
   {325, 275}, // weapons

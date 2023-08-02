@@ -12,7 +12,9 @@
 #include "grid/routing/routing_terrain.h"
 #include "grid/tiles.h"
 
-enum E_EVOLVE { EVOLVE = 1, NONE = 0, DEVOLVE = -1 };
+enum E_EVOLVE { EVOLVE = 1,
+                NONE = 0,
+                DEVOLVE = -1 };
 
 static int check_evolve_desirability(building* house) {
     int level = house->subtype.house_level;
@@ -415,10 +417,7 @@ static void consume_resources(building* b) {
 }
 
 static int (*evolve_callback[])(building*, house_demands*)
-  = {evolve_small_tent,   evolve_large_tent,   evolve_small_shack,   evolve_large_shack,  evolve_small_hovel,
-     evolve_large_hovel,  evolve_small_casa,   evolve_large_casa,    evolve_small_insula, evolve_medium_insula,
-     evolve_large_insula, evolve_grand_insula, evolve_small_villa,   evolve_medium_villa, evolve_large_villa,
-     evolve_grand_villa,  evolve_small_palace, evolve_medium_palace, evolve_large_palace, evolve_luxury_palace};
+  = {evolve_small_tent, evolve_large_tent, evolve_small_shack, evolve_large_shack, evolve_small_hovel, evolve_large_hovel, evolve_small_casa, evolve_large_casa, evolve_small_insula, evolve_medium_insula, evolve_large_insula, evolve_grand_insula, evolve_small_villa, evolve_medium_villa, evolve_large_villa, evolve_grand_villa, evolve_small_palace, evolve_medium_palace, evolve_large_palace, evolve_luxury_palace};
 
 void building_house_process_evolve_and_consume_goods(void) {
     city_houses_reset_demands();

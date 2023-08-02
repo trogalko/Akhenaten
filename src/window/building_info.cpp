@@ -1,10 +1,10 @@
 #include "building_info.h"
 
-#include "building/storage.h"
 #include "building/barracks.h"
 #include "building/building.h"
 #include "building/house_evolution.h"
 #include "building/model.h"
+#include "building/storage.h"
 #include "building/warehouse.h"
 #include "city/map.h"
 #include "city/resource.h"
@@ -54,16 +54,13 @@ static void button_mothball(int mothball, int param2);
 
 static image_button image_buttons_help_close[] = {
   {14, 0, 27, 27, IB_NORMAL, GROUP_CONTEXT_ICONS, 0, button_help, button_none, 0, 0, 1},
-  {424, 3, 24, 24, IB_NORMAL, GROUP_CONTEXT_ICONS, 4, button_close, button_none, 0, 0, 1}
-};
+  {424, 3, 24, 24, IB_NORMAL, GROUP_CONTEXT_ICONS, 4, button_close, button_none, 0, 0, 1}};
 
 static image_button image_buttons_advisor[] = {
-  {350, -38, 28, 28, IB_NORMAL, GROUP_MESSAGE_ADVISOR_BUTTONS, 9, button_advisor, button_none, ADVISOR_RATINGS, 0, 1}
-};
+  {350, -38, 28, 28, IB_NORMAL, GROUP_MESSAGE_ADVISOR_BUTTONS, 9, button_advisor, button_none, ADVISOR_RATINGS, 0, 1}};
 
 static generic_button generic_button_mothball[] = {
-  {400, 3, 24, 24, button_mothball, button_none, 0, 0}
-};
+  {400, 3, 24, 24, button_mothball, button_none, 0, 0}};
 
 static building_info_context context;
 static int focus_image_button_id;
@@ -141,7 +138,7 @@ static int get_height_id(void) {
         case BUILDING_WEAPONS_WORKSHOP:
         case BUILDING_JEWELS_WORKSHOP:
         case BUILDING_POTTERY_WORKSHOP:
-        //case BUILDING_GOLD_MINE:
+            // case BUILDING_GOLD_MINE:
             return 1;
 
         case BUILDING_BOOTH:
@@ -957,7 +954,7 @@ static void button_mothball(int mothball, int param2) {
     }
 }
 
-void window_building_info_show(const map_point &point) {
+void window_building_info_show(const map_point& point) {
     window_type window = {WINDOW_BUILDING_INFO, draw_background, draw_foreground, handle_input, get_tooltip};
 
     init(point);

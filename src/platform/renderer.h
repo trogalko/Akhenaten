@@ -20,7 +20,8 @@ enum {
     CUSTOM_IMAGE_MAX = 7
 };
 
-enum { IMAGE_FILTER_NEAREST = 0, IMAGE_FILTER_LINEAR = 1 };
+enum { IMAGE_FILTER_NEAREST = 0,
+       IMAGE_FILTER_LINEAR = 1 };
 
 int platform_renderer_init(SDL_Window* window);
 int platform_renderer_create_render_texture(int width, int height);

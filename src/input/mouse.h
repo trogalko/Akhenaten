@@ -19,7 +19,9 @@ struct mouse_button {
     int system_change;
 };
 
-enum { SCROLL_NONE = 0, SCROLL_UP = -1, SCROLL_DOWN = 1 };
+enum { SCROLL_NONE = 0,
+       SCROLL_UP = -1,
+       SCROLL_DOWN = 1 };
 
 /**
  * Mouse state

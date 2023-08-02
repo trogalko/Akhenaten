@@ -40,9 +40,15 @@
 #include "core/core_utility.h"
 #include "core/span.hpp"
 
-enum E_INFO { INFO_NONE = 0, INFO_FUNDS = 1, INFO_POPULATION = 2, INFO_DATE = 3 };
+enum E_INFO { INFO_NONE = 0,
+              INFO_FUNDS = 1,
+              INFO_POPULATION = 2,
+              INFO_DATE = 3 };
 
-enum e_menu_index { INDEX_OPTIONS = 1, INDEX_HELP = 2, INDEX_ADVISORS = 3, INDEX_DEBUG = 4 };
+enum e_menu_index { INDEX_OPTIONS = 1,
+                    INDEX_HELP = 2,
+                    INDEX_ADVISORS = 3,
+                    INDEX_DEBUG = 4 };
 
 static void menu_file_new_game(int param);
 static void menu_file_replay_map(int param);

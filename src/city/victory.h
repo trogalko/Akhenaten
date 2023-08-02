@@ -1,7 +1,9 @@
 #ifndef CITY_VICTORY_H
 #define CITY_VICTORY_H
 
-enum e_victory_state { VICTORY_STATE_LOST = -1, VICTORY_STATE_NONE = 0, VICTORY_STATE_WON = 1 };
+enum e_victory_state { VICTORY_STATE_LOST = -1,
+                       VICTORY_STATE_NONE = 0,
+                       VICTORY_STATE_WON = 1 };
 
 void city_victory_reset(void);
 

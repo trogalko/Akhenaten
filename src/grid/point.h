@@ -3,7 +3,11 @@
 
 #define _INVALID_COORD -1
 
-enum { _X = 0, _Y = 1, _GRID_OFFSET = 2, _ABS_X = 3, _ABS_Y = 4 };
+enum { _X = 0,
+       _Y = 1,
+       _GRID_OFFSET = 2,
+       _ABS_X = 3,
+       _ABS_Y = 4 };
 
 struct coords_t {
     int x;
