@@ -89,6 +89,7 @@ static int name_group_id() { // TODO
         return 65;
     else if (GAME_ENV == ENGINE_ENV_PHARAOH)
         return 254;
+    else return -1;
 }
 
 void figure::draw_trader(building_info_context* c) {

@@ -277,16 +277,12 @@ building* building_create(e_building_type type, int x, int y, int orientation) {
             break;
         }
     }
-
     if (!b) {
         city_warning_show(WARNING_DATA_LIMIT_REACHED);
         return &g_all_buildings[0];
     }
-
     memset(&(b->data), 0, sizeof(b->data));
     building_new_fill_in_data_for_type(b, type, x, y, orientation);
-    b->data.house.health = 100;
-
     return b;
 }
 
@@ -1045,7 +1041,7 @@ io_buffer* iob_buildings = new io_buffer([](io_buffer* iob, size_t version) {
 
         iob->bind(BIND_SIGNATURE_INT32, &b->tax_income_or_storage);
         iob->bind(BIND_SIGNATURE_UINT8, &b->house_days_without_food);
-        iob->bind(BIND_SIGNATURE_UINT8, &b->has_plague); // 6
+        iob->bind(BIND_SIGNATURE_UINT8, &b->ruin_has_plague); // 6
 
         iob->bind(BIND_SIGNATURE_INT8, &b->desirability);
         iob->bind(BIND_SIGNATURE_UINT8, &b->is_deleted);
