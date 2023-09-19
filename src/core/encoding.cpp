@@ -1,8 +1,8 @@
 #include "core/encoding.h"
 
-#include "core/encoding/korean.h"
-#include "core/encoding/simp_chinese.h"
-#include "core/encoding/trad_chinese.h"
+//#include "core/encoding/korean.h"
+//#include "core/encoding/simp_chinese.h"
+//#include "core/encoding/trad_chinese.h"
 
 #include <stdlib.h>
 
@@ -588,7 +588,7 @@ encoding_type encoding_determine(int language) {
     } else if (language == LANGUAGE_RUSSIAN) {
         data.to_utf8_table = HIGH_TO_UTF8_CYRILLIC;
         data.encoding = ENCODING_CYRILLIC;
-    } else if (language == LANGUAGE_TRADITIONAL_CHINESE) {
+    /*} else if (language == LANGUAGE_TRADITIONAL_CHINESE) {
         encoding_trad_chinese_init();
         data.to_utf8_table = NULL;
         data.encoding = ENCODING_TRADITIONAL_CHINESE;
@@ -599,7 +599,7 @@ encoding_type encoding_determine(int language) {
     } else if (language == LANGUAGE_KOREAN) {
         encoding_korean_init();
         data.to_utf8_table = NULL;
-        data.encoding = ENCODING_KOREAN;
+        data.encoding = ENCODING_KOREAN;*/
     } else { // assume Western encoding
         data.to_utf8_table = HIGH_TO_UTF8_DEFAULT;
         data.encoding = ENCODING_WESTERN_EUROPE;
@@ -635,7 +635,7 @@ int encoding_can_display(const char* utf8_char) {
 
 void encoding_to_utf8(const uint8_t* input, char* output, int output_length, int decomposed) {
     if (!data.to_utf8_table) {
-        if (data.encoding == ENCODING_KOREAN)
+        /*if (data.encoding == ENCODING_KOREAN)
             encoding_korean_to_utf8(input, output, output_length);
         else if (data.encoding == ENCODING_TRADITIONAL_CHINESE)
             encoding_trad_chinese_to_utf8(input, output, output_length);
@@ -644,7 +644,7 @@ void encoding_to_utf8(const uint8_t* input, char* output, int output_length, int
         else {
             *output = 0;
         }
-        return;
+        return;*/
     }
     const char* max_output = &output[output_length - 1];
 
@@ -681,7 +681,7 @@ void encoding_to_utf8(const uint8_t* input, char* output, int output_length, int
 }
 
 void encoding_from_utf8(const char* input, uint8_t* output, int output_length) {
-    if (!data.to_utf8_table) {
+    /*if (!data.to_utf8_table) {
         if (data.encoding == ENCODING_KOREAN) {
             encoding_korean_from_utf8(input, output, output_length);
             return;
@@ -692,7 +692,7 @@ void encoding_from_utf8(const char* input, uint8_t* output, int output_length) {
             encoding_simp_chinese_from_utf8(input, output, output_length);
             return;
         }
-    }
+    }*/
 
     const uint8_t* max_output = &output[output_length - 1];
 

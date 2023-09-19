@@ -129,7 +129,6 @@ static void advance_day() {
 
     city_sentiment_update_day();
     city_criminals_update_day();
-    city_plague_update_day();
 
     tutorial_on_day_tick();
 }
@@ -235,8 +234,7 @@ static void advance_tick(void) {
         building_government_distribute_treasury();
         break;
     case 35:
-        house_service_decay_services();
-        house_service_update_health();
+        house_service_decay_culture();
         break;
     case 36:
         house_service_calculate_culture_aggregates();

@@ -1,6 +1,6 @@
 #include "font.h"
 
-#include "core/encoding/trad_chinese.h"
+//#include "core/encoding/trad_chinese.h"
 #include "image.h"
 
 static int image_y_offset_none(uint8_t c, int image_height, int line_height);
@@ -12,7 +12,7 @@ static int image_y_offset_cyrillic_large_plain(uint8_t c, int image_height, int 
 static int image_y_offset_cyrillic_large_black(uint8_t c, int image_height, int line_height);
 static int image_y_offset_cyrillic_large_brown(uint8_t c, int image_height, int line_height);
 static int image_y_offset_cyrillic_small_black(uint8_t c, int image_height, int line_height);
-static int image_y_offset_korean(uint8_t c, int image_height, int line_height);
+//static int image_y_offset_korean(uint8_t c, int image_height, int line_height);
 
 static const int CHAR_TO_FONT_IMAGE_DEFAULT[] = {
   0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0x01, 0x01, 0x01, 0x00,
@@ -101,7 +101,7 @@ static const font_definition DEFINITIONS_CYRILLIC[]
      {FONT_NORMAL_BLACK_ON_DARK, 1264, 0, 6, 0, 11, image_y_offset_cyrillic_normal_colored},
      {FONT_SMALL_SHADED, 1422, 0, 6, 0, 11, image_y_offset_cyrillic_small_black}};
 
-static const font_definition DEFINITIONS_TRADITIONAL_CHINESE[]
+/*static const font_definition DEFINITIONS_TRADITIONAL_CHINESE[]
   = {{FONT_SMALL_PLAIN, 0, IMAGE_FONT_MULTIBYTE_TRAD_CHINESE_MAX_CHARS, 6, 1, 11, image_y_offset_none},
      {FONT_NORMAL_BLACK_ON_LIGHT, 134, 0, 6, 0, 11, image_y_offset_none},
      {FONT_NORMAL_WHITE_ON_DARK, 268, 0, 6, 0, 11, image_y_offset_none},
@@ -135,13 +135,13 @@ static const font_definition DEFINITIONS_KOREAN[]
      {FONT_LARGE_BLACK_ON_DARK, 804, IMAGE_FONT_MULTIBYTE_KOREAN_MAX_CHARS * 2, 8, 0, 24, image_y_offset_korean},
      {FONT_SMALL_OUTLINED, 938, 0, 4, 1, 9, image_y_offset_korean},
      {FONT_NORMAL_BLACK_ON_DARK, 1072, 0, 6, 0, 11, image_y_offset_korean},
-     {FONT_SMALL_SHADED, 1206, 0, 6, 0, 11, image_y_offset_korean}};
+     {FONT_SMALL_SHADED, 1206, 0, 6, 0, 11, image_y_offset_korean}};*/
 
 enum E_MULTIBYTE {
     MULTIBYTE_NONE = 0,
-    MULTIBYTE_TRADITIONAL_CHINESE = 1,
-    MULTIBYTE_SIMPLIFIED_CHINESE = 2,
-    MULTIBYTE_KOREAN = 3,
+    //MULTIBYTE_TRADITIONAL_CHINESE = 1,
+    //MULTIBYTE_SIMPLIFIED_CHINESE = 2,
+    //MULTIBYTE_KOREAN = 3,
 };
 
 struct font_data_t {
@@ -321,7 +321,7 @@ static int image_y_offset_cyrillic_small_black(uint8_t c, int image_height, int 
     }
 }
 
-static int image_y_offset_korean(uint8_t c, int image_height, int line_height) {
+/*static int image_y_offset_korean(uint8_t c, int image_height, int line_height) {
     if (c < 0x80)
         return 0;
 
@@ -332,7 +332,7 @@ static int image_y_offset_korean(uint8_t c, int image_height, int line_height) {
             return 3;
     }
     return image_height - line_height;
-}
+}*/
 
 void font_set_encoding(encoding_type encoding) {
     auto& data = g_font_data;
@@ -343,7 +343,7 @@ void font_set_encoding(encoding_type encoding) {
     } else if (encoding == ENCODING_CYRILLIC) {
         data.font_mapping = CHAR_TO_FONT_IMAGE_CYRILLIC;
         data.font_definitions = DEFINITIONS_CYRILLIC;
-    } else if (encoding == ENCODING_TRADITIONAL_CHINESE) {
+    /*} else if (encoding == ENCODING_TRADITIONAL_CHINESE) {
         data.font_mapping = CHAR_TO_FONT_IMAGE_DEFAULT;
         data.font_definitions = DEFINITIONS_TRADITIONAL_CHINESE;
         data.multibyte = MULTIBYTE_TRADITIONAL_CHINESE;
@@ -354,7 +354,7 @@ void font_set_encoding(encoding_type encoding) {
     } else if (encoding == ENCODING_KOREAN) {
         data.font_mapping = CHAR_TO_FONT_IMAGE_DEFAULT;
         data.font_definitions = DEFINITIONS_KOREAN;
-        data.multibyte = MULTIBYTE_KOREAN;
+        data.multibyte = MULTIBYTE_KOREAN;*/
     } else {
         data.font_mapping = CHAR_TO_FONT_IMAGE_DEFAULT;
         data.font_definitions = DEFINITIONS_DEFAULT;
@@ -374,7 +374,7 @@ int font_can_display(const uint8_t* character) {
 
 int font_letter_id(const font_definition* def, const uint8_t* str, int* num_bytes) {
     auto& data = g_font_data;
-    if (data.multibyte != MULTIBYTE_NONE && *str >= 0x80) {
+    /*if (data.multibyte != MULTIBYTE_NONE && *str >= 0x80) {
         *num_bytes = 2;
         if (data.multibyte == MULTIBYTE_TRADITIONAL_CHINESE) {
             int char_id = (str[0] & 0x7f) | ((str[1] & 0x7f) << 7);
@@ -403,11 +403,11 @@ int font_letter_id(const font_definition* def, const uint8_t* str, int* num_byte
         } else {
             return -1;
         }
-    } else {
+    } else {*/
         *num_bytes = 1;
         if (!data.font_mapping[*str])
             return -1;
 
         return data.font_mapping[*str] + def->image_offset - 1;
-    }
+    //}
 }
