@@ -601,17 +601,21 @@ io_buffer *iob_city_data = new io_buffer([](io_buffer *iob) {
     iob->bind____skip(2); // 2800 --> 0     granary space?
     iob->bind____skip(30);
     iob->bind____skip(2); // 400 --> 0      granary used (game meat)?
-    iob->bind____skip(290);
+    iob->bind____skip(146);
+	for (int i = 0; i < RESOURCES_MAX; i++)
+        iob->bind(BIND_SIGNATURE_INT32, &city_data.resource.stored_in_warehouses_actual[i + 1]);
     iob->bind____skip(4); // something related to Bast plague (minor curse)
     iob->bind(BIND_SIGNATURE_INT16, &city_data.religion.ra_slightly_increased_trading_months_left);
     iob->bind(BIND_SIGNATURE_INT16, &city_data.religion.ra_harshly_reduced_trading_months_left);
     iob->bind(BIND_SIGNATURE_INT16, &city_data.religion.ra_slightly_reduced_trading_months_left);
     iob->bind____skip(2);
-    iob->bind(BIND_SIGNATURE_INT16, &city_data.religion.seth_protect_player_troops);
-    iob->bind____skip(6);
+    iob->bind(BIND_SIGNATURE_INT32, &city_data.religion.seth_protect_player_troops);
+    iob->bind____skip(4);
     iob->bind(BIND_SIGNATURE_INT32, &city_data.religion.osiris_double_farm_yield);
     iob->bind(BIND_SIGNATURE_INT32, &city_data.religion.osiris_flood_will_destroy_active);
-    iob->bind____skip(60);
+    iob->bind____skip(51);
+    iob->bind(BIND_SIGNATURE_INT16, &city_data.building.academy_placed);
+    iob->bind____skip(7);
 //    iob->bind____skip(378);
 });
 io_buffer *iob_city_data_extra = new io_buffer([](io_buffer *iob) {
