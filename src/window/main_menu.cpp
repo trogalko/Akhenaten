@@ -28,11 +28,6 @@
 #include "core/httplib.h"
 #endif
 
-
-#if defined(GAME_PLATFORM_WIN)
-#include <winbase.h>
-#endif
-
 #if defined(GAME_PLATFORM_MACOSX)
 #include <mach-o/dyld.h>
 #endif
@@ -77,7 +72,7 @@ void main_menu_download_latest_version()
         ShellExecuteA(0, "Open", "update_binary_windows.cmd", 0, 0, SW_SHOW);
     });
 #endif // GAME_PLATFORM_WIN
-#if defined(GAME_PLATFORM_MACOSX) //(GAME_PLATFORM_WIN) || defined(GAME_PLATFORM_MACOSX)
+#if defined(GAME_PLATFORM_MACOSX)
 
     if (g_main_menu.instance().updating==true) return;
 
