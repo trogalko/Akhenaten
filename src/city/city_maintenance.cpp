@@ -12,7 +12,7 @@
 #include "scenario/scenario.h"
 #include "figuretype/figure_homeless.h"
 #include "city/city.h"
-#include "city/city_events.h"
+#include "game/game_events.h"
 #include "city/city_warnings.h"
 #include "city/city_message.h"
 #include "grid/routing/routing.h"
@@ -34,6 +34,15 @@ void city_maintenance_t::collapse_building(building *b) {
 
     game_undo_disable();
     b->destroy_by_collapse();
+}
+
+
+void city_maintenance_t::flood_building(building *b) {
+    city_message_apply_sound_interval(MESSAGE_CAT_COLLAPSE);
+    city_message_post_with_popup_delay(MESSAGE_CAT_COLLAPSE, false, MESSAGE_COLLAPSED_BUILDING, b->type, b->tile.grid_offset());
+
+    game_undo_disable();
+    b->destroy_by_flooded();
 }
 
 void city_maintenance_t::init() {

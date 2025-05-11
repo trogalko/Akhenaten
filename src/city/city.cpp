@@ -16,7 +16,6 @@
 #include "core/calc.h"
 #include "game/difficulty.h"
 #include "scenario/scenario.h"
-#include "core/game_environment.h"
 #include "empire/empire_city.h"
 #include "empire/empire.h"
 #include "io/io_buffer.h"
@@ -31,7 +30,7 @@
 #include "figuretype/figure_kingdome_trader.h"
 #include "figuretype/figure_trader_ship.h"
 #include "city_warnings.h"
-#include "city/city_events.h"
+#include "game/game_events.h"
 #include "empire/empire_object.h"
 #include "overlays/city_overlay.h"
 #include "grid/building.h"
@@ -865,8 +864,10 @@ io_buffer* iob_city_data = new io_buffer([](io_buffer* iob, size_t version) {
     iob->bind(BIND_SIGNATURE_INT32, &data.finance.estimated_tax_income);
     iob->bind(BIND_SIGNATURE_INT32, &data.finance.estimated_tax_uncollected);
     iob->bind(BIND_SIGNATURE_INT32, &data.finance.estimated_wages);
-    iob->bind(BIND_SIGNATURE_INT32, &data.finance.last_year.expenses.requests_and_festivals);
-    iob->bind(BIND_SIGNATURE_INT32, &data.finance.this_year.expenses.requests_and_festivals);
+    iob->bind(BIND_SIGNATURE_UINT16, &data.finance.last_year.expenses.festivals);
+    iob->bind(BIND_SIGNATURE_UINT16, &data.finance.this_year.expenses.festivals);
+    iob->bind(BIND_SIGNATURE_UINT16, &data.finance.last_year.expenses.kingdome);
+    iob->bind(BIND_SIGNATURE_UINT16, &data.finance.this_year.expenses.kingdome);
     iob->bind(BIND_SIGNATURE_INT32, &data.finance.wage_rate_paid_this_year);
     iob->bind(BIND_SIGNATURE_INT32, &data.finance.this_year.expenses.tribute);
     iob->bind(BIND_SIGNATURE_INT32, &data.finance.last_year.expenses.tribute);
@@ -881,7 +882,9 @@ io_buffer* iob_city_data = new io_buffer([](io_buffer* iob, size_t version) {
     iob->bind(BIND_SIGNATURE_UINT32, &data.finance.this_year.income.gold_extracted);
     iob->bind(BIND_SIGNATURE_UINT32, &data.finance.last_year.income.gold_extracted);
     assert(iob->get_offset() == 30440);
-    for (int i = 0; i < 1381; i++)
+    iob->bind(BIND_SIGNATURE_UINT16, &data.finance.this_year.expenses.disasters);
+    iob->bind(BIND_SIGNATURE_UINT16, &data.finance.last_year.expenses.disasters);
+    for (int i = 0; i < 1376; i++)
         iob->bind(BIND_SIGNATURE_INT32, &data.unused.unknown_2c20[i]);
     for (int i = 0; i < 8; i++)
         iob->bind(BIND_SIGNATURE_INT32, &data.unused.houses_requiring_unknown_to_evolve[i]); // ????

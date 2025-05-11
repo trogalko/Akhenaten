@@ -36,7 +36,6 @@ enum
 
 	/* keywords */
 	TK_BREAK,
-	TK_BUILDINGIF,
 	TK_CASE,
 	TK_CATCH,
 	TK_CONTINUE,
@@ -46,7 +45,6 @@ enum
 	TK_DO,
 	TK_ELSE,
 	TK_FALSE,
-	TK_FIGUREIF,
 	TK_FINALLY,
 	TK_FOR,
 	TK_FUNCTION,
@@ -66,7 +64,6 @@ enum
 	TK_VAR,
 	TK_VOID,
 	TK_WHILE,
-	TK_WINDOWIF,
 	TK_WITH,
 };
 

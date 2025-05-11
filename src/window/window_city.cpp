@@ -4,11 +4,10 @@
 #include "building/construction/build_planner.h"
 #include "building/rotation.h"
 #include "city/city_message.h"
-#include "city/city_events.h"
+#include "game/game_events.h"
 #include "city/city.h"
 #include "city/city_warnings.h"
 #include "core/profiler.h"
-#include "core/game_environment.h"
 #include "dev/debug.h"
 #include "game/settings.h"
 #include "game/state.h"
@@ -180,8 +179,7 @@ static void cycle_legion(void) {
 bool city_has_loaded = false;
 
 void window_city_handle_hotkeys(const hotkeys* h) {
-    if (h->cycle_legion)
-        cycle_legion();
+        
 }
 
 void window_city_handle_input(const mouse* m, const hotkeys* h) {
@@ -233,6 +231,10 @@ void window_city_init() {
             vec2i screen = tile_to_screen(p);
             camera_go_to_screen_tile(screen, true);
         }
+    });
+
+    events::subscribe_once([] (event_toggle_legion ev) {
+        cycle_legion();
     });
 }
 

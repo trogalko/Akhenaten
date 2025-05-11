@@ -24,8 +24,9 @@ import images_remap
 import ui_overlay_menu
 import imagepaks
 import missions
-include(":figures.js")
-include(":localization.js")
+import figures
+import ui_hold_festival_window
+import localization
 include(":building_menu.js")
 include(":desirability.js")
 include(":floodplain.js")

@@ -1,7 +1,7 @@
 #include "request.h"
 
 #include "building/building_storage_yard.h"
-#include "city/city_events.h"
+#include "game/game_events.h"
 #include "city/finance.h"
 #include "city/city_message.h"
 #include "city/ratings.h"
@@ -151,7 +151,7 @@ void scenario_request_dispatch(int id) {
     scenario_request_set_state(request, new_state);
 
     if (request.resource == RESOURCE_DEBEN) {
-        city_finance_process_requests_and_festivals(request.amount);
+        events::emit(event_finance_process_request{ efinance_request_kigdome, uint32_t(request.amount) });
     } else if (request.resource == RESOURCE_TROOPS) {
         g_city.population.remove_for_troop_request(request.amount);
         events::emit(event_storageyards_remove_resource{ RESOURCE_WEAPONS, request.amount });

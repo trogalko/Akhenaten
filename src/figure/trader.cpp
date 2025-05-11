@@ -1,12 +1,11 @@
 #include "figure/trader.h"
 
-#include "core/game_environment.h"
 #include "empire/empire.h"
 #include "empire/trade_prices.h"
 #include "building/building_storage_yard.h"
 #include "building/building_storage_room.h"
 #include "city/city.h"
-#include "city/city_events.h"
+#include "game/game_events.h"
 #include "io/io_buffer.h"
 #include "empire/empire_map.h"
 #include "figure/figure.h"

@@ -34,7 +34,7 @@
 #include "building/building_temple_complex.h"
 #include "city/coverage.h"
 #include "city/city_floods.h"
-#include "city/city_events.h"
+#include "game/game_events.h"
 #include "sound/sound_city.h"
 #include "sound/sound.h"
 #include "core/random.h"
@@ -1195,8 +1195,7 @@ void draw_debug_ui(int x, int y) {
         tile2i camera_tile = city_view_get_camera_mappoint();
         vec2i camera_pixels = camera_get_pixel_offset_internal(ctx);
 
-        vec2i min_pos, max_pos;
-        city_view_get_camera_scrollable_pixel_limits(g_city_view, min_pos, max_pos);
+        auto mm_view = g_city_view.get_scrollable_pixel_limits();
 
         int real_max_x;
         int real_max_y;
@@ -1207,9 +1206,9 @@ void draw_debug_ui(int x, int y) {
         city_view_get_camera_max_pixel_offset(&max_x_pixel_offset, &max_y_pixel_offset);
 
         y += 30;
-        debug_text_dual_left(str, x, y - 15, 90, 40, "---min:", min_pos.x, min_pos.y);
+        debug_text_dual_left(str, x, y - 15, 90, 40, "---min:", mm_view.min.x, mm_view.min.y);
         debug_text_dual_left(str, x, y - 5, 90, 40, "camera:", g_city_view.camera.position.x, g_city_view.camera.position.y);
-        debug_text_dual_left(str, x, y + 5, 90, 40, "---max:", max_pos.x, max_pos.y);
+        debug_text_dual_left(str, x, y + 5, 90, 40, "---max:", mm_view.max.x, mm_view.max.y);
 
         debug_text_dual_left(str, x, y + 25, 90, 40, "---min:", SCROLL_MIN_SCREENTILE_X, SCROLL_MIN_SCREENTILE_Y);
         debug_text_dual_left(str, x, y + 35, 90, 40, "tile:", camera_tile.x(), camera_tile.y());
@@ -1225,8 +1224,8 @@ void draw_debug_ui(int x, int y) {
         debug_text(ctx, str, x, y + 125, 50, "zoom:", g_zoom.get_percentage());
         debug_text_float(str, x, y + 125, 50 + 40, "", g_zoom.get_scale());
 
-        debug_text_float(str, x, y + 135, 50, "target:", g_zoom.debug_target());
-        debug_text_float(str, x + 100, y + 135, 50, "delta:", g_zoom.debug_delta());
+        debug_text_float(str, x, y + 135, 50, "target:", g_zoom.ftarget());
+        debug_text_float(str, x + 100, y + 135, 50, "delta:", g_zoom.fdelta());
 
         vec2i pixel = {mouse_get()->x, mouse_get()->y};
         debug_text(ctx, str, x, y + 145, 50, "mouse:", pixel.x);
@@ -1248,7 +1247,7 @@ void draw_debug_ui(int x, int y) {
         debug_text(ctx, str, x, y + 185, 50, "offset:", offset.x);
         debug_text(ctx, str, x + 40, y + 185, 50, "", offset.y);
 
-        tile2i point = screentile_to_mappoint(screen);
+        tile2i point = screen_to_tile(screen);
         debug_text(ctx, str, x, y + 195, 50, "point:", point.x());
         debug_text(ctx, str, x + 40, y + 195, 50, "", point.y());
         debug_text(ctx, str, x + 80, y + 195, 50, "", point.grid_offset());

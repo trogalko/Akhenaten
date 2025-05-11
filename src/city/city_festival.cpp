@@ -6,7 +6,7 @@
 #include "city/constants.h"
 #include "city/city.h"
 #include "city/finance.h"
-#include "city/city_events.h"
+#include "game/game_events.h"
 #include "city/city_message.h"
 #include "core/random.h"
 #include "figure/figure.h"
@@ -45,8 +45,8 @@ void city_festival_t::schedule() {
     planned.god = selected.god;
     planned.size = selected.size;
 
-    int cost;
-    int population = g_city.population.current;
+    uint32_t cost;
+    const int population = g_city.population.current;
     switch (selected.size) {
     case FESTIVAL_SMALL:
         planned.months_to_go = small_min_months + population / 1000 + 1;
@@ -58,12 +58,13 @@ void city_festival_t::schedule() {
         cost = large_cost;
         break;
 
-    default:
+    case FESTIVAL_GRAND:
         planned.months_to_go = grand_min_minths + population / 2000 + 1;
         cost = grand_cost;
     }
 
-    city_finance_process_requests_and_festivals(cost);
+    events::emit(event_finance_process_request{ efinance_request_festival, cost });
+    events::emit(event_festival_hold{ planned.god, planned.size });
 
     if (selected.size == FESTIVAL_GRAND) {
         events::emit(event_storageyards_remove_resource{ RESOURCE_BEER, grand_alcohol });
@@ -180,7 +181,7 @@ void city_festival_t::execute_festival() {
 }
 
 void city_festival_t::update() {
-    months_since_festival = std::min<uint8_t>(60, months_since_festival++);
+    months_since_festival = std::min<uint8_t>(months_since_festival+1, 60);
 
     if (first_festival_effect_months > 0) {
         --first_festival_effect_months;

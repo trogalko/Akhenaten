@@ -2,7 +2,6 @@
 
 #include "city/constants.h"
 #include "city/city.h"
-#include "core/game_environment.h"
 #include "game/resource.h"
 #include "graphics/graphics.h"
 #include "graphics/image.h"
@@ -16,6 +15,7 @@
 #include "window/advisors.h"
 #include "window/message_dialog.h"
 #include "window/window_city.h"
+#include "widget/widget_sidebar.h"
 #include "game/game.h"
 
 ui::hold_festival_window g_hold_festival_window;
@@ -23,17 +23,17 @@ ui::hold_festival_window g_hold_festival_window;
 void ui::hold_festival_window::close() {
     if (callback) {
         callback();
-    } else {
-        window_go_back();
-    }
+    } 
+
+    window_go_back();
 }
 
-void window_hold_festival_select_size(e_festival_type size) {
+void ui::hold_festival_window::select_size(int size) {
     if (g_city.finance.is_out_of_money()) {
         return;
     }
 
-    if (g_city.festival.select_size(size)) {
+    if (g_city.festival.select_size(e_festival_type(size))) {
     }
 }
 
@@ -44,59 +44,19 @@ int ui::hold_festival_window::draw_background(UiFlags flags) {
         game.animation = false;
         window_city_draw_panels();
         window_city_draw();
+        widget_sidebar_city_draw_foreground();
     }
 
-    ui["background_image"].enabled = background;
     ui["title"] = ui::str(58, 25 + g_city.festival.selected_god());
-
-    int resource_image_deben = image_id_from_group(PACK_GENERAL, 103) + 18;
-    const bool is_out_of_money = g_city.finance.is_out_of_money();
-    ui["small_festival"].text_var("%s %u @I%u", ui::str(58, 31), g_city.festival.small_cost, resource_image_deben);
-    ui["small_festival"].darkened = is_out_of_money;
-    ui["small_festival"].onclick([] {
-        window_hold_festival_select_size(FESTIVAL_SMALL);
-    });
-
-    ui["middle_festival"].text_var("%s %u @I%u", ui::str(58, 32), g_city.festival.large_cost, resource_image_deben);
-    ui["middle_festival"].darkened = is_out_of_money;
-    ui["middle_festival"].onclick([] { 
-        window_hold_festival_select_size(FESTIVAL_LARGE); 
-    });
-
-    int resource_image_beer = image_id_resource_icon(RESOURCE_BEER);
-    ui["large_festival"].darkened = is_out_of_money || g_city.festival.not_enough_alcohol;
-    ui["large_festival"].text_var("%s %u @I%u %u  @I%u", ui::str(58, 32), g_city.festival.grand_cost, resource_image_deben, g_city.festival.grand_alcohol, resource_image_beer);
-    ui["large_festival"].onclick([] {
-        window_hold_festival_select_size(FESTIVAL_GRAND);
-    });
-
-    ui["button_ok"].onclick([] { 
-        if (!g_city.finance.is_out_of_money()) {
-            g_city.festival.schedule();
-        }
-        g_hold_festival_window.close();
-    });
-
-    ui["button_cancel"].onclick([] { 
-        g_hold_festival_window.close();
-    });
-
-    ui["button_help"].onclick([] {
-        window_message_dialog_show(MESSAGE_DIALOG_ADVISOR_ENTERTAINMENT, -1, 0);
-    });
 
     for (e_god god = GOD_OSIRIS; god < MAX_GODS; ++god) {
         bstring32 god_id; god_id.printf("god%d", god);
         if (g_city.religion.is_god_known(god) == GOD_STATUS_UNKNOWN) {
             ui[god_id].select(false);
-            ui[god_id].darkened = true;
             continue;
         }
 
         ui[god_id].select(god == g_city.festival.selected_god());
-        ui[god_id].onclick([god] {
-            g_city.festival.select_god(god);
-        });
     }
 
     ui["festival_type"] = ui::str(58, 30 + g_city.festival.selected_size());
@@ -111,12 +71,66 @@ int ui::hold_festival_window::ui_handle_mouse(const mouse *m) {
     if (input_go_back_requested(m, h)) {
         if (callback) {
             callback();
-        } else {
-            window_go_back();
-        }
+        } 
+        
+        window_go_back();
     }
 
     return 0;
+}
+
+void ui::hold_festival_window::init() {
+    autoconfig_window::init();
+
+    ui["background_image"].enabled = background;
+
+    int resource_image_deben = image_id_from_group(PACK_GENERAL, 103) + 18;
+    const bool is_out_of_money = g_city.finance.is_out_of_money();
+    ui["small_festival"].text_var("%s %u @I%u", ui::str(58, 31), g_city.festival.small_cost, resource_image_deben);
+    ui["small_festival"].darkened = is_out_of_money;
+    ui["small_festival"].onclick([this] {
+        select_size(FESTIVAL_SMALL);
+    });
+
+    ui["middle_festival"].text_var("%s %u @I%u", ui::str(58, 32), g_city.festival.large_cost, resource_image_deben);
+    ui["middle_festival"].darkened = is_out_of_money;
+    ui["middle_festival"].onclick([this] {
+       select_size(FESTIVAL_LARGE);
+    });
+
+    int resource_image_beer = image_id_resource_icon(RESOURCE_BEER);
+    ui["large_festival"].darkened = is_out_of_money || g_city.festival.not_enough_alcohol;
+    ui["large_festival"].text_var("%s %u @I%u %u  @I%u", ui::str(58, 32), g_city.festival.grand_cost, resource_image_deben, g_city.festival.grand_alcohol, resource_image_beer);
+    ui["large_festival"].onclick([this] {
+        select_size(FESTIVAL_GRAND);
+    });
+
+    ui["button_ok"].onclick([this] {
+        if (!g_city.finance.is_out_of_money()) {
+            g_city.festival.schedule();
+        }
+        close();
+    });
+
+    ui["button_cancel"].onclick([this] {
+        close();
+    });
+
+    ui["button_help"].onclick([] {
+        window_message_dialog_show(MESSAGE_DIALOG_ADVISOR_ENTERTAINMENT, -1, 0);
+    });
+
+    for (e_god god = GOD_OSIRIS; god < MAX_GODS; ++god) {
+        bstring32 god_id; god_id.printf("god%d", god);
+        if (g_city.religion.is_god_known(god) == GOD_STATUS_UNKNOWN) {
+            ui[god_id].darkened = UiFlags_Grayscale;
+            ui[god_id].readonly = true;
+        }
+
+        ui[god_id].onclick([god] {
+            g_city.festival.select_god(god);
+        });
+    }
 }
 
 void ui::hold_festival_window::get_tooltip(tooltip_context* c) {
@@ -160,7 +174,7 @@ void ui::hold_festival_window::get_tooltip(tooltip_context* c) {
     //}
 }
 
-void window_hold_festival_show(bool bg, std::function<void()> cb) {
+void ui::hold_festival_window::show(bool bg, std::function<void()> cb) {
     static window_type window = {
         WINDOW_HOLD_FESTIVAL,
         [] (int flags) { g_hold_festival_window.draw_background(flags); },

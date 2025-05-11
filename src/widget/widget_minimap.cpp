@@ -10,7 +10,7 @@
 #include "grid/terrain.h"
 #include "input/scroll.h"
 #include "city/city_buildings.h"
-#include "city/city_events.h"
+#include "game/game_events.h"
 #include "scenario/scenario.h"
 #include "game/game.h"
 #include "dev/debug.h"
@@ -35,7 +35,7 @@ void city_view_foreach_minimap_tile(int x_offset, int y_offset, int absolute_x, 
         int x_abs = absolute_x - 4;
         for (int x_rel = -4; x_rel < width_tiles; x_rel++, x_abs++, screen_x += 2) {
             if (x_abs >= 0 && x_abs < (2 * GRID_LENGTH) + 1 && y_abs >= 0 && y_abs < (2 * GRID_LENGTH) + 1)
-                callback({ screen_x, screen_y }, screentile_to_mappoint({ x_abs, y_abs }));
+                callback({ screen_x, screen_y }, screen_to_tile({ x_abs, y_abs }));
         }
     }
 }
@@ -103,18 +103,17 @@ int minimap_window::handle_mouse(const mouse *m) {
         float xx, yy;
         vec2i relative = get_mouse_relative_pos(m, xx, yy);
         if (relative.x > 0 && relative.y > 0) {
-            vec2i min_pos, max_pos;
             vec2i view_pos, view_size;
 
-            city_view_get_camera_scrollable_pixel_limits(g_city_view, min_pos, max_pos);
+            auto mm_view = g_city_view.get_scrollable_pixel_limits();
             city_view_get_viewport(g_city_view, view_pos, view_size);
 
-            max_pos += view_size;
-            vec2i city_canvas_pixels = max_pos - min_pos;
+            mm_view.max += view_size;
+            vec2i city_canvas_pixels = mm_view.max - mm_view.min;
             vec2i map_pos(city_canvas_pixels.x * xx, city_canvas_pixels.y * yy);
 
             painter ctx = game.painter();
-            camera_go_to_pixel(ctx, min_pos + map_pos - view_size / 2, true);
+            camera_go_to_pixel(ctx, mm_view.min + map_pos - view_size / 2, true);
             widget_minimap_invalidate();
             mouse_last_coords = { m->x, m->y };
             return true;

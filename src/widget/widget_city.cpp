@@ -6,6 +6,7 @@
 #include "graphics/view/lookup.h"
 #include "graphics/view/view.h"
 #include "grid/property.h"
+#include "grid/grid.h"
 #include "widget/city/building_ghost.h"
 #include "overlays/city_overlay.h"
 #include "building/construction/build_planner.h"
@@ -77,10 +78,10 @@ tile2i screen_city_t::update_city_view_coords(vec2i pixel) {
     vec2i screen = pixel_to_screentile(pixel);
     if (screen.x != -1 && screen.y != -1) {
         city_view_set_selected_view_tile(&screen);
-        return screentile_to_mappoint(screen);
+        return screen_to_tile(screen);
     }
 
-    return tile2i(0);
+    return tile2i::invalid;
 }
 
 int screen_city_t::input_coords_in_city(int x, int y) {
@@ -119,14 +120,14 @@ static void draw_TEST(vec2i pixel, tile2i point, painter &ctx) {
     //        COLOR_CHANNEL_GREEN);
 }
 
-static void draw_tile_boxes(vec2i pixel, tile2i point) {
+void draw_tile_boxes(vec2i pixel, tile2i point) {
     if (map_property_is_draw_tile(point.grid_offset())) {
         int tile_size = map_property_multi_tile_size(point.grid_offset());
         debug_draw_tile_box(pixel.x, pixel.y, tile_size, tile_size);
     }
 };
 
-static void update_tile_coords(vec2i pixel, tile2i tile, painter &ctx) {
+void update_tile_coords(vec2i pixel, tile2i tile, painter &ctx) {
     record_mappoint_pixelcoord(tile, pixel);
 }
 
@@ -135,11 +136,10 @@ void screen_city_t::update_clouds(painter &ctx) {
         clouds_pause();
     }
 
-    vec2i min_pos, max_pos;
-    city_view_get_camera_scrollable_pixel_limits(g_city_view, min_pos, max_pos);
+    auto mm_view = g_city_view.get_scrollable_pixel_limits();
     const vec2i offset = {
-        g_city_view.camera.position.x - min_pos.x,
-        g_city_view.camera.position.y - min_pos.y,
+        g_city_view.camera.position.x - mm_view.min.x,
+        g_city_view.camera.position.y - mm_view.min.y,
     };
 
     const vec2i limit = {
@@ -147,7 +147,7 @@ void screen_city_t::update_clouds(painter &ctx) {
         GRID_LENGTH * TILE_HEIGHT_PIXELS,
     };
 
-    clouds_draw(ctx, min_pos, offset, limit);
+    clouds_draw(ctx, mm_view.min, offset, limit);
 }
 
 void screen_city_t::clear_current_tile() {
@@ -268,8 +268,11 @@ void screen_city_t::draw_without_overlay(painter &ctx, int selected_figure_id, v
 
 void screen_city_t::draw_isometric_flat(vec2i pixel, tile2i tile, painter &ctx) {
     // black tile outside of map
-    if (!tile.valid()) {
-        ImageDraw::isometric_from_drawtile(ctx, image_id_from_group(GROUP_TERRAIN_BLACK), pixel, COLOR_BLACK);
+    const bool is_tree = map_terrain_is(tile, TERRAIN_TREE);
+    const bool is_water = map_terrain_is(tile, TERRAIN_WATER);
+    const bool outside_map = is_tree && is_water;
+    if (!tile.valid() || outside_map) {
+        ImageDraw::isometric_from_drawtile(ctx, image_id_from_group(GROUP_TERRAIN_UGLY_GRASS), pixel);
         return;
     }
 
@@ -848,7 +851,13 @@ void screen_city_t::handle_input_military(const mouse *m, const hotkeys *h, int 
 void screen_city_t::handle_mouse(const mouse* m) {
     current_tile = update_city_view_coords(*m);
 
+    const float old_zoom_target = g_zoom.ftarget();
+    painter ctx = game.painter();
     g_zoom.handle_mouse(m);
+    if (!ctx.view->can_update(g_zoom.ftarget())) {
+        g_zoom.set_scale(old_zoom_target);
+    }
+
     g_city_planner.draw_as_constructing = false;
     if (m->left.went_down) {
         if (handle_legion_click(current_tile)) {
