@@ -231,7 +231,7 @@ void figure::hit_opponent() {
 
     if (opponent->opponent_id != id && m->figure_type != FIGURE_STANDARD_BEARER
         && attack_is_same_direction(attack_direction, opponent->attack_direction)) {
-        figure_attack += 4; // attack opponent on the (exposed) back
+        figure_attack += 24; // attack opponent on the (exposed) back
         events::emit( event_sound_effect{ SOUND_EFFECT_SWORD_SWING });
     }
     if (m->is_halted && m->figure_type == FIGURE_STANDARD_BEARER && attack_is_same_direction(attack_direction, m->direction)) {
