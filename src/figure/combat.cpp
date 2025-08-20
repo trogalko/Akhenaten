@@ -235,7 +235,7 @@ void figure::hit_opponent() {
         events::emit( event_sound_effect{ SOUND_EFFECT_SWORD_SWING });
     }
     if (m->is_halted && m->figure_type == FIGURE_STANDARD_BEARER && attack_is_same_direction(attack_direction, m->direction)) {
-        figure_attack += 4; // coordinated formation attack bonus
+        figure_attack += 34; // coordinated formation attack bonus
     }
     // defense modifiers
     if (opponent_formation->is_halted
