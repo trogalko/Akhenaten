@@ -36,7 +36,7 @@ class building_mine_gems : public building_mine {
 public:
     BUILDING_METAINFO(BUILDING_GEMSTONE_MINE, building_mine_gems, building_mine)
 
-    virtual int produce_uptick_per_day() const override { return base.num_workers > 0 ? std::max<int>(1, base.num_workers / 3) : 0; }
+    virtual int produce_uptick_per_day() const override { return base.num_workers > 0 ? std::max<int>(1, base.num_workers / 1) : 0; }
 };
 
 class building_mine_copper : public building_mine {
@@ -47,6 +47,6 @@ public:
         virtual bool planer_is_need_flag(e_building_flags flag) const override;
     };
 
-    virtual int produce_uptick_per_day() const override { return base.num_workers > 0 ? std::max<int>(1, base.num_workers / 2) : 0; }
+    virtual int produce_uptick_per_day() const override { return base.num_workers > 0 ? std::max<int>(1, base.num_workers / 1) : 0; }
     virtual void on_before_collapse() override;
 };

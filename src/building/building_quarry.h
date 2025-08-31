@@ -22,7 +22,7 @@ public:
 
     virtual int animation_speed(int speed) const override { return 3; }
     virtual bool draw_ornaments_and_animations_height(painter &ctx, vec2i point, tile2i tile, color color_mask) override;
-    virtual int produce_uptick_per_day() const override { return base.num_workers > 0 ? std::max<int>(1, base.num_workers / 2) : 0; }
+    virtual int produce_uptick_per_day() const override { return base.num_workers > 0 ? std::max<int>(1, base.num_workers / 1) : 0; }
 };
 
 class building_limestone_quarry : public building_quarry {

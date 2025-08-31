@@ -54,9 +54,9 @@ bool building_mine::draw_ornaments_and_animations_height(painter &ctx, vec2i poi
 
 int building_mine_gold::produce_uptick_per_day() const {
     if (!!game_features::gameplay_change_goldmine_twice_production) {
-        return base.num_workers / 5.f;
+        return base.num_workers / 2.f;
     } else {
-        return base.num_workers / 10.f;
+        return base.num_workers / 2.f;
     }
 }
 
